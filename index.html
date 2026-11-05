@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>成分组合台 · 一起吃到底吃了多少</title>
+<style>
+:root{
+  --bg:#f5f3ee; --panel:#fffdf9; --line:#e2ddd2; --line2:#efeae0;
+  --ink:#23211d; --ink2:#5a554b; --ink3:#8d8678;
+  --accent:#1f6b52; --accent-bg:#e8f2ed;
+  --warn:#8a4b12; --warn-bg:#fbf0e2;
+  --danger:#8f2f2f; --danger-bg:#fbecec;
+  --r:14px; --r-sm:9px;
+  --shadow:0 1px 2px rgba(35,33,29,.035), 0 5px 16px -12px rgba(35,33,29,.28);
+  --shadow-lift:0 2px 6px rgba(35,33,29,.06), 0 10px 26px -14px rgba(35,33,29,.34);
+  --mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  padding-bottom:64px;
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 14px}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+input{font:inherit;color:inherit}
+
+/* ---------- 顶栏 ---------- */
+header{
+  position:sticky;top:0;z-index:30;background:rgba(245,243,238,.94);
+  backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line);
+}
+.hd{display:flex;align-items:baseline;gap:10px;padding:12px 0 10px}
+.hd h1{font-size:17px;margin:0;font-weight:700;letter-spacing:.02em}
+.hd .sub{font-size:12px;color:var(--ink3);margin-left:auto;font-family:var(--mono)}
+.selbar{padding-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  display:flex;align-items:center;gap:6px;background:var(--panel);
+  border:1px solid var(--line);border-radius:999px;padding:5px 8px 5px 12px;max-width:100%;
+  box-shadow:var(--shadow);
+}
+.chip .nm{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:178px;min-width:0}
+.chip .stp{display:flex;align-items:center;gap:1px;flex:none}
+.chip .stp button{width:20px;height:20px;border-radius:50%;background:var(--line2);color:var(--ink2);
+  display:grid;place-items:center;font-size:13px;line-height:1;font-weight:600}
+.chip .stp button:active{background:var(--line)}
+.chip input{
+  width:46px;text-align:center;border:1px solid transparent;border-radius:7px;
+  background:transparent;padding:3px 0;font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums;
+}
+.chip input:focus{outline:none;border-color:var(--line);background:#fff}
+.chip .un{font-size:11px;color:var(--ink3)}
+.chip .x{width:20px;height:20px;border-radius:50%;background:transparent;color:var(--ink3);
+  display:grid;place-items:center;font-size:15px;line-height:1}
+.chip .x:hover{background:var(--line2);color:var(--ink)}
+/* 吸顶汇总条 */
+.sumbar{display:none;gap:14px;overflow-x:auto;padding:7px 0 9px;border-top:1px solid var(--line2);
+  margin-top:7px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.sumbar::-webkit-scrollbar{display:none}
+.sumbar .si{display:flex;align-items:baseline;gap:4px;flex:none;font-size:11.5px;color:var(--ink3)}
+.sumbar .si b{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.sumbar .si i{font-style:normal;font-size:10px;color:var(--ink3)}
+.sumbar .lbl{flex:none;font-size:11px;color:var(--ink3);letter-spacing:.04em}
+.addbtn{
+  border:1px dashed var(--line);border-radius:999px;padding:7px 14px;font-size:13.5px;
+  color:var(--accent);background:var(--accent-bg);
+}
+.ghost{font-size:12.5px;color:var(--ink3);text-decoration:underline;text-underline-offset:3px}
+
+/* ---------- 区块 ---------- */
+section{margin:18px 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
+.sect-head{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:0 0 11px;
+  padding:0 0 9px;border-bottom:1px solid var(--line);position:relative}
+.sect-head::after{content:'';position:absolute;left:0;bottom:-1px;width:64px;height:2px;
+  border-radius:2px;background:linear-gradient(90deg,var(--accent),rgba(31,107,82,0))}
+.sect-head h2{display:flex;align-items:center;gap:8px;font-size:16px;margin:0;font-weight:700;
+  letter-spacing:.01em;color:var(--ink);line-height:1.35}
+.sect-head h2::before{content:'';flex:none;width:4px;height:17px;border-radius:2px;background:var(--accent)}
+.sect-head .hint{margin-left:auto;max-width:100%;font-size:11.5px;line-height:1.4;
+  color:var(--accent);background:var(--accent-bg);border:1px solid rgba(31,107,82,.16);
+  border-radius:999px;padding:2px 9px;text-align:right}
+@media(max-width:480px){.sect-head .hint{font-size:11px;padding:2px 8px}}
+.pad{padding:14px}
+
+/* 空态 */
+.empty{text-align:center;padding:44px 20px;color:var(--ink2)}
+.empty .ico{width:52px;height:52px;margin:0 auto 14px;display:grid;grid-template-columns:repeat(3,1fr);gap:5px;opacity:.5}
+.empty .ico i{border-radius:3px;background:var(--line)}
+.empty .ico i:nth-child(1),.empty .ico i:nth-child(5),.empty .ico i:nth-child(9){background:var(--accent);opacity:.55}
+.empty .big{font-size:15px;font-weight:600;margin-bottom:6px;color:var(--ink)}
+.empty p{margin:0 0 18px;font-size:13.5px;line-height:1.8}
+.quick-hd{display:flex;align-items:center;justify-content:center;gap:9px;margin:20px 0 11px;font-size:11.5px;color:var(--ink3);letter-spacing:.06em}
+.quick-hd::before,.quick-hd::after{content:'';width:26px;height:1px;background:var(--line)}
+.quick{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:566px;margin:0 auto}
+.quick button{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 12px;font-size:12.5px;color:var(--ink2);white-space:nowrap}
+.quick button:hover{border-color:var(--accent);color:var(--accent)}
+
+/* 提示条 */
+.alerts{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.alert{display:flex;gap:9px;padding:11px 13px;border-radius:var(--r-sm);font-size:13.5px;line-height:1.6}
+.alert.warn{background:var(--warn-bg);color:var(--warn)}
+.alert.info{background:var(--accent-bg);color:var(--accent)}
+.alert.danger{background:var(--danger-bg);color:var(--danger)}
+.alert b{font-weight:700}
+
+/* 元素表 */
+.el-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(208px,1fr));gap:10px}
+.el-cell{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 13px 11px;
+  box-shadow:var(--shadow);position:relative;overflow:hidden}
+.el-cell::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c,#c9c2b4);opacity:.85}
+.el-cell .el-hd{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--c,var(--ink2));font-weight:700;letter-spacing:.03em}
+.el-cell .el-hd .dot{width:6px;height:6px;border-radius:50%;background:var(--c,#c9c2b4);flex:none}
+.el-cell .el-hd .sym{font-family:var(--mono);font-size:10px;font-weight:400;color:var(--ink3);letter-spacing:.04em;margin-left:auto}
+.el-cell .v{font-family:var(--mono);font-size:25px;font-weight:600;line-height:1.12;margin-top:5px;letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums}
+.el-cell .v small{font-size:11px;font-weight:400;color:var(--ink3);margin-left:3px;font-family:inherit;letter-spacing:0}
+.el-cell .src{font-size:11px;color:var(--ink3);margin-top:4px;line-height:1.35;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* 电解质平衡（钠钾镁） */
+.elec{padding:13px 15px 12px}
+.ec-row{padding:11px 0 10px;border-top:1px dashed var(--line2)}
+.ec-row:first-child{border-top:0;padding-top:1px}
+.ec-top{display:flex;align-items:baseline;gap:9px}
+.ec-nm{display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:700;
+  color:var(--ink);flex:none;min-width:64px}
+.ec-nm i{width:7px;height:7px;border-radius:50%;background:var(--c,#c9c2b4);flex:none}
+.ec-nm em{font-style:normal;font-family:var(--mono);font-size:10px;font-weight:400;
+  color:var(--ink3);letter-spacing:.04em}
+.ec-val{font-family:var(--mono);font-size:19px;font-weight:600;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;line-height:1.2}
+.ec-val small{font-size:10.5px;font-weight:400;color:var(--ink3);margin-left:2px;letter-spacing:0}
+.ec-tag{margin-left:auto;font-size:11px;font-weight:600;padding:2.5px 9px;border-radius:999px;
+  white-space:nowrap;font-variant-numeric:tabular-nums}
+.ec-tag.ok{background:var(--accent-bg);color:var(--accent)}
+.ec-tag.low{background:var(--warn-bg);color:var(--warn)}
+.ec-tag.high{background:var(--danger-bg);color:var(--danger)}
+.ec-tag.na{background:var(--line2);color:var(--ink3);font-weight:400}
+.ec-bar{position:relative;height:7px;border-radius:999px;background:var(--line2);
+  margin:8px 0 5px;overflow:hidden}
+.ec-zone{position:absolute;top:0;bottom:0;background:var(--accent);opacity:.25}
+.ec-mark{position:absolute;top:0;bottom:0;width:1.5px;background:var(--accent);opacity:.6}
+.ec-fill{position:absolute;top:0;bottom:0;left:0;border-radius:999px;background:var(--c,#8d8678);
+  opacity:.9;transition:width .35s ease}
+.ec-row.st-high .ec-fill{background:var(--danger);opacity:1}
+.ec-row.st-na .ec-fill{background:transparent}
+.ec-foot{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:var(--ink3);
+  font-variant-numeric:tabular-nums}
+.ec-foot .gk{color:var(--ink2)}
+.ec-ratio{margin-top:11px;padding-top:11px;border-top:1px solid var(--line2);
+  display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-size:12.5px;color:var(--ink2)}
+.ec-ratio b{font-family:var(--mono);font-size:14px;color:var(--ink);font-weight:600;
+  font-variant-numeric:tabular-nums}
+.ec-ratio .rk{margin-left:auto;font-size:11.5px;padding:2px 9px;border-radius:999px}
+.ec-ratio .rk.ok{background:var(--accent-bg);color:var(--accent)}
+.ec-ratio .rk.off{background:var(--warn-bg);color:var(--warn)}
+.ec-sug{margin-top:11px;padding-top:11px;border-top:1px dashed var(--line2)}
+.ec-sug .lb{display:block;font-size:11px;color:var(--ink3);letter-spacing:.03em;margin-bottom:8px}
+.ec-sug-list{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ec-sug-i{min-width:0;background:#fff;border:1px solid var(--line);border-left:3px solid var(--c,#8d8678);
+  border-radius:var(--r-sm);padding:9px 10px 8px;box-shadow:var(--shadow)}
+.ec-sug-i .n{font-size:11.5px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ec-sug-i .v{display:flex;align-items:baseline;gap:4px;margin-top:2px;
+  font-family:var(--mono);font-variant-numeric:tabular-nums}
+.ec-sug-i .v b{font-size:24px;line-height:1.15;font-weight:700;letter-spacing:-.035em;
+  color:var(--c,#1f6b52)}
+.ec-sug-i .v span{font-size:12px;color:var(--ink3)}
+.ec-sug .ec-note{display:block;margin-top:8px;font-size:11px;color:var(--ink3);line-height:1.5}
+@media(max-width:400px){
+  .ec-sug-list{gap:6px}
+  .ec-sug-i{padding:8px 7px 7px}
+  .ec-sug-i .n{font-size:11px}
+  .ec-sug-i .v b{font-size:21px}
+}
+
+/* 成分清单 */
+.grp{border-top:1px solid var(--line2)}
+.grp:first-child{border-top:0}
+.grp-hd{width:100%;display:flex;align-items:center;gap:8px;padding:12px 14px;text-align:left;background:none}
+.grp-hd .t{font-size:13.5px;font-weight:700}
+.grp-hd .n{font-size:11.5px;color:var(--ink3);font-family:var(--mono)}
+.grp-hd .arw{margin-left:auto;color:var(--ink3);font-size:12px;transition:.15s}
+.grp[data-open="1"] .grp-hd .arw{transform:rotate(90deg);display:inline-block}
+.grp-bd{display:none;padding:0 14px 10px}
+.grp[data-open="1"] .grp-bd{display:block}
+.row{display:flex;gap:10px;padding:9px 14px;border-top:1px dashed var(--line2);align-items:flex-start}
+.row:first-child{border-top:0}
+.row .no{flex:none;width:24px;padding-top:1px;font-family:var(--mono);font-size:11.5px;
+  font-weight:600;color:var(--ink2);text-align:right;font-variant-numeric:tabular-nums;line-height:1.5}
+.row .nm{flex:1;min-width:0;font-size:13.5px;line-height:1.5}
+.row .cls{display:block;font-size:10.5px;color:var(--ink3);letter-spacing:.02em;margin-bottom:2px;display:flex;align-items:center;gap:5px}
+.row .cls::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--c,#cfc8b9);flex:none}
+.fchips{display:flex;gap:6px;overflow-x:auto;margin:0 0 9px;scrollbar-width:none}
+.fchips::-webkit-scrollbar{display:none}
+.fchips button{white-space:nowrap;font-size:12.5px;padding:5px 12px;border:1px solid var(--line);border-radius:999px;background:var(--panel)}
+.fchips button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.row .nm .al{display:block;font-size:11px;color:var(--ink3);margin-top:1px}
+.row .val{flex:none;font-family:var(--mono);font-size:14px;font-weight:600;white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums}
+.row .split{font-size:11px;color:var(--ink3);margin-top:2px;line-height:1.5;font-family:var(--mono)}
+.multi{background:var(--accent-bg);border-radius:5px;padding:0 5px;font-size:10.5px;color:var(--accent);margin-left:4px;font-family:inherit}
+
+/* 怎么吃：--hc / --hc-rgb 由 howHTML() 按产品注入，单产品时退回默认墨绿 */
+.how-item{--hc:var(--accent);--hc-rgb:31,107,82;padding:12px 14px 13px;border-top:1px solid var(--line2)}
+.how-item:first-child{border-top:0}
+.how-item.hwc .nm::before{content:"";display:inline-block;width:7px;height:7px;
+  border-radius:2px;background:var(--hc);margin-right:6px;vertical-align:1px}
+.hw-top{display:flex;align-items:flex-start;gap:10px}
+.hw-top .nm{flex:1;min-width:0;font-size:13.5px;font-weight:700;line-height:1.45;cursor:pointer}
+.hw-qty{flex:none;text-align:right;white-space:nowrap}
+.hw-qty b{font-family:var(--mono);font-size:18px;font-weight:600;letter-spacing:-.02em}
+.hw-qty i{font-style:normal;font-size:11px;color:var(--ink3);margin-left:3px}
+.hw-tags{margin-top:2px}
+.tag{display:inline-block;font-size:11.5px;padding:1.5px 8px;border-radius:5px;background:var(--line2);color:var(--ink2);margin:5px 5px 0 0;line-height:1.5}
+.tag.ng{background:var(--danger-bg);color:var(--danger)}
+.tag.ng::before{content:"✕";font-size:9px;margin-right:3px;opacity:.7}
+.hw-dose{display:flex;gap:6px;margin-top:5px;align-items:flex-start}
+.hw-dose .k{flex:none;font-size:10.5px;color:var(--ink3);line-height:1.95;letter-spacing:.02em;width:23px}
+.hw-dose .v{flex:1;min-width:0;font-size:13px;line-height:1.6;color:var(--ink2)}
+.hw-more{margin-top:9px}
+.hw-more summary{display:flex;align-items:center;gap:8px;width:100%;box-sizing:border-box;
+  padding:7px 10px;border:1px solid rgba(var(--hc-rgb),.32);border-radius:var(--r-sm);background:var(--bg);
+  font-size:12.5px;font-weight:600;color:var(--hc);cursor:pointer;list-style:none;
+  transition:background .15s,border-color .15s}
+.hw-more summary::-webkit-details-marker{display:none}
+.hw-more summary::before{content:"+";display:grid;place-items:center;flex:none;
+  width:17px;height:17px;border-radius:50%;background:var(--hc);color:#fff;
+  font-family:var(--mono);font-size:13px;font-weight:700;line-height:1}
+.hw-more summary:hover{border-color:var(--hc);background:rgba(var(--hc-rgb),.07)}
+.hw-more .t{flex:1;min-width:0}
+.hw-more .close-t{display:none}
+.hw-more .cnt{flex:none;font-family:var(--mono);font-size:11px;font-weight:600;
+  color:var(--hc);background:rgba(var(--hc-rgb),.11);border-radius:999px;padding:1px 8px}
+.hw-more[open] summary{background:rgba(var(--hc-rgb),.09);border-color:rgba(var(--hc-rgb),.55)}
+.hw-more[open] summary::before{content:"−"}
+.hw-more[open] .open-t{display:none}
+.hw-more[open] .close-t{display:inline}
+.hw-more .bd{margin-top:9px;padding:0;border-left:0}
+.hw-sec{margin:0 0 8px;border:1px solid rgba(var(--hc-rgb),.22);border-radius:var(--r-sm);
+  background:#fff;overflow:hidden;box-shadow:var(--shadow)}
+.hw-sec:last-child{margin-bottom:0}
+.hw-sec .hd{display:flex;align-items:center;gap:8px;padding:7px 11px;
+  background:rgba(var(--hc-rgb),.06);border-bottom:1px solid rgba(var(--hc-rgb),.18);
+  border-left:3px solid var(--hc)}
+.hw-sec .no{flex:none;font-family:var(--mono);font-size:10.5px;font-weight:700;
+  color:#fff;background:var(--hc);border-radius:5px;padding:1px 5px;letter-spacing:.02em}
+.hw-sec .hd h4{margin:0;font-size:13px;font-weight:700;color:var(--ink);letter-spacing:.02em}
+.hw-sec .ct{padding:9px 11px 10px}
+.hw-sec .ct > :last-child{margin-bottom:0}
+.hw-sec .ct hr:last-child{display:none}
+details{margin-top:7px}
+details summary{font-size:12.5px;color:var(--ink2);cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:4px}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"+";font-family:var(--mono);font-size:12px;color:var(--ink3);width:9px;text-align:center}
+details[open] summary::before{content:"−"}
+details .bd{font-size:13px;color:var(--ink2);line-height:1.75;padding:6px 0 0 14px;border-left:2px solid var(--line2);margin-top:6px}
+details .bd p{margin:0 0 8px}
+details .bd ul,details .bd ol{margin:0 0 8px;padding-left:18px}
+details .bd li{margin:2px 0}
+details .bd h3,details .bd h4{font-size:13px;margin:8px 0 4px;color:var(--ink)}
+details .bd blockquote{margin:0 0 8px;padding:6px 10px;background:var(--bg);border-left:2px solid var(--line);border-radius:0 6px 6px 0}
+details .bd hr{border:0;border-top:1px dashed var(--line2);margin:10px 0}
+
+/* 注意事项 */
+.note{display:flex;gap:9px;padding:7px 14px;border-top:1px solid var(--line2);
+  font-size:13.5px;line-height:1.6;color:var(--ink2)}
+.note:first-child{border-top:0}
+.note > .no{flex:none;width:22px;padding-top:2px;font-family:var(--mono);font-size:11.5px;
+  font-weight:600;color:var(--ink2);text-align:right;font-variant-numeric:tabular-nums}
+.note > .txt{flex:1;min-width:0}
+.note p{margin:0}
+.note p + p{margin-top:5px}
+.note hr{display:none}
+.note .who{font-size:11.5px;color:var(--accent);margin-top:3px}
+.note.note-more{color:var(--ink3)}
+.note.dis{display:none}
+
+/* 弹层 */
+.sheet{position:fixed;inset:0;z-index:60;display:none;background:rgba(30,28,24,.35)}
+.sheet.on{display:block}
+.sheet .panel{
+  position:absolute;left:0;right:0;bottom:0;max-height:88vh;background:var(--bg);
+  border-radius:18px 18px 0 0;display:flex;flex-direction:column;
+}
+.sheet .ph{padding:14px 16px 10px;border-bottom:1px solid var(--line);flex:none}
+.sheet .ph h3{margin:0 0 10px;font-size:15px}
+.search{width:100%;padding:10px 13px;border:1px solid var(--line);border-radius:10px;background:var(--panel);font-size:14px;outline:none}
+.search:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(31,107,82,.08)}
+.filters{display:flex;gap:6px;overflow-x:auto;padding:10px 16px;border-bottom:1px solid var(--line);scrollbar-width:none;flex:none}
+.filters::-webkit-scrollbar{display:none}
+.filters button{white-space:nowrap;font-size:12.5px;padding:5px 11px;border:1px solid var(--line);border-radius:999px;background:var(--panel)}
+.filters button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.plist{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:6px 10px 20px}
+.pgroup{font-size:11.5px;color:var(--ink3);padding:12px 6px 5px;font-family:var(--mono)}
+.pitem{width:100%;display:flex;align-items:center;gap:10px;padding:11px 10px;border-radius:10px;text-align:left}
+.pitem:active{background:var(--line2)}
+.pitem .id{font-family:var(--mono);font-size:11px;color:var(--ink3);width:34px;flex:none}
+.pitem .tx{flex:1;min-width:0}
+.pitem .tx .n{display:block;font-size:14px;font-weight:600;line-height:1.4}
+.pitem .n em{font-style:normal;color:var(--accent);background:rgba(31,107,82,.10);border-radius:3px}
+.pitem .whyhit{display:block;font-size:11px;color:var(--accent);margin-top:2px;line-height:1.4}
+.pcount{font-size:11.5px;color:var(--ink3);padding:4px 6px 2px}
+.pitem .tx .m{display:block;font-size:11.5px;color:var(--ink3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pitem .plus{width:26px;height:26px;border-radius:50%;background:var(--accent-bg);color:var(--accent);display:grid;place-items:center;font-size:16px;flex:none}
+
+/* 产品详情面板 */
+.dsheet .panel{max-height:92vh}
+.dbody{flex:1;min-height:0;overflow-y:auto;padding:4px 16px 30px;font-size:13.5px;line-height:1.8;color:var(--ink2)}
+.dbody h2{font-size:14.5px;color:var(--ink);margin:18px 0 6px}
+.dbody p{margin:0 0 9px}
+.dbody ul,.dbody ol{padding-left:19px;margin:0 0 9px}
+.dbody blockquote{margin:0 0 9px;padding:7px 11px;background:var(--panel);border-left:2px solid var(--line);border-radius:0 6px 6px 0}
+
+footer{border-top:1px solid var(--line);margin-top:26px;padding:16px 0 26px;font-size:11.5px;color:var(--ink3);line-height:1.8}
+footer .ver{font-family:var(--mono);margin-top:6px}
+.loading{padding:56px 16px;text-align:center;color:var(--ink3);font-size:13.5px;line-height:1.9}
+.loading .spin{width:26px;height:26px;border:2.5px solid var(--line);border-top-color:var(--accent);
+  border-radius:50%;margin:0 auto 12px;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.errbox{padding:34px 18px;text-align:center;color:var(--ink2);font-size:13.5px;line-height:1.9}
+.errbox .retry{margin-top:14px;border:1px solid var(--line);border-radius:999px;padding:7px 18px;
+  font-size:13px;color:var(--accent);background:var(--accent-bg)}
+.fadein{animation:fadeUp .22s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+@media (max-width:600px){
+  .el-grid{grid-template-columns:1fr 1fr;gap:8px}
+}
+@media (max-width:420px){
+  .hd h1{font-size:16px}
+  .chip .nm{max-width:132px}
+  .el-grid{grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:8px}
+  .el-cell .v{font-size:22px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="hd">
+      <h1>成分组合台</h1>
+      <span class="sub" id="cnt">— 个产品</span>
+    </div>
+    <div class="selbar">
+      <div class="chips" id="chips"></div>
+      <div class="sumbar" id="sumbar"></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <main id="main">
+    <div class="loading"><div class="spin"></div>正在加载数据…</div>
+  </main>
+
+  <footer>
+    <div id="disclaimer"></div>
+    <div class="ver" id="ver"></div>
+  </footer>
+</div>
+
+<!-- 选产品 -->
+<div class="sheet" id="picker">
+  <div class="panel">
+    <div class="ph">
+      <h3>添加产品 <span class="ghost" id="pclose" style="float:right">关闭</span></h3>
+      <input class="search" id="psearch" placeholder="搜产品名、成分、编号，如「镁」「P032」" autocomplete="off">
+    </div>
+    <div class="filters" id="pfilters"></div>
+    <div class="plist" id="plist"></div>
+  </div>
+</div>
+
+<!-- 产品详情 -->
+<div class="sheet dsheet" id="detail">
+  <div class="panel">
+    <div class="ph">
+      <h3 id="dtitle">产品详情</h3>
+      <span class="ghost" id="dclose">关闭</span>
+    </div>
+    <div class="dbody" id="dbody"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   数据源：国内静态壳 + GitHub 仓库（jsdelivr）
+   - preview.html 里 BUNDLE 已被内联，走后门直接读
+   - 线上：localStorage 缓存 10 分钟 → GitHub API 取最新 sha → 壳内 BUILD_SHA
+   ============================================================ */
+var BUNDLE = /*__DATA__*/null;
+var REPO = 'liuchenyu26131/buji-chengfen';
+var BUILD_SHA = ''; // 由 push 脚本自动改写，可留空
+var BASE = '';
+
+function lsGet(k){ try{ return JSON.parse(localStorage.getItem(k)||'null'); }catch(e){ return null; } }
+function lsSet(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+
+async function resolveSha(){
+  var c = lsGet('cf_ver');
+  if (c && c.sha && (Date.now()-c.t) < 600000) return c.sha;
+  try{
+    var r = await fetch('https://api.github.com/repos/'+REPO+'/commits/main', {cache:'no-store'});
+    if (r.ok){
+      var j = await r.json();
+      var sha = (j.sha||'').slice(0,7);
+      if (sha){ lsSet('cf_ver', {sha:sha, t:Date.now()}); return sha; }
+    }
+  }catch(e){}
+  return BUILD_SHA || 'main';
+}
+
+async function boot(){
+  if (BUNDLE){ return BUNDLE; }
+  var sha = await resolveSha();
+  BASE = 'https://fastly.jsdelivr.net/gh/'+REPO+'@'+sha;
+  var idx = await fetch(BASE+'/data/index.json', {cache:'force-cache'}).then(r=>r.json());
+  var ref = await fetch(BASE+'/data/ref.json').then(r=>r.json());
+  var ver = await fetch(BASE+'/data/version.json').then(r=>r.json()).catch(()=>({}));
+  return {index:idx, ref:ref, version:ver, products:{}, remote:true};
+}
+
+var GING = null;               // 成分反查索引 {n:{成分名:[产品ID]}, a:{英文别名:[产品ID]}}
+
+function loadIng(){
+  if (GING) return Promise.resolve(GING);
+  if (BUNDLE && BUNDLE.ing){ GING = BUNDLE.ing; prepIng(); return Promise.resolve(GING); }
+  return fetch(BASE+'/data/ing.json').then(r=>r.json()).then(function(j){
+    GING = j; prepIng(); return j;
+  }).catch(function(){ GING = {n:{},a:{}}; return GING; });
+}
+function prepIng(){
+  if (!GING || !DB) return;
+  var pool = [];
+  ['n','a'].forEach(function(k){
+    Object.keys(GING[k] || {}).forEach(function(name){
+      pool.push({t:name, ids:GING[k][name]});
+    });
+  });
+  DB.index.forEach(function(it){
+    var out = [];
+    pool.forEach(function(o){ if (o.ids.indexOf(it.id) >= 0) out.push(o.t); });
+    it._ings = out;
+  });
+}
+
+var DB = null;                 // {index, ref, version}
+var PD = {};                   // 已加载的产品
+var SEL = [];                  // [{id, amount}]
+var INGF = '全部';             // 成分合计的类别筛选
+
+function product(id){
+  if (PD[id]) return Promise.resolve(PD[id]);
+  if (DB.products && DB.products[id]){ PD[id] = DB.products[id]; return Promise.resolve(PD[id]); }
+  return fetch(BASE+'/data/p/'+id+'.json').then(r=>r.json()).then(p=>{ PD[id]=p; return p; });
+}
+
+/* ---------------- 视觉：元素与类别配色（只影响显示） ---------------- */
+var ELC = {'钙':'#A9734A','镁':'#3C7A68','钾':'#B07C28','钠':'#37698F','锌':'#6B5E98',
+  '铜':'#9C5B45','锰':'#5E7A46','硒':'#8A6AA0','碘':'#7E6A3F','硼':'#4E7D86',
+  '钼':'#8A6E7E','铬':'#5F7050','铁':'#8C4A3C'};
+var ELS = {'钙':'Ca','镁':'Mg','钾':'K','钠':'Na','锌':'Zn','铜':'Cu','锰':'Mn',
+  '硒':'Se','碘':'I','硼':'B','钼':'Mo','铬':'Cr','铁':'Fe'};
+var CLSC = {'维生素':'#B07C28','矿物质':'#37698F','氨基酸':'#3C7A68','脂质':'#8A6AA0',
+  '抗氧化':'#9C5B45','B族辅因子':'#6B5E98'};
+function elColor(n){ return ELC[n] || '#a39b8c'; }
+function clsColor(c){ return CLSC[String(c||'').split('/')[0].trim()] || '#cfc8b9'; }
+
+/* 多产品时给「怎么吃」逐产品分色（只影响显示，不动数据）
+   按产品 ID 稳定散列取起始色，再依次避重 + 色距过滤（RGB 距离 > 55）：
+   看起来是随机多彩，且同一组合内固定，改份数/刷新不跳色；产品超过 12 个才可能重复。 */
+var HWC = ['#1f6b52','#B07C28','#37698F','#9C5B45','#6B5E98','#5E7A46',
+  '#8A6AA0','#A9734A','#4E7D86','#8C4A3C','#3C7A68','#7E6A3F'];
+function hwRGB(hex){
+  var n = parseInt(hex.slice(1),16);
+  return ((n>>16)&255)+','+((n>>8)&255)+','+(n&255);
+}
+function hwDist(a,b){
+  var x = parseInt(a.slice(1),16), y = parseInt(b.slice(1),16);
+  var dr = ((x>>16)&255)-((y>>16)&255), dg = ((x>>8)&255)-((y>>8)&255),
+      db = (x&255)-(y&255);
+  return Math.sqrt(dr*dr+dg*dg+db*db);
+}
+function hwColors(list){
+  if (list.length < 2) return list.map(function(){ return ''; });
+  var used = [];
+  return list.map(function(x){
+    var id = String(x.p.id||''), h = 0;
+    for (var k=0;k<id.length;k++) h = (h*31 + id.charCodeAt(k)) >>> 0;
+    var start = h % HWC.length, pick = -1, fallback = -1;
+    for (var s=0;s<HWC.length;s++){
+      var c = (start+s) % HWC.length, col = HWC[c];
+      if (used.indexOf(col) >= 0) continue;
+      if (fallback < 0) fallback = c;
+      if (used.every(function(u){ return hwDist(col,u) > 55; })){ pick = c; break; }
+    }
+    if (pick < 0) pick = (fallback < 0 ? start : fallback);
+    used.push(HWC[pick]);
+    return HWC[pick];
+  });
+}
+
+/* ---------------- 电解质平衡目标（钠钾镁） ---------------- */
+/* 口径来源：钠钾镁平衡统计（低碳/生酮饮食口径，盐 10~15 g 折算）
+   钠 3900~5850 mg、钾 2000~3000 mg、镁 400~600 mg
+   钠:钾 的「配平带」按两端比值取 1.5~2.5（目标区间本身的比约 1.3:1 ~ 2.9:1） */
+var TY = {
+  '钠': {low:3900, high:5850},
+  '钾': {low:2000, high:3000},
+  '镁': {low:400,  high:600}
+};
+var EC_ORDER = ['钠','钾','镁'];
+/* 缺口折算系数：每 1 g 原料能提供多少 mg 元素（来源同「钠钾镁平衡统计」） */
+var SUP_RATE = {
+  '钠': {name:'盐',        per:390},
+  '钾': {name:'柠檬酸钾',  per:360},
+  '镁': {name:'柠檬酸镁',  per:160, alt:'甘氨酸镁含镁 110 mg/g，需更多'}
+};
+var RATIO_BAND = [1.6, 2.6];
+
+/* ---------------- 工具 ---------------- */
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function fmtNum(v){
+  if (v==null || isNaN(v)) return '—';
+  var a = Math.abs(v);
+  var s;
+  if (a >= 1000) s = Math.round(v).toLocaleString('en-US');
+  else if (a >= 100) s = v.toFixed(0);
+  else if (a >= 10) s = v.toFixed(1);
+  else if (a >= 1) s = v.toFixed(2);
+  else if (a >= 0.01) s = v.toFixed(3);
+  else s = v.toPrecision(2);
+  return s.replace(/\.0+$/,'').replace(/(\.\d*?)0+$/,'$1');
+}
+function unitScale(v,u){
+  if (u==='mg' && v!=null && v>0 && v<1) return {v:v*1000, u:'μg'};
+  if (u==='g' && v!=null && v<0.1) return {v:v*1000, u:'mg'};
+  return {v:v,u:u};
+}
+function fmtVal(v,u){ var s=unitScale(v,u); return fmtNum(s.v)+' '+s.u; }
+/* 统一换算到 mg，用于和目标值比较 */
+function toMg(v,u){
+  u = String(u||'mg').toLowerCase();
+  if (u==='g') return v*1000;
+  if (u==='μg'||u==='ug'||u==='mcg') return v/1000;
+  return v;
+}
+function normText(s){ return String(s||'').replace(/<[^>]+>/g,'').replace(/[\s\u3000，。、；：！？,.;:!?*"'“”‘’()（）]/g,''); }
+function q(sel){ return document.querySelector(sel); }
+
+/* ---------------- 选品 ---------------- */
+function addP(id){
+  if (SEL.some(x=>x.id===id)) return;
+  var it = DB.index.find(x=>x.id===id);
+  if (!it) return;
+  SEL.push({id:id, amount: it.defaultAmount});
+  renderChips();
+  product(id).then(function(){ render(); }, function(){ render(); });
+  if (SEL.length===1) window.scrollTo({top:0});
+}
+function rmP(id){ SEL = SEL.filter(x=>x.id!==id); renderChips(); render(); }
+
+function renderChips(){
+  var box = q('#chips'); box.innerHTML = '';
+  SEL.forEach(function(s){
+    var it = DB.index.find(x=>x.id===s.id);
+    var el = document.createElement('div');
+    el.className = 'chip fadein';
+    el.innerHTML = '<span class="nm" data-detail="'+s.id+'" title="'+esc(it.name)+'">'+esc(it.name)+'</span>'+
+      '<span class="stp"><button data-step="'+s.id+'" data-dir="-1" aria-label="减少">−</button>'+
+      '<input type="number" step="0.1" min="0" value="'+s.amount+'" data-amt="'+s.id+'">'+
+      '<button data-step="'+s.id+'" data-dir="1" aria-label="增加">+</button></span>'+
+      '<span class="un">'+esc(it.defaultUnit||'份')+'/天</span>'+
+      '<button class="x" data-rm="'+s.id+'" aria-label="移除">×</button>';
+    box.appendChild(el);
+  });
+  var b = document.createElement('button');
+  b.className = 'addbtn'; b.textContent = '+ 添加产品';
+  b.onclick = openPicker;
+  box.appendChild(b);
+  if (SEL.length){
+    var c = document.createElement('button');
+    c.className = 'ghost'; c.style.marginLeft = '4px'; c.textContent = '清空';
+    c.onclick = function(){ SEL=[]; renderChips(); render(); };
+    box.appendChild(c);
+  }
+}
+
+/* 吸顶汇总条：滚动到下面也看得见总量 */
+function renderSum(r){
+  var box = q('#sumbar');
+  if (!box) return;
+  if (!r || r.list.length === 0){
+    box.style.display = 'none'; box.innerHTML = ''; return;
+  }
+  var order = ['钠','钾','镁','钙','锌','硒','碘','铁','铜','锰'];
+  var arr = Array.from(r.els.values()).sort(function(a,b){
+    var ia = order.indexOf(a.el), ib = order.indexOf(b.el);
+    return (ia<0?99:ia) - (ib<0?99:ib);
+  }).slice(0, 6);
+  var html = '<span class="lbl">'+r.list.length+' 样</span>';
+  html += arr.map(function(o){
+    var s = unitScale(o.total, o.unit);
+    return '<span class="si" style="--c:'+elColor(o.el)+'">'+esc(o.el)+
+      '<b style="color:'+elColor(o.el)+'">'+fmtNum(s.v)+'</b><i>'+esc(s.u)+'</i></span>';
+  }).join('');
+  box.innerHTML = html;
+  box.style.display = 'flex';
+}
+
+/* ---------------- 计算 ---------------- */
+function compute(){
+  var ing = new Map();     // name|unit -> {name,unit,cls,alias,total,items,noAmt}
+  var els = new Map();
+  var cls = new Map();
+  var unm = [];
+  var list = [];
+
+  SEL.forEach(function(s){
+    var p = PD[s.id]; if (!p) return;
+    var basis = (p.basis && p.basis.value) || 1;
+    var f = (s.amount==null? basis : s.amount) / basis;
+    list.push({p:p, amount:s.amount, factor:f});
+
+    (p.ingredients||[]).forEach(function(g2){
+      var key = (g2.name||'')+'|'+(g2.unit||'');
+      if (!ing.has(key)) ing.set(key, {name:g2.name, unit:g2.unit, cls:g2.cls||'其他', alias:g2.alias, total:0, items:[], noAmt:false});
+      var o = ing.get(key);
+      if (!o.alias && g2.alias) o.alias = g2.alias;
+      if (g2.amount==null){ o.noAmt = true; unm.push({pid:p.id, name:g2.name}); }
+      else {
+        var v = g2.amount * f;
+        o.total += v;
+        o.items.push({pid:p.id, pname:p.name, v:v});
+      }
+    });
+    (p.elements||[]).forEach(function(e){
+      var key = (e.el||'')+'|'+(e.unit||'');
+      if (!els.has(key)) els.set(key, {el:e.el, unit:e.unit, total:0, items:[], status:e.status});
+      var o = els.get(key);
+      var v = e.value * f;
+      o.total += v;
+      o.items.push({pid:p.id, pname:p.name, v:v});
+    });
+    (p.ingredients||[]).forEach(function(g2){
+      if (!g2.cls) return;
+      if (!cls.has(g2.cls)) cls.set(g2.cls, new Set());
+      cls.get(g2.cls).add(p.id);
+    });
+  });
+
+  return {ing:ing, els:els, cls:cls, unm:unm, list:list};
+}
+
+/* ---------------- 渲染 ---------------- */
+function render(){
+  var main = q('#main');
+  if (!SEL.length){ main.innerHTML = emptyHTML(); renderSum(null); return; }
+  if (SEL.some(s=>!PD[s.id])){ main.innerHTML = '<div class="loading"><div class="spin"></div>读取产品数据…</div>'; return; }
+
+  var r = compute();
+  renderSum(r);
+  var html = '';
+  html += alertsHTML(r);
+  html += elemsHTML(r);
+  html += elecHTML(r);
+  html += ingHTML(r);
+  html += howHTML(r);
+  html += notesHTML(r);
+  main.innerHTML = html;
+  bindUI();
+}
+
+function emptyHTML(){
+  // 三板斧（与 sps 店 h4uy8「三板斧」类目对齐；一物多版取主推版）
+  var quick = [
+    ['P111','B版基础全营养素'],['P110','活性B族胶囊'],['P117','岩藻多糖'],
+    ['P101','三丁酸甘油酯胶囊'],['P044','VC泡腾电解质'],['P009','胶原蛋白肽'],
+    ['P046','九合一油'],['P016','三合一油'],['P069','盐酸甜菜碱'],
+    ['P105','TUDCA']
+  ];
+  // 另外常用：不在「三板斧」类目里，单独一组，避免 12 个胶囊挤成参差的 5+6+1
+  var quickMore = [
+    ['P104','熊去氧胆酸'],['P109','A版基础全营养素']
+  ];
+  var btns = function(arr){
+    return arr.map(function(x){
+      return DB.index.some(i=>i.id===x[0]) ? '<button data-quick="'+x[0]+'">'+esc(x[1])+'</button>' : '';
+    }).join('');
+  };
+  return '<div class="empty">'+
+    '<div class="ico"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>'+
+    '<div class="big">先选几样你正在吃的</div>'+
+    '<p>选好之后，这里会算出：每样成分每天一共吃了多少、<br>这些产品一天怎么排、注意事项有哪些重复。</p>'+
+    '<div class="quick-hd">三板斧 · 点一下加进来</div>'+
+    '<div class="quick">'+btns(quick)+'</div>'+
+    '<div class="quick-hd" style="margin-top:14px">另外常用 · 点一下加进来</div>'+
+    '<div class="quick">'+btns(quickMore)+'</div>'+
+    '<p style="margin-top:18px;font-size:12px;color:var(--ink3)">也可以点上面的「添加产品」，从 '+DB.index.length+' 个里挑，能搜成分名。</p>'+
+  '</div>';
+}
+
+function alertsHTML(r){
+  var out = [];
+  // 同一成分来自多个产品
+  var multi = [];
+  r.ing.forEach(function(o){
+    if (o.items.length > 1){
+      var ids = {}; o.items.forEach(i=>ids[i.pid]=1);
+      if (Object.keys(ids).length > 1) multi.push(o);
+    }
+  });
+  if (multi.length){
+    var names = multi.slice(0,4).map(o=>o.name).join('、');
+    out.push('<div class="alert info"><span>◈</span><div><b>有 '+multi.length+' 样成分在多个产品里重复出现</b>：'+esc(names)+
+      (multi.length>4?' 等':'')+'。已在合计里合并，点开有条形拆分。</div></div>');
+  }
+  // 空腹 / 随餐 冲突
+  var hasEmpty=false, hasMeal=false;
+  r.list.forEach(function(x){
+    var t = (x.p.how && x.p.how['服用时间'] && x.p.how['服用时间'].text) || '';
+    if (/空腹/.test(t)) hasEmpty = true;
+    if (/随餐|餐后|餐中|跟正餐/.test(t)) hasMeal = true;
+  });
+  if (hasEmpty && hasMeal){
+    out.push('<div class="alert warn"><span>⚠</span><div><b>时间安排有冲突</b>：选中的产品里，有的要求空腹、有的要求随餐/餐后，别放在同一时段。</div></div>');
+  }
+  // 未标量
+  if (r.unm.length){
+    var ns = []; r.unm.forEach(u=>{ if(ns.indexOf(u.name)<0) ns.push(u.name); });
+    out.push('<div class="alert warn"><span>⚠</span><div><b>'+ns.length+' 样成分标签未标量</b>：'+esc(ns.slice(0,5).join('、'))+(ns.length>5?' 等':'')+'，这部分算不出数字。</div></div>');
+  }
+  return out.length ? '<div class="alerts">'+out.join('')+'</div>' : '';
+}
+
+function elemsHTML(r){
+  if (!r.els.size) return '';
+  var order = ['钙','镁','钾','钠','锌','铁','铜','锰','硒','碘','铬','钼','硼'];
+  var arr = Array.from(r.els.values()).sort(function(a,b){
+    var ia = order.indexOf(a.el), ib = order.indexOf(b.el);
+    return (ia<0?99:ia) - (ib<0?99:ib);
+  });
+  var cells = arr.map(function(o){
+    var names = o.items.map(i=>i.pname.split('·')[0]).filter(function(v,i,a){ return a.indexOf(v)===i; });
+    var srcFull = names.join('｜');
+    var pn = (names[0] || '');
+    if (pn.length > 9) pn = pn.slice(0,9) + '…';
+    var src = names.length > 1 ? (pn + '  +' + (names.length-1)) : pn;
+    var s = unitScale(o.total, o.unit);
+    var c = elColor(o.el);
+    return '<div class="el-cell" style="--c:'+c+'">'+
+      '<div class="el-hd"><span class="dot"></span>'+esc(o.el)+'<span class="sym">'+esc(ELS[o.el]||'')+'</span></div>'+
+      '<div class="v" style="color:var(--ink)">'+fmtNum(s.v)+'<small>'+esc(s.u)+'</small></div>'+
+      '<div class="src" title="'+esc(srcFull)+'">'+esc(src)+'</div>'+
+    '</div>';
+  }).join('');
+  return '<section><div class="sect-head"><h2>矿物质元素合计</h2>'+
+    '<span class="hint">已按原料折算成元素量</span></div>'+
+    '<div class="el-grid">'+cells+'</div>'+
+    '<div style="font-size:11.5px;color:var(--ink3);margin-top:9px;line-height:1.6">元素量 = 矿物质原料按浓度折算后的实际元素，跨不同形态可以相加；原料投放量见下方「成分合计」。</div></section>';
+}
+
+/* 电解质平衡：钠钾镁三条目标带 + 钠钾比 */
+function elecHTML(r){
+  if (!r || !r.els.size) return '';
+  var got = {};
+  r.els.forEach(function(o){
+    if (!TY[o.el]) return;
+    if (!got[o.el]) got[o.el] = {mg:0, pids:[]};
+    got[o.el].mg += toMg(o.total, o.unit);
+    o.items.forEach(function(i){ if (got[o.el].pids.indexOf(i.pid)<0) got[o.el].pids.push(i.pid); });
+  });
+  if (!EC_ORDER.some(function(e){ return got[e]; })) return '';
+
+  var rows = EC_ORDER.map(function(el){
+    var ty = TY[el], c = elColor(el), g = got[el], mg = g ? g.mg : 0;
+    var st, tag, right;
+    if (!g)                     { st = 'na';   tag = '所选产品不含'; right = '—'; }
+    else if (mg < ty.low)       { st = 'low';  tag = '缺 ' + fmtNum(ty.low - mg); right = g.pids.length + ' 个产品'; }
+    else if (mg > ty.high)      { st = 'high'; tag = '超 ' + fmtNum(mg - ty.high); right = g.pids.length + ' 个产品'; }
+    else                        { st = 'ok';   tag = '区间内'; right = g.pids.length + ' 个产品'; }
+
+    var pct = g ? Math.min(mg / ty.high * 100, 100) : 0;
+    var zl  = ty.low / ty.high * 100;
+    return '<div class="ec-row st-'+st+'" style="--c:'+c+'">'+
+      '<div class="ec-top">'+
+        '<span class="ec-nm"><i></i>'+esc(el)+'<em>'+esc(ELS[el]||'')+'</em></span>'+
+        '<span class="ec-val">'+(g?fmtNum(mg):'<span style="color:var(--ink3)">0</span>')+'<small>mg</small></span>'+
+        '<span class="ec-tag '+st+'">'+esc(tag)+'</span>'+
+      '</div>'+
+      '<div class="ec-bar">'+
+        '<span class="ec-zone" style="left:'+zl.toFixed(1)+'%;right:0"></span>'+
+        '<span class="ec-mark" style="left:'+zl.toFixed(1)+'%"></span>'+
+        '<span class="ec-fill" style="width:'+pct.toFixed(1)+'%"></span>'+
+      '</div>'+
+      '<div class="ec-foot"><span>目标 '+fmtNum(ty.low)+' ~ '+fmtNum(ty.high)+' mg</span>'+
+      '<span class="gk">'+esc(right)+'</span></div>'+
+    '</div>';
+  }).join('');
+
+  /* 钠 : 钾 */
+  var na = got['钠'] ? got['钠'].mg : 0, k = got['钾'] ? got['钾'].mg : 0;
+  var ratioLine = '';
+  if (na > 0 && k > 0){
+    var rt = na / k, ok = rt >= RATIO_BAND[0] && rt <= RATIO_BAND[1];
+    var r1 = function(v){ return String(Math.round(v*10)/10); };
+    var txt = rt >= 1 ? r1(rt) + ' : 1' : '1 : ' + r1(1/rt);
+    var lab = ok ? '配平' : (rt < RATIO_BAND[0] ? '钾相对偏高' : '钾相对不足');
+    ratioLine = '<div class="ec-ratio"><span>钠 : 钾</span><b>'+txt+'</b>'+
+      '<span style="font-size:11.5px;color:var(--ink3)">参考 2 : 1（盐 10~15 g 配柠檬酸钾约 5 g）</span>'+
+      '<span class="rk '+(ok?'ok':'off')+'">'+lab+'</span></div>';
+  } else if (na > 0 || k > 0){
+    ratioLine = '<div class="ec-ratio"><span>钠 : 钾</span>'+
+      '<span style="font-size:11.5px;color:var(--ink3)">只含'+(na>0?'钠':'钾')+'，不比比值</span></div>';
+  }
+
+  /* 缺口折算成原料（系数见 SUP_RATE，来源：钠钾镁平衡统计） */
+  var sug = EC_ORDER.map(function(el){
+    var ty = TY[el], g = got[el], mg = g ? g.mg : 0;
+    if (mg >= ty.low) return '';   /* 完全不含时也照算：缺口就是整个下限 */
+    var r = SUP_RATE[el];
+    var gram = (ty.low - mg) / r.per;
+    if (!(gram > 0)) return '';
+    var num = gram < 1 ? gram.toFixed(2) : gram.toFixed(1);
+    return '<div class="ec-sug-i" style="--c:'+elColor(el)+'" title="'+esc(r.alt||'')+'">'+
+      '<div class="n">'+esc(r.name)+'</div>'+
+      '<div class="v"><b>'+num+'</b><span>g</span></div>'+
+    '</div>';
+  }).filter(Boolean).join('');
+  var sugLine = sug ? '<div class="ec-sug"><span class="lb">缺口折算 · 补到目标下限约需</span>'+
+    '<div class="ec-sug-list">'+sug+'</div>'+
+    '<span class="ec-note">按原料含量估算到下限，不是服用建议；补钾需结合自身情况</span></div>' : '';
+
+  return '<section><div class="sect-head"><h2>电解质平衡 · 钠 钾 镁</h2>'+
+    '<span class="hint">对照目标区间看缺口</span></div>'+
+    '<div class="card elec">'+rows+ratioLine+sugLine+'</div>'+
+    '<div style="font-size:11.5px;color:var(--ink3);margin-top:9px;line-height:1.6">'+
+      '目标区间取自低碳/生酮口径：钠按每日盐 10~15 g 折算、钾 2~3 g、镁 0.4~0.6 g；'+
+      '作息与饮食模式不同时按自己的实际情况看，一般饮食人群的钠参考值更低。'+
+    '</div></section>';
+}
+
+function ingHTML(r){
+  var arr = [];
+  r.ing.forEach(function(o){ if (o.total > 0) arr.push(o); });
+  if (!arr.length) return '';
+
+  var order = ['维生素','矿物质','氨基酸','脂质','抗氧化','B族辅因子','代谢','甲基化','有机硫','抗糖基化','辅酶','功能性脂质','甜味剂','辅料'];
+  function major(o){ return (o.cls||'其他').split('/')[0].trim(); }
+  function rank(o){ var i = order.indexOf(major(o)); return i<0?99:i; }
+
+  var cnt = {};
+  arr.forEach(function(o){ var m = major(o); cnt[m] = (cnt[m]||0)+1; });
+  var cats = Object.keys(cnt).filter(function(m){ return cnt[m] >= 2; })
+    .sort(function(a,b){ return cnt[b]-cnt[a]; }).slice(0,8);
+  cats = ['全部'].concat(cats);
+
+  var list = arr.filter(function(o){ return INGF==='全部' || major(o)===INGF; });
+  list.sort(function(a,b){ return rank(a)-rank(b) || b.total-a.total; });
+
+  var chips = cats.map(function(c){
+    return '<button data-ingf="'+esc(c)+'" class="'+(INGF===c?'on':'')+'">'+esc(c)+'</button>';
+  }).join('');
+
+  var rows = list.map(function(o, i){
+    var no = (i + 1) < 10 ? '0' + (i + 1) : String(i + 1);
+    var ids = {}; o.items.forEach(function(i){ ids[i.pid]=1; });
+    var n = Object.keys(ids).length;
+    var split = '';
+    if (n > 1){
+      split = o.items.map(function(i){ return esc(i.pname.split('·')[0].slice(0,7))+' '+fmtNum(i.v); }).join(' / ');
+    }
+    return '<div class="row"><span class="no">'+no+'</span><div class="nm" style="--c:'+clsColor(o.cls)+'">'+
+      '<span class="cls">'+esc(o.cls)+'</span>'+esc(o.name)+
+      (o.alias?'<span class="al">'+esc(o.alias)+'</span>':'')+
+      (n>1?'<span class="multi">'+n+' 个产品</span>':'')+
+      (split?'<div class="split">'+split+'</div>':'')+
+      '</div><div class="val">'+fmtVal(o.total, o.unit)+'</div></div>';
+  }).join('');
+
+  return '<section><div class="sect-head"><h2>成分合计（按每日吃量）</h2>'+
+    '<span class="hint">'+list.length+' 项 · 同类不同形态不合并</span></div>'+
+    '<div class="fchips">'+chips+'</div>'+
+    '<div class="card">'+rows+'</div></section>';
+}
+
+var HOW_ORDER = ['剂量', '服用方法', '服用频次', '服用时间'];
+
+function howKeys(h){
+  return Object.keys(h || {}).sort(function(a, b){
+    var ia = HOW_ORDER.indexOf(a), ib = HOW_ORDER.indexOf(b);
+    return (ia < 0 ? 9 : ia) - (ib < 0 ? 9 : ib);
+  });
+}
+
+function howHTML(r){
+  var cols = hwColors(r.list);
+  var items = r.list.map(function(x, i){
+    var p = x.p, h = p.how || {}, pl = p.plan || {};
+    var unit = (p.basis && p.basis.unit) || '份';
+    var col = cols[i];
+    var sty = col ? ' style="--hc:' + col + ';--hc-rgb:' + hwRGB(col) + '"' : '';
+
+    // 时机标签：勿X 表示这个时段要避开（红色 + ✕），不是建议
+    var tags = (pl.tags || []).map(function(t){
+      var neg = t.charAt(0) === '勿';
+      return '<span class="tag' + (neg ? ' ng' : '') + '">' + esc(neg ? t.slice(1) : t) + '</span>';
+    }).join('');
+
+    // 折叠区：按原文所有小节，标题沿用卡片原标题（各卡标题差异大，不硬套四个模板）
+    var keys = howKeys(h), secCount = 0;
+    var body = '';
+    keys.forEach(function(k){
+      var o = h[k];
+      if (!o || !o.html) return;
+      secCount++;
+      var no = secCount < 10 ? '0' + secCount : String(secCount);
+      body += '<div class="hw-sec"><div class="hd"><span class="no">' + no + '</span>' +
+        '<h4>' + esc(k) + '</h4></div><div class="ct">' + o.html + '</div></div>';
+    });
+    var more = '';
+    if (body){
+      more = '<details class="hw-more"><summary>' +
+        '<span class="t open-t">展开完整说明</span>' +
+        '<span class="t close-t">收起完整说明</span>' +
+        '<span class="cnt">' + secCount + ' 节</span>' +
+        '</summary><div class="bd">' + body + '</div></details>';
+    }
+
+    var dose = pl.dose ? '<div class="hw-dose"><span class="k">原文</span>' +
+      '<span class="v">' + esc(pl.dose) + '</span></div>' : '';
+
+    return '<div class="how-item' + (col ? ' hwc' : '') + '"' + sty + '>' +
+      '<div class="hw-top"><span class="nm" data-detail="' + p.id + '">' + esc(p.name) + '</span>' +
+      '<span class="hw-qty"><b>' + fmtNum(x.amount) + '</b><i>' + esc(unit) + '/天</i></span></div>' +
+      (tags ? '<div class="hw-tags">' + tags + '</div>' : '') +
+      dose + more + '</div>';
+  }).join('');
+
+  return '<section><div class="sect-head"><h2>怎么吃</h2>' +
+    '<span class="hint">右侧数字 = 你填的份数 · 「原文」= 卡片写的量</span></div>' +
+    '<div class="card">' + items + '</div></section>';
+}
+
+function notesHTML(r){
+  var map = new Map();   // norm -> {text, html, pids:[]}
+  r.list.forEach(function(x){
+    (x.p.notes||[]).forEach(function(n){
+      if (n.kind==='disclaimer') return;
+      var k = normText(n.text);
+      if (!k) return;
+      if (!map.has(k)) map.set(k, {text:n.text, html:n.html, pids:[]});
+      var o = map.get(k);
+      if (o.pids.indexOf(x.p.id)<0) o.pids.push(x.p.id);
+    });
+  });
+  if (!map.size) return '';
+  var arr = Array.from(map.values()).sort(function(a,b){ return b.pids.length - a.pids.length; });
+  var body = arr.slice(0,40).map(function(o, i){
+    var no = (i + 1) < 10 ? '0' + (i + 1) : String(i + 1);
+    var who = o.pids.length>1 ? ('这 '+o.pids.length+' 个产品都有这条') : '';
+    return '<div class="note"><span class="no">'+no+'</span><div class="txt">'+o.html+
+      (who?'<div class="who">'+who+'</div>':'')+'</div></div>';
+  }).join('');
+  var more = arr.length>40 ? '<div class="note note-more"><span class="no"></span>'+
+    '<div class="txt">还有 '+(arr.length-40)+' 条，见各产品详情</div></div>' : '';
+  return '<section><div class="sect-head"><h2>注意事项</h2>'+
+    '<span class="hint">'+arr.length+' 条，已去重</span></div>'+
+    '<div class="card">'+body+more+'</div></section>';
+}
+
+function bindUI(){
+  // 交互统一走 document 事件委托，避免重绘后丢绑定
+}
+
+/* ---------------- 选品面板 ---------------- */
+function openPicker(){
+  q('#picker').classList.add('on');
+  q('#psearch').value = '';
+  FILTER = '全部';
+  renderFilters(); renderList();
+  loadIng().then(function(){ renderList(); });
+  setTimeout(()=>q('#psearch').focus(), 120);
+}
+var FILTER = '全部';
+function renderFilters(){
+  var types = ['全部','多成分','单成分','粉末','胶囊'];
+  var box = q('#pfilters');
+  box.innerHTML = types.map(function(t){
+    return '<button data-f="'+t+'" class="'+(FILTER===t?'on':'')+'">'+t+'</button>';
+  }).join('');
+  box.querySelectorAll('button').forEach(function(b){
+    b.onclick = function(){ FILTER=b.dataset.f; renderFilters(); renderList(); };
+  });
+}
+function hl(text, kw){
+  var t = String(text == null ? '' : text);
+  if (!kw) return esc(t);
+  var i = t.toLowerCase().indexOf(kw);
+  if (i < 0) return esc(t);
+  return esc(t.slice(0, i)) + '<em>' + esc(t.slice(i, i + kw.length)) + '</em>' + esc(t.slice(i + kw.length));
+}
+
+function pRow(it, kw, hit){
+  var on = SEL.some(s => s.id === it.id);
+  var sub = '';
+  if (hit && hit.length){
+    sub = '<span class="whyhit">含 ' + hit.slice(0, 4).map(function(x){ return esc(x); }).join('、') +
+          (hit.length > 4 ? ' 等 ' + hit.length + ' 个成分' : '') + '</span>';
+  }
+  return '<button class="pitem" data-add="' + it.id + '"' + (on ? ' style="opacity:.45"' : '') + '>' +
+    '<span class="id">' + it.id + '</span>' +
+    '<span class="tx"><span class="n">' + hl(it.name, kw) + '</span>' +
+    '<span class="m">' + esc(it.spec) + ' · 每' + esc(it.basis.replace(/^每/, '')) + ' · ' + esc(it.group) + '</span>' +
+    (hit ? sub : '') + '</span>' +
+    '<span class="plus">' + (on ? '✓' : '+') + '</span></button>';
+}
+
+/* 搜索只匹配「结果行里看得见的字段」+ 成分名。
+   一句话口诀是用法摘要，不参与匹配——否则搜「基础」会把「基础 2 粒」的产品全带出来。 */
+function renderList(){
+  var kw = q('#psearch').value.trim().toLowerCase();
+  var base = DB.index.filter(function(it){
+    if (FILTER === '多成分' && it.type.indexOf('多成分') < 0) return false;
+    if (FILTER === '单成分' && it.type.indexOf('单成分') < 0) return false;
+    if (FILTER === '粉末' && !/粉|原料/.test(it.name + it.spec)) return false;
+    if (FILTER === '胶囊' && !/胶囊/.test(it.name)) return false;
+    return true;
+  });
+
+  var html = '', nMain = 0, nIng = 0;
+
+  if (!kw){
+    var byGroup = new Map();
+    base.forEach(function(it){
+      if (!byGroup.has(it.group)) byGroup.set(it.group, []);
+      byGroup.get(it.group).push(it);
+    });
+    byGroup.forEach(function(arr, grp){
+      html += '<div class="pgroup">' + esc(grp) + ' · ' + arr.length + '</div>';
+      arr.forEach(function(it){ html += pRow(it, '', null); });
+    });
+    nMain = base.length;
+  } else {
+    var main = [], extra = [];
+    base.forEach(function(it){
+      var n = (it.name || '').toLowerCase(), id = it.id.toLowerCase(), grp = (it.group || '').toLowerCase();
+      if (n.indexOf(kw) >= 0 || id.indexOf(kw) >= 0 || grp.indexOf(kw) >= 0){ main.push(it); return; }
+      var hits = (it._ings || []).filter(function(g){ return g.toLowerCase().indexOf(kw) >= 0; });
+      if (hits.length){ it._hit = hits; extra.push(it); }
+    });
+    main.sort(function(a, b){
+      var an = a.name.toLowerCase().indexOf(kw) >= 0 ? 0 : 1;
+      var bn = b.name.toLowerCase().indexOf(kw) >= 0 ? 0 : 1;
+      return an !== bn ? an - bn : (a.id < b.id ? -1 : 1);
+    });
+    nMain = main.length; nIng = extra.length;
+    if (main.length){
+      html += '<div class="pgroup">产品名 / 编号 / 分组 · ' + main.length + '</div>';
+      main.forEach(function(it){ html += pRow(it, kw, null); });
+    }
+    if (extra.length){
+      html += '<div class="pgroup">含「' + esc(kw) + '」这个成分 · ' + extra.length + '</div>';
+      extra.forEach(function(it){ html += pRow(it, '', it._hit); });
+    }
+    if (!main.length && !extra.length){
+      html = '<div class="loading">没搜到「' + esc(kw) + '」<br><span style="font-size:12px">试试成分名（如「镁」「甘氨酸」）、产品或编号</span></div>';
+    } else {
+      html = '<div class="pcount">共 ' + (nMain + nIng) + ' 个结果' +
+             (nIng ? '（其中 ' + nIng + ' 个是按成分命中的）' : '') + '</div>' + html;
+    }
+  }
+  q('#plist').innerHTML = html || '<div class="loading">没找到</div>';
+}
+
+/* ---------------- 详情 ---------------- */
+async function openDetail(id){
+  var p = await product(id);
+  q('#dtitle').textContent = p.name;
+  var html = '<div style="font-size:12px;color:var(--ink3);margin:6px 0 2px">'+p.id+' · '+esc(p.spec)+' · 计量基准 '+esc(p.basis.raw)+
+      (p.grade?' · 覆盖 '+esc(p.grade)+' 级':'')+'</div>';
+  if (p.oneLine) html += '<blockquote style="font-size:13.5px">'+esc(p.oneLine)+'</blockquote>';
+  if (p.advice) html += '<p><b>建议用量：</b>'+esc(p.advice)+
+    (p.dose&&p.dose.confidence?'　<span style="color:var(--ink3);font-size:12px">（置信度 '+esc(p.dose.confidence)+'）</span>':'')+'</p>';
+  var h = p.how||{};
+  howKeys(h).forEach(function(k){
+    if (h[k] && h[k].html) html += '<h2>'+esc(k)+'</h2>'+h[k].html;
+  });
+  (p.sections||[]).forEach(function(s){
+    if (!s.html) return;
+    html += '<h2>'+esc(s.title)+'</h2>'+s.html;
+  });
+  if ((p.notes||[]).length){
+    html += '<h2>注意事项</h2>';
+    p.notes.forEach(function(n){ html += '<div style="margin-bottom:6px">'+n.html+'</div>'; });
+  }
+  if (p.composite){
+    html += '<p style="color:var(--ink3);font-size:12px">套装的成分 = '+p.composite.join(' + ')+' 四款单品各 1 份合并。</p>';
+  }
+  q('#dbody').innerHTML = html;
+  q('#detail').classList.add('on');
+}
+
+/* ---------------- 启动 ---------------- */
+(async function(){
+  try{
+    DB = await boot();
+    q('#cnt').textContent = DB.index.length + ' 个产品';
+    q('#disclaimer').textContent = (DB.ref && DB.ref.disclaimer) || '';
+    var v = DB.version || {};
+    q('#ver').textContent = '数据 ' + (v.builtAt||'本地') + ' · ' + (v.products||DB.index.length) + ' 个产品' +
+      (DB.remote? '' : ' · 离线预览');
+    PD = PD || {};
+
+    // 分享链接：#s=P032:1,P005:2
+    var m = location.hash.match(/s=([^&]+)/);
+    if (m){
+      m[1].split(',').forEach(function(pair){
+        var a = pair.split(':');
+        if (a[0] && DB.index.some(x=>x.id===a[0])){
+          SEL.push({id:a[0], amount: parseFloat(a[1]) || (DB.index.find(x=>x.id===a[0]).defaultAmount)});
+        }
+      });
+    }
+    renderChips();
+    if (SEL.length){
+      q('#main').innerHTML = '<div class="loading">读取产品数据…</div>';
+      for (var i=0;i<SEL.length;i++){ await product(SEL[i].id); }
+    }
+    render();
+  }catch(e){
+    q('#main').innerHTML = '<div class="errbox">'+
+      '<div style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:6px">数据没加载出来</div>'+
+      '检查一下网络，或者稍后重试。<br><span style="font-size:12px;color:var(--ink3)">'+esc(e.message)+'</span>'+
+      (BUNDLE?'':'<br><span style="font-size:12px;color:var(--ink3)">本地直接打开请用 preview.html</span>')+
+      '<br><button class="retry" onclick="location.reload()">重新加载</button></div>';
+    renderSum(null);
+  }
+
+  q('#pclose').onclick = function(){ q('#picker').classList.remove('on'); };
+  q('#picker').onclick = function(e){ if (e.target===this) this.classList.remove('on'); };
+  q('#dclose').onclick = function(){ q('#detail').classList.remove('on'); };
+  q('#detail').onclick = function(e){ if (e.target===this) this.classList.remove('on'); };
+  q('#psearch').oninput = renderList;
+
+  document.addEventListener('click', function(e){
+    var t = e.target.closest ? e.target.closest('[data-rm],[data-detail],[data-add],[data-quick],[data-ingf],[data-step]') : null;
+    if (!t) return;
+    if (t.dataset.step){
+      var id = t.dataset.step, dir = parseFloat(t.dataset.dir) || 1;
+      var it = SEL.find(x=>x.id===id);
+      if (it){
+        var cur = (it.amount==null ? 0 : it.amount);
+        var stp = cur >= 1 ? 1 : 0.1;
+        it.amount = Math.max(0, Math.round((cur + dir*stp) * 1000) / 1000);
+        renderChips(); render(); syncHash();
+      }
+      return;
+    }
+    if (t.dataset.rm){ rmP(t.dataset.rm); return; }
+    if (t.dataset.detail){ openDetail(t.dataset.detail); return; }
+    if (t.dataset.add){ addP(t.dataset.add); renderList(); return; }
+    if (t.dataset.quick){ addP(t.dataset.quick); return; }
+    if (t.dataset.ingf){ INGF = t.dataset.ingf; render(); return; }
+    if (t.classList.contains('grp-hd')){
+      var gp = t.parentNode; gp.dataset.open = gp.dataset.open==='1' ? '0' : '1';
+    }
+  });
+  document.addEventListener('input', function(e){
+    var id = e.target.dataset && e.target.dataset.amt;
+    if (id){
+      var v = parseFloat(e.target.value);
+      var it = SEL.find(x=>x.id===id);
+      if (it){ it.amount = isNaN(v)? null : v; throttledRender(); }
+    }
+  });
+})();
+
+var rt = null;
+function throttledRender(){
+  if (rt) clearTimeout(rt);
+  rt = setTimeout(function(){ render(); syncHash(); }, 220);
+}
+function syncHash(){
+  try{
+    if (!SEL.length){ history.replaceState(null,'',location.pathname+location.search); return; }
+    var s = SEL.map(x=>x.id+':'+x.amount).join(',');
+    history.replaceState(null,'','#s='+s);
+  }catch(e){}
+}
+</script>
+</body>
+</html>
