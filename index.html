@@ -11,39 +11,78 @@
   --accent:#1f6b52; --accent-bg:#e8f2ed;
   --warn:#8a4b12; --warn-bg:#fbf0e2;
   --danger:#8f2f2f; --danger-bg:#fbecec;
+  --header-bg:rgba(245,243,238,.94); --field:#fff; --inverse:#fff; --overlay:rgba(30,28,24,.35);
   --r:14px; --r-sm:9px;
   --shadow:0 1px 2px rgba(35,33,29,.035), 0 5px 16px -12px rgba(35,33,29,.28);
   --shadow-lift:0 2px 6px rgba(35,33,29,.06), 0 10px 26px -14px rgba(35,33,29,.34);
   --mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
 }
+html[data-theme="night"]{
+  color-scheme:dark;
+  --bg:#171c19; --panel:#222924; --line:#3a453e; --line2:#2d3731;
+  --ink:#edf3ef; --ink2:#c4d0c8; --ink3:#93a198;
+  --accent:#70caa0; --accent-bg:#1f3b30;
+  --warn:#efb477; --warn-bg:#3f2d1c;
+  --danger:#ef9a9a; --danger-bg:#442523;
+  --header-bg:rgba(23,28,25,.94); --field:#1b211d; --inverse:#171c19; --overlay:rgba(0,0,0,.58);
+  --shadow:0 1px 2px rgba(0,0,0,.2), 0 5px 16px -12px rgba(0,0,0,.72);
+  --shadow-lift:0 2px 6px rgba(0,0,0,.25), 0 10px 26px -14px rgba(0,0,0,.86);
+}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{
   background:var(--bg); color:var(--ink);
   font:16px/1.65 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
   padding-bottom:64px;
 }
+html.sheet-open,body.sheet-open{overflow:hidden}
+body.sheet-open{position:fixed;left:0;right:0;width:100%}
 .wrap{max-width:760px;margin:0 auto;padding:0 14px}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 input{font:inherit;color:inherit}
 
 /* ---------- 顶栏 ---------- */
 header{
-  position:sticky;top:0;z-index:30;background:rgba(245,243,238,.94);
+  position:sticky;top:0;z-index:30;background:var(--header-bg);
   backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line);
 }
-.hd{display:flex;align-items:baseline;gap:10px;padding:12px 0 10px}
-.hd h1{font-size:17px;margin:0;font-weight:700;letter-spacing:.02em}
-.hd .sub{font-size:12px;color:var(--ink3);margin-left:auto;font-family:var(--mono)}
-.selbar{padding-bottom:6px}
+.hd{display:flex;align-items:center;gap:4px;padding:12px 0 10px;transition:padding .2s ease}
+.hd h1{font-size:17px;margin:0;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+.hd .sub{font-size:11.5px;color:var(--ink3);margin-left:auto;font-family:var(--mono);white-space:nowrap}
+.hd-tools{display:flex;align-items:center;gap:6px;flex:none;touch-action:manipulation}
+.hd-tool{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);
+  border-radius:8px;background:var(--panel);color:var(--ink2);line-height:1}
+.hd-tool:active{background:var(--line2)}
+.hd-tool .ico{font-size:15px;line-height:1}
+.zoom-group{display:flex;align-items:center;height:34px;overflow:hidden;border:1px solid var(--line);
+  border-radius:8px;background:var(--panel)}
+.zoom-btn{width:30px;height:32px;display:grid;place-items:center;font-size:16px;line-height:1;color:var(--ink2)}
+.zoom-btn:active{background:var(--line2)}
+.zoom-btn:disabled{opacity:.3;cursor:default}
+.zoom-val{min-width:34px;padding:0 2px;text-align:center;border-left:1px solid var(--line);
+  border-right:1px solid var(--line);font-family:var(--mono);font-size:9.5px;color:var(--ink3);
+  font-variant-numeric:tabular-nums}
+.hd-toggle{display:none;flex:none;width:34px;height:34px;margin-left:2px;border:1px solid var(--line);
+  border-radius:8px;background:var(--panel);color:var(--ink2);place-items:center}
+.hd-toggle::before{content:"";width:7px;height:7px;border-right:1.5px solid currentColor;
+  border-bottom:1.5px solid currentColor;transform:rotate(-135deg) translate(-1px,-1px)}
+header.can-collapse .hd{cursor:pointer}
+header.can-collapse .hd-toggle{display:grid}
+header.is-collapsed .hd{padding:7px 0}
+header.is-collapsed .hd-toggle::before{transform:rotate(45deg) translate(-1px,-1px)}
+.selbar{padding-bottom:6px;max-height:100vh;overflow:hidden;opacity:1;
+  transition:max-height .24s ease,opacity .16s ease,padding .24s ease}
+header.is-collapsed .selbar{max-height:0;padding-bottom:0;opacity:0;pointer-events:none}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{
   display:flex;align-items:center;gap:6px;background:var(--panel);
-  border:1px solid var(--line);border-radius:999px;padding:5px 8px 5px 12px;max-width:100%;
+  border:1px solid var(--line);border-radius:999px;padding:5px 8px 5px 12px;width:100%;max-width:100%;
   box-shadow:var(--shadow);
 }
-.chip .nm{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:178px;min-width:0}
-.chip .stp{display:flex;align-items:center;gap:1px;flex:none}
+.chip .nm{flex:1;min-width:0;font-size:13px;font-weight:600;line-height:1.45;white-space:normal;
+  overflow-wrap:anywhere}
+.chip .stp{display:flex;align-items:center;gap:1px;flex:none;margin-left:auto}
 .chip .stp button{width:20px;height:20px;border-radius:50%;background:var(--line2);color:var(--ink2);
   display:grid;place-items:center;font-size:13px;line-height:1;font-weight:600}
 .chip .stp button:active{background:var(--line)}
@@ -51,11 +90,12 @@ header{
   width:46px;text-align:center;border:1px solid transparent;border-radius:7px;
   background:transparent;padding:3px 0;font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums;
 }
-.chip input:focus{outline:none;border-color:var(--line);background:#fff}
+.chip input:focus{outline:none;border-color:var(--line);background:var(--field)}
 .chip .un{font-size:11px;color:var(--ink3)}
 .chip .x{width:20px;height:20px;border-radius:50%;background:transparent;color:var(--ink3);
   display:grid;place-items:center;font-size:15px;line-height:1}
 .chip .x:hover{background:var(--line2);color:var(--ink)}
+.chip-actions{display:flex;align-items:center;gap:12px;flex:0 0 100%;min-height:32px}
 /* 吸顶汇总条 */
 .sumbar{display:none;gap:14px;overflow-x:auto;padding:7px 0 9px;border-top:1px solid var(--line2);
   margin-top:7px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
@@ -112,9 +152,12 @@ section{margin:18px 0}
 .el-cell{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 13px 11px;
   box-shadow:var(--shadow);position:relative;overflow:hidden}
 .el-cell::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c,#c9c2b4);opacity:.85}
-.el-cell .el-hd{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--c,var(--ink2));font-weight:700;letter-spacing:.03em}
+.el-cell .el-hd{display:flex;align-items:center;gap:7px}
+.el-cell .el-hd .sym{display:flex;align-items:center;gap:5px;font-family:var(--mono);
+  font-size:12px;font-weight:600;color:var(--c,var(--ink2));letter-spacing:.04em}
 .el-cell .el-hd .dot{width:6px;height:6px;border-radius:50%;background:var(--c,#c9c2b4);flex:none}
-.el-cell .el-hd .sym{font-family:var(--mono);font-size:10px;font-weight:400;color:var(--ink3);letter-spacing:.04em;margin-left:auto}
+.el-cell .el-hd .cn{margin-left:auto;font-size:16px;font-weight:700;line-height:1.2;
+  color:var(--ink);letter-spacing:.02em;white-space:nowrap}
 .el-cell .v{font-family:var(--mono);font-size:25px;font-weight:600;line-height:1.12;margin-top:5px;letter-spacing:-.03em;
   font-variant-numeric:tabular-nums}
 .el-cell .v small{font-size:11px;font-weight:400;color:var(--ink3);margin-left:3px;font-family:inherit;letter-spacing:0}
@@ -125,10 +168,11 @@ section{margin:18px 0}
 .elec{padding:13px 15px 12px}
 .ec-row{padding:11px 0 10px;border-top:1px dashed var(--line2)}
 .ec-row:first-child{border-top:0;padding-top:1px}
-.ec-top{display:flex;align-items:baseline;gap:9px}
-.ec-nm{display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:700;
+.ec-top{display:flex;align-items:center;gap:9px}
+.ec-nm{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;
   color:var(--ink);flex:none;min-width:64px}
 .ec-nm i{width:7px;height:7px;border-radius:50%;background:var(--c,#c9c2b4);flex:none}
+.ec-nm .ec-cn{font-size:17px;line-height:1.2;color:var(--ink);letter-spacing:.02em}
 .ec-nm em{font-style:normal;font-family:var(--mono);font-size:10px;font-weight:400;
   color:var(--ink3);letter-spacing:.04em}
 .ec-val{font-family:var(--mono);font-size:19px;font-weight:600;letter-spacing:-.02em;
@@ -161,7 +205,7 @@ section{margin:18px 0}
 .ec-sug{margin-top:11px;padding-top:11px;border-top:1px dashed var(--line2)}
 .ec-sug .lb{display:block;font-size:11px;color:var(--ink3);letter-spacing:.03em;margin-bottom:8px}
 .ec-sug-list{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.ec-sug-i{min-width:0;background:#fff;border:1px solid var(--line);border-left:3px solid var(--c,#8d8678);
+.ec-sug-i{min-width:0;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--c,#8d8678);
   border-radius:var(--r-sm);padding:9px 10px 8px;box-shadow:var(--shadow)}
 .ec-sug-i .n{font-size:11.5px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ec-sug-i .v{display:flex;align-items:baseline;gap:4px;margin-top:2px;
@@ -192,15 +236,20 @@ section{margin:18px 0}
 .row .no{flex:none;width:24px;padding-top:1px;font-family:var(--mono);font-size:11.5px;
   font-weight:600;color:var(--ink2);text-align:right;font-variant-numeric:tabular-nums;line-height:1.5}
 .row .nm{flex:1;min-width:0;font-size:13.5px;line-height:1.5}
+.row .nm .ing-name{font-size:15px;font-weight:600;line-height:1.5;color:var(--ink)}
 .row .cls{display:block;font-size:10.5px;color:var(--ink3);letter-spacing:.02em;margin-bottom:2px;display:flex;align-items:center;gap:5px}
 .row .cls::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--c,#cfc8b9);flex:none}
 .fchips{display:flex;gap:6px;overflow-x:auto;margin:0 0 9px;scrollbar-width:none}
 .fchips::-webkit-scrollbar{display:none}
 .fchips button{white-space:nowrap;font-size:12.5px;padding:5px 12px;border:1px solid var(--line);border-radius:999px;background:var(--panel)}
-.fchips button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.fchips button.on{background:var(--ink);color:var(--inverse);border-color:var(--ink)}
 .row .nm .al{display:block;font-size:11px;color:var(--ink3);margin-top:1px}
 .row .val{flex:none;font-family:var(--mono);font-size:14px;font-weight:600;white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums}
-.row .split{font-size:11px;color:var(--ink3);margin-top:2px;line-height:1.5;font-family:var(--mono)}
+.row .split{display:flex;flex-wrap:wrap;align-items:center;font-size:11px;color:var(--ink3);
+  margin-top:3px;line-height:1.5;font-family:var(--mono)}
+.row .split-i{display:inline-flex;align-items:center;padding:1px 8px 1px 0;white-space:nowrap}
+.row .split-i + .split-i{padding-left:8px;border-left:2px solid var(--sc,var(--accent))}
+.row .raw-note{display:block;margin-top:1px;font-size:10.5px;line-height:1.45;color:var(--ink3);font-family:var(--mono)}
 .multi{background:var(--accent-bg);border-radius:5px;padding:0 5px;font-size:10.5px;color:var(--accent);margin-left:4px;font-family:inherit}
 
 /* 怎么吃：--hc / --hc-rgb 由 howHTML() 按产品注入，单产品时退回默认墨绿 */
@@ -240,7 +289,7 @@ section{margin:18px 0}
 .hw-more[open] .close-t{display:inline}
 .hw-more .bd{margin-top:9px;padding:0;border-left:0}
 .hw-sec{margin:0 0 8px;border:1px solid rgba(var(--hc-rgb),.22);border-radius:var(--r-sm);
-  background:#fff;overflow:hidden;box-shadow:var(--shadow)}
+  background:var(--panel);overflow:hidden;box-shadow:var(--shadow)}
 .hw-sec:last-child{margin-bottom:0}
 .hw-sec .hd{display:flex;align-items:center;gap:8px;padding:7px 11px;
   background:rgba(var(--hc-rgb),.06);border-bottom:1px solid rgba(var(--hc-rgb),.18);
@@ -279,24 +328,35 @@ details .bd hr{border:0;border-top:1px dashed var(--line2);margin:10px 0}
 .note.dis{display:none}
 
 /* 弹层 */
-.sheet{position:fixed;inset:0;z-index:60;display:none;background:rgba(30,28,24,.35)}
+.sheet{position:fixed;inset:0;z-index:60;display:none;background:var(--overlay);overscroll-behavior:contain}
 .sheet.on{display:block}
 .sheet .panel{
   position:absolute;left:0;right:0;bottom:0;max-height:88vh;background:var(--bg);
-  border-radius:18px 18px 0 0;display:flex;flex-direction:column;
+  border-radius:18px 18px 0 0;display:flex;flex-direction:column;overscroll-behavior:contain;
 }
 .sheet .ph{padding:14px 16px 10px;border-bottom:1px solid var(--line);flex:none}
 .sheet .ph h3{margin:0 0 10px;font-size:15px}
-.search{width:100%;padding:10px 13px;border:1px solid var(--line);border-radius:10px;background:var(--panel);font-size:14px;outline:none}
+#picker .panel{
+  height:min(88vh,760px);max-height:min(88vh,760px);
+  height:min(88dvh,760px);max-height:min(88dvh,760px);
+}
+.sheet .ph .sheet-close{
+  position:absolute;top:10px;right:12px;z-index:2;padding:4px 9px;border:1px solid var(--line);
+  border-radius:8px;background:var(--panel);font-size:13px;color:var(--ink2);line-height:1.4;
+}
+.sheet .ph .sheet-close:active{background:var(--line2)}
+.search{width:100%;min-height:44px;padding:10px 13px;border:1px solid var(--line);border-radius:10px;
+  background:var(--panel);font-size:16px;outline:none}
 .search:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(31,107,82,.08)}
 .filters{display:flex;gap:6px;overflow-x:auto;padding:10px 16px;border-bottom:1px solid var(--line);scrollbar-width:none;flex:none}
 .filters::-webkit-scrollbar{display:none}
 .filters button{white-space:nowrap;font-size:12.5px;padding:5px 11px;border:1px solid var(--line);border-radius:999px;background:var(--panel)}
-.filters button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-.plist{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:6px 10px 20px}
+.filters button.on{background:var(--ink);color:var(--inverse);border-color:var(--ink)}
+.plist{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:6px 10px 20px}
 .pgroup{font-size:11.5px;color:var(--ink3);padding:12px 6px 5px;font-family:var(--mono)}
 .pitem{width:100%;display:flex;align-items:center;gap:10px;padding:11px 10px;border-radius:10px;text-align:left}
 .pitem:active{background:var(--line2)}
+.pitem.on{background:var(--accent-bg)}
 .pitem .id{font-family:var(--mono);font-size:11px;color:var(--ink3);width:34px;flex:none}
 .pitem .tx{flex:1;min-width:0}
 .pitem .tx .n{display:block;font-size:14px;font-weight:600;line-height:1.4}
@@ -305,14 +365,75 @@ details .bd hr{border:0;border-top:1px dashed var(--line2);margin:10px 0}
 .pcount{font-size:11.5px;color:var(--ink3);padding:4px 6px 2px}
 .pitem .tx .m{display:block;font-size:11.5px;color:var(--ink3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pitem .plus{width:26px;height:26px;border-radius:50%;background:var(--accent-bg);color:var(--accent);display:grid;place-items:center;font-size:16px;flex:none}
+.pitem.on .plus{background:var(--accent);color:var(--inverse)}
 
 /* 产品详情面板 */
 .dsheet .panel{max-height:92vh}
-.dbody{flex:1;min-height:0;overflow-y:auto;padding:4px 16px 30px;font-size:13.5px;line-height:1.8;color:var(--ink2)}
-.dbody h2{font-size:14.5px;color:var(--ink);margin:18px 0 6px}
+.dsheet .ph{position:relative;padding-right:16px}
+.dsheet .ph h3{
+  margin:0;padding-right:158px;font-size:15px;line-height:1.45;overflow:hidden;
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;
+}
+.detail-tools{position:absolute;top:10px;right:12px;z-index:2;display:flex;align-items:center;gap:6px}
+.dsheet .ph .sheet-close{position:static;padding:4px 9px;background:var(--bg)}
+.dbody{
+  flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;
+  -webkit-overflow-scrolling:touch;padding:4px 16px 30px;font-size:13.5px;line-height:1.8;color:var(--ink2)
+}
+.dmeta{font-size:12px;color:var(--ink3);margin:6px 0 2px}
+.d-oneline{font-size:13.5px}
+.d-advice{margin:12px 0 2px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);
+  background:var(--panel);line-height:1.65}
+.dsec{margin:0;padding:16px 0 9px;border-top:1px solid var(--line)}
+.dsec:first-of-type{border-top-color:var(--line)}
+.dsec h2{
+  display:flex;align-items:center;gap:9px;margin:0 0 10px;padding:0;font-size:17px;
+  font-weight:700;line-height:1.45;color:var(--ink);letter-spacing:.01em;
+}
+.dsec h2::before{content:"";flex:none;width:4px;height:17px;border-radius:2px;background:var(--accent)}
+.dsec-dose{padding-top:20px;border-top:2px solid var(--accent)}
+.dsec-dose h2{font-size:20px;color:var(--accent)}
+.dsec-dose h2::before{width:5px;height:21px}
+.dsec-notes h2{color:var(--danger)}
+.dsec-notes h2::before{background:var(--danger)}
+.dsec-body > :last-child{margin-bottom:0}
+.dsec-body > hr:last-child{display:none}
 .dbody p{margin:0 0 9px}
 .dbody ul,.dbody ol{padding-left:19px;margin:0 0 9px}
 .dbody blockquote{margin:0 0 9px;padding:7px 11px;background:var(--panel);border-left:2px solid var(--line);border-radius:0 6px 6px 0}
+
+/* 右下角模块快捷跳转 */
+.quicknav{position:fixed;right:max(14px,env(safe-area-inset-right));
+  bottom:max(16px,calc(env(safe-area-inset-bottom) + 12px));z-index:55;
+  display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.quicknav[hidden]{display:none}
+.quicknav-toggle{position:relative;width:48px;height:48px;display:grid;place-items:center;border:1px solid var(--line);
+  border-radius:50%;background:var(--panel);color:var(--accent);box-shadow:var(--shadow-lift)}
+.quicknav-toggle::after{
+  content:"";position:absolute;inset:-5px;z-index:0;border-radius:50%;pointer-events:none;
+  background:conic-gradient(#37698F,#1f6b52,#B07C28,#8f2f2f,#37698F);
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));
+  mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));
+  filter:drop-shadow(0 0 3px rgba(31,107,82,.3));
+  animation:quicknavMarquee 3s linear infinite;will-change:transform;
+}
+.quicknav-toggle::before{content:"";width:10px;height:10px;border-left:2px solid currentColor;
+  border-top:2px solid currentColor;transform:rotate(45deg) translate(2px,2px);transition:transform .16s ease}
+.quicknav.open .quicknav-toggle::before{transform:rotate(225deg) translate(2px,2px)}
+.quicknav-menu{display:none;min-width:142px;padding:6px;border:1px solid var(--line);border-radius:10px;
+  background:var(--panel);box-shadow:var(--shadow-lift)}
+.quicknav.open .quicknav-menu{display:grid;gap:2px}
+.quicknav-menu button{display:flex;align-items:center;gap:9px;width:100%;padding:9px 11px;
+  border:1px solid transparent;border-radius:7px;text-align:left;font-size:13.5px;color:var(--ink);
+  background:var(--line2);background:color-mix(in srgb,var(--nav-c) 17%,var(--panel))}
+.quicknav-menu button[hidden]{display:none}
+.quicknav-menu button::before{content:"";flex:none;width:3px;height:16px;border-radius:2px;
+  background:var(--nav-c,var(--accent))}
+.quicknav-menu button:active{background:color-mix(in srgb,var(--nav-c) 28%,var(--panel))}
+@keyframes quicknavMarquee{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){
+  .quicknav-toggle::after{animation:none}
+}
 
 footer{border-top:1px solid var(--line);margin-top:26px;padding:16px 0 26px;font-size:11.5px;color:var(--ink3);line-height:1.8}
 footer .ver{font-family:var(--mono);margin-top:6px}
@@ -326,13 +447,29 @@ footer .ver{font-family:var(--mono);margin-top:6px}
 .fadein{animation:fadeUp .22s ease both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 @media (max-width:600px){
+  .hd{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:7px 8px;padding:10px 0 8px}
+  .hd h1{grid-column:1;grid-row:1}
+  .hd .sub{grid-column:2;grid-row:1;margin-left:0}
+  .hd-toggle{grid-column:3;grid-row:1;margin-left:0;width:36px;height:36px}
+  .hd-tools{grid-column:1/-1;grid-row:2;justify-self:end;gap:8px}
+  .hd-tool{width:36px;height:36px}
+  .zoom-group{height:36px}
+  .zoom-btn{width:36px;height:34px;font-size:18px}
+  .zoom-val{min-width:40px;font-size:10.5px}
+  .dsheet .ph h3{padding-right:180px}
+  header.is-collapsed .hd{padding:5px 0}
+  header.is-collapsed .hd-tools{display:none}
   .el-grid{grid-template-columns:1fr 1fr;gap:8px}
 }
 @media (max-width:420px){
   .hd h1{font-size:16px}
-  .chip .nm{max-width:132px}
   .el-grid{grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:8px}
   .el-cell .v{font-size:22px}
+}
+@media (max-width:350px){
+  .hd h1{font-size:15px}
+  .hd .sub{font-size:10.5px}
+  .zoom-val{min-width:38px}
 }
 </style>
 </head>
@@ -343,8 +480,19 @@ footer .ver{font-family:var(--mono);margin-top:6px}
     <div class="hd">
       <h1>成分组合台</h1>
       <span class="sub" id="cnt">— 个产品</span>
+      <div class="hd-tools">
+        <button type="button" class="hd-tool" id="themeToggle" aria-pressed="false" aria-label="切换到夜间模式" title="切换到夜间模式">
+          <span class="ico" id="themeIcon" aria-hidden="true">☀</span>
+        </button>
+        <div class="zoom-group" role="group" aria-label="正文缩放">
+          <button type="button" class="zoom-btn" id="zoomOut" aria-label="缩小正文" title="缩小正文">−</button>
+          <span class="zoom-val" id="zoomVal" aria-live="polite">100%</span>
+          <button type="button" class="zoom-btn" id="zoomIn" aria-label="放大正文" title="放大正文">+</button>
+        </div>
+      </div>
+      <button type="button" class="hd-toggle" id="hdToggle" aria-controls="selbar" aria-expanded="true" aria-label="收起产品选择"></button>
     </div>
-    <div class="selbar">
+    <div class="selbar" id="selbar">
       <div class="chips" id="chips"></div>
       <div class="sumbar" id="sumbar"></div>
     </div>
@@ -366,7 +514,8 @@ footer .ver{font-family:var(--mono);margin-top:6px}
 <div class="sheet" id="picker">
   <div class="panel">
     <div class="ph">
-      <h3>添加产品 <span class="ghost" id="pclose" style="float:right">关闭</span></h3>
+      <h3>添加产品</h3>
+      <button type="button" class="sheet-close" id="pclose">关闭</button>
       <input class="search" id="psearch" placeholder="搜产品名、成分、编号，如「镁」「P032」" autocomplete="off">
     </div>
     <div class="filters" id="pfilters"></div>
@@ -379,11 +528,30 @@ footer .ver{font-family:var(--mono);margin-top:6px}
   <div class="panel">
     <div class="ph">
       <h3 id="dtitle">产品详情</h3>
-      <span class="ghost" id="dclose">关闭</span>
+      <div class="detail-tools">
+        <div class="zoom-group" role="group" aria-label="详情正文缩放">
+          <button type="button" class="zoom-btn" id="detailZoomOut" aria-label="缩小详情正文" title="缩小详情正文">−</button>
+          <span class="zoom-val" id="detailZoomVal" aria-live="polite">100%</span>
+          <button type="button" class="zoom-btn" id="detailZoomIn" aria-label="放大详情正文" title="放大详情正文">+</button>
+        </div>
+        <button type="button" class="sheet-close" id="dclose">关闭</button>
+      </div>
     </div>
-    <div class="dbody" id="dbody"></div>
+    <div class="dbody" id="dbody" aria-label="产品完整使用说明"></div>
   </div>
 </div>
+
+<nav class="quicknav" id="quicknav" aria-label="快速跳转" hidden>
+  <div class="quicknav-menu" id="quicknavMenu">
+    <button type="button" data-jump="elements" style="--nav-c:#A9734A">矿物质元素</button>
+    <button type="button" data-jump="elec" style="--nav-c:#37698F">电解质平衡</button>
+    <button type="button" data-jump="ingredients" style="--nav-c:#1f6b52">成分合计列表</button>
+    <button type="button" data-jump="how" style="--nav-c:#B07C28">怎么吃</button>
+    <button type="button" data-jump="notes" style="--nav-c:#8f2f2f">注意事项</button>
+  </div>
+  <button type="button" class="quicknav-toggle" id="quicknavToggle"
+    aria-controls="quicknavMenu" aria-expanded="false" aria-label="打开快速跳转"></button>
+</nav>
 
 <script>
 /* ============================================================
@@ -523,6 +691,7 @@ var RATIO_BAND = [1.6, 2.6];
 
 /* ---------------- 工具 ---------------- */
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escAttr(s){ return esc(s).replace(/"/g,'&quot;'); }
 function fmtNum(v){
   if (v==null || isNaN(v)) return '—';
   var a = Math.abs(v);
@@ -551,6 +720,94 @@ function toMg(v,u){
 function normText(s){ return String(s||'').replace(/<[^>]+>/g,'').replace(/[\s\u3000，。、；：！？,.;:!?*"'“”‘’()（）]/g,''); }
 function q(sel){ return document.querySelector(sel); }
 
+/* ---------------- 主题与正文缩放 ---------------- */
+var ZOOM_MIN = 0.8, ZOOM_MAX = 1.4, ZOOM_STEP = 0.1;
+var contentZoom = 1, themeMode = 'day';
+function applyTheme(save){
+  var root = document.documentElement;
+  var night = themeMode === 'night';
+  if (night) root.setAttribute('data-theme', 'night');
+  else root.removeAttribute('data-theme');
+  var btn = q('#themeToggle'), ico = q('#themeIcon');
+  if (btn){
+    btn.setAttribute('aria-pressed', String(night));
+    btn.setAttribute('aria-label', night ? '切换到白昼模式' : '切换到夜间模式');
+    btn.title = night ? '切换到白昼模式' : '切换到夜间模式';
+  }
+  if (ico) ico.textContent = night ? '☾' : '☀';
+  if (save) lsSet('cf_theme', themeMode);
+}
+function toggleTheme(){
+  themeMode = themeMode === 'night' ? 'day' : 'night';
+  applyTheme(true);
+}
+function applyContentZoom(scale, save){
+  scale = Math.round(Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, scale || 1)) * 10) / 10;
+  contentZoom = scale;
+  var main = q('#main');
+  if (main){
+    main.style.zoom = String(scale);
+    main.style.width = '';
+  }
+  var label = q('#zoomVal'), out = q('#zoomOut'), inc = q('#zoomIn');
+  if (label) label.textContent = Math.round(scale * 100) + '%';
+  if (out) out.disabled = scale <= ZOOM_MIN;
+  if (inc) inc.disabled = scale >= ZOOM_MAX;
+  if (save) lsSet('cf_zoom', scale);
+}
+function initDisplayControls(){
+  themeMode = lsGet('cf_theme') === 'night' ? 'night' : 'day';
+  applyTheme(false);
+  var savedZoom = parseFloat(lsGet('cf_zoom'));
+  applyContentZoom(isNaN(savedZoom) ? 1 : savedZoom, false);
+}
+initDisplayControls();
+
+/* 详情正文单独缩放，不改变标题栏和关闭按钮。 */
+var detailZoom = 1, sheetLockY = 0, sheetLocked = false;
+function applyDetailZoom(scale, save){
+  scale = Math.round(Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, scale || 1)) * 10) / 10;
+  detailZoom = scale;
+  var body = q('#dbody');
+  if (body) body.style.zoom = String(scale);
+  var label = q('#detailZoomVal'), out = q('#detailZoomOut'), inc = q('#detailZoomIn');
+  if (label) label.textContent = Math.round(scale * 100) + '%';
+  if (out) out.disabled = scale <= ZOOM_MIN;
+  if (inc) inc.disabled = scale >= ZOOM_MAX;
+  if (save) lsSet('cf_detail_zoom', scale);
+}
+function initDetailZoom(){
+  var saved = parseFloat(lsGet('cf_detail_zoom'));
+  applyDetailZoom(isNaN(saved) ? 1 : saved, false);
+}
+initDetailZoom();
+
+/* 弹层打开期间固定背景页，详情正文到达上下边界后不再把滚动传给页面。 */
+function syncSheetLock(){
+  var hasSheet = !!document.querySelector('.sheet.on');
+  var locked = document.body.classList.contains('sheet-open');
+  if (hasSheet && !locked){
+    sheetLocked = true;
+    sheetLockY = window.scrollY || 0;
+    document.documentElement.classList.add('sheet-open');
+    document.body.classList.add('sheet-open');
+    document.body.style.top = -sheetLockY + 'px';
+  } else if (!hasSheet && locked){
+    document.documentElement.classList.remove('sheet-open');
+    document.body.classList.remove('sheet-open');
+    document.body.style.top = '';
+    var restoreY = sheetLockY;
+    requestAnimationFrame(function(){
+      window.scrollTo(0, restoreY);
+      requestAnimationFrame(function(){
+        if (Math.abs((window.scrollY || 0) - restoreY) > 2) window.scrollTo(0, restoreY);
+        headerLastY = restoreY;
+        sheetLocked = false;
+      });
+    });
+  }
+}
+
 /* ---------------- 选品 ---------------- */
 function addP(id){
   if (SEL.some(x=>x.id===id)) return;
@@ -569,7 +826,7 @@ function renderChips(){
     var it = DB.index.find(x=>x.id===s.id);
     var el = document.createElement('div');
     el.className = 'chip fadein';
-    el.innerHTML = '<span class="nm" data-detail="'+s.id+'" title="'+esc(it.name)+'">'+esc(it.name)+'</span>'+
+    el.innerHTML = '<span class="nm" data-detail="'+s.id+'" title="'+escAttr(it.name)+'">'+esc(it.name)+'</span>'+
       '<span class="stp"><button data-step="'+s.id+'" data-dir="-1" aria-label="减少">−</button>'+
       '<input type="number" step="0.1" min="0" value="'+s.amount+'" data-amt="'+s.id+'">'+
       '<button data-step="'+s.id+'" data-dir="1" aria-label="增加">+</button></span>'+
@@ -577,17 +834,66 @@ function renderChips(){
       '<button class="x" data-rm="'+s.id+'" aria-label="移除">×</button>';
     box.appendChild(el);
   });
+  var actions = document.createElement('div');
+  actions.className = 'chip-actions';
   var b = document.createElement('button');
   b.className = 'addbtn'; b.textContent = '+ 添加产品';
   b.onclick = openPicker;
-  box.appendChild(b);
+  actions.appendChild(b);
   if (SEL.length){
     var c = document.createElement('button');
-    c.className = 'ghost'; c.style.marginLeft = '4px'; c.textContent = '清空';
+    c.className = 'ghost'; c.textContent = '清空';
     c.onclick = function(){ SEL=[]; renderChips(); render(); };
-    box.appendChild(c);
+    actions.appendChild(c);
   }
+  box.appendChild(actions);
+  syncHeaderControl();
 }
+
+/* 多产品时，向下浏览自动收起顶部选品区；点击标题栏可随时展开。 */
+var headerCollapsed = false, headerLastY = 0, headerManualOpenY = 0, headerScrollPauseUntil = 0;
+function syncHeaderControl(){
+  var hd = q('header'), bar = q('#selbar'), btn = q('#hdToggle');
+  if (!hd || !bar || !btn) return;
+  var can = SEL.length >= 2;
+  hd.classList.toggle('can-collapse', can);
+  if (!can) headerCollapsed = false;
+  hd.classList.toggle('is-collapsed', can && headerCollapsed);
+  btn.setAttribute('aria-expanded', String(!(can && headerCollapsed)));
+  btn.setAttribute('aria-label', can && headerCollapsed ? '展开产品选择' : '收起产品选择');
+  bar.setAttribute('aria-hidden', String(can && headerCollapsed));
+  bar.inert = can && headerCollapsed;
+}
+function setHeaderCollapsed(collapsed, source){
+  if (collapsed && SEL.length < 2) return;
+  headerCollapsed = !!collapsed;
+  if (!headerCollapsed && source === 'tap'){
+    headerManualOpenY = window.scrollY || 0;
+    headerScrollPauseUntil = performance.now() + 450;
+  }
+  syncHeaderControl();
+}
+window.addEventListener('scroll', function(){
+  var y = Math.max(0, window.scrollY || document.documentElement.scrollTop || 0);
+  if (sheetLocked){
+    headerLastY = y;
+    return;
+  }
+  if (performance.now() < headerScrollPauseUntil){
+    headerLastY = y;
+    return;
+  }
+  if (SEL.length < 2){
+    headerLastY = y;
+    return;
+  }
+  if (y <= 4){
+    setHeaderCollapsed(false, 'top');
+  } else if (!headerCollapsed && y > 64 && y > headerLastY + 2 && y - headerManualOpenY > 42){
+    setHeaderCollapsed(true, 'scroll');
+  }
+  headerLastY = y;
+}, {passive:true});
 
 /* 吸顶汇总条：滚动到下面也看得见总量 */
 function renderSum(r){
@@ -626,15 +932,24 @@ function compute(){
     list.push({p:p, amount:s.amount, factor:f});
 
     (p.ingredients||[]).forEach(function(g2){
-      var key = (g2.name||'')+'|'+(g2.unit||'');
-      if (!ing.has(key)) ing.set(key, {name:g2.name, unit:g2.unit, cls:g2.cls||'其他', alias:g2.alias, total:0, items:[], noAmt:false});
+      var pot = g2.potency && g2.potency.value != null ? g2.potency : null;
+      var value = pot ? pot.value : g2.amount;
+      var unit = pot && pot.unit ? pot.unit : g2.unit;
+      var key = (g2.name||'')+'|'+(unit||'');
+      if (!ing.has(key)) ing.set(key, {name:g2.name, unit:unit, cls:g2.cls||'其他', alias:g2.alias, total:0, items:[], noAmt:false, potency:!!pot, approx:false});
       var o = ing.get(key);
       if (!o.alias && g2.alias) o.alias = g2.alias;
-      if (g2.amount==null){ o.noAmt = true; unm.push({pid:p.id, name:g2.name}); }
+      if (pot && /参考页/.test(pot.status || '')) o.approx = true;
+      if (value==null){ o.noAmt = true; unm.push({pid:p.id, name:g2.name}); }
       else {
-        var v = g2.amount * f;
+        var v = value * f;
         o.total += v;
-        o.items.push({pid:p.id, pname:p.name, v:v});
+        o.items.push({
+          pid:p.id, pname:p.name, v:v,
+          rawValue: pot ? (pot.rawValue==null ? null : pot.rawValue*f) : null,
+          rawUnit: pot ? pot.rawUnit : '',
+          potency: !!pot
+        });
       }
     });
     (p.elements||[]).forEach(function(e){
@@ -658,8 +973,8 @@ function compute(){
 /* ---------------- 渲染 ---------------- */
 function render(){
   var main = q('#main');
-  if (!SEL.length){ main.innerHTML = emptyHTML(); renderSum(null); return; }
-  if (SEL.some(s=>!PD[s.id])){ main.innerHTML = '<div class="loading"><div class="spin"></div>读取产品数据…</div>'; return; }
+  if (!SEL.length){ main.innerHTML = emptyHTML(); renderSum(null); syncQuickNav(); return; }
+  if (SEL.some(s=>!PD[s.id])){ main.innerHTML = '<div class="loading"><div class="spin"></div>读取产品数据…</div>'; syncQuickNav(); return; }
 
   var r = compute();
   renderSum(r);
@@ -672,6 +987,7 @@ function render(){
   html += notesHTML(r);
   main.innerHTML = html;
   bindUI();
+  syncQuickNav();
 }
 
 function emptyHTML(){
@@ -752,12 +1068,13 @@ function elemsHTML(r){
     var s = unitScale(o.total, o.unit);
     var c = elColor(o.el);
     return '<div class="el-cell" style="--c:'+c+'">'+
-      '<div class="el-hd"><span class="dot"></span>'+esc(o.el)+'<span class="sym">'+esc(ELS[o.el]||'')+'</span></div>'+
+      '<div class="el-hd"><span class="sym"><span class="dot"></span>'+esc(ELS[o.el]||'')+'</span>'+
+      '<span class="cn">'+esc(o.el)+'</span></div>'+
       '<div class="v" style="color:var(--ink)">'+fmtNum(s.v)+'<small>'+esc(s.u)+'</small></div>'+
       '<div class="src" title="'+esc(srcFull)+'">'+esc(src)+'</div>'+
     '</div>';
   }).join('');
-  return '<section><div class="sect-head"><h2>矿物质元素合计</h2>'+
+  return '<section id="elements"><div class="sect-head"><h2>矿物质元素合计</h2>'+
     '<span class="hint">已按原料折算成元素量</span></div>'+
     '<div class="el-grid">'+cells+'</div>'+
     '<div style="font-size:11.5px;color:var(--ink3);margin-top:9px;line-height:1.6">元素量 = 矿物质原料按浓度折算后的实际元素，跨不同形态可以相加；原料投放量见下方「成分合计」。</div></section>';
@@ -787,7 +1104,7 @@ function elecHTML(r){
     var zl  = ty.low / ty.high * 100;
     return '<div class="ec-row st-'+st+'" style="--c:'+c+'">'+
       '<div class="ec-top">'+
-        '<span class="ec-nm"><i></i>'+esc(el)+'<em>'+esc(ELS[el]||'')+'</em></span>'+
+        '<span class="ec-nm"><i></i><span class="ec-cn">'+esc(el)+'</span><em>'+esc(ELS[el]||'')+'</em></span>'+
         '<span class="ec-val">'+(g?fmtNum(mg):'<span style="color:var(--ink3)">0</span>')+'<small>mg</small></span>'+
         '<span class="ec-tag '+st+'">'+esc(tag)+'</span>'+
       '</div>'+
@@ -834,7 +1151,7 @@ function elecHTML(r){
     '<div class="ec-sug-list">'+sug+'</div>'+
     '<span class="ec-note">按原料含量估算到下限，不是服用建议；补钾需结合自身情况</span></div>' : '';
 
-  return '<section><div class="sect-head"><h2>电解质平衡 · 钠 钾 镁</h2>'+
+  return '<section id="elec"><div class="sect-head"><h2>电解质平衡 · 钠 钾 镁</h2>'+
     '<span class="hint">对照目标区间看缺口</span></div>'+
     '<div class="card elec">'+rows+ratioLine+sugLine+'</div>'+
     '<div style="font-size:11.5px;color:var(--ink3);margin-top:9px;line-height:1.6">'+
@@ -847,6 +1164,10 @@ function ingHTML(r){
   var arr = [];
   r.ing.forEach(function(o){ if (o.total > 0) arr.push(o); });
   if (!arr.length) return '';
+  var productColors = {};
+  hwColors(r.list).forEach(function(col, i){
+    productColors[r.list[i].p.id] = col || '#1f6b52';
+  });
 
   var order = ['维生素','矿物质','氨基酸','脂质','抗氧化','B族辅因子','代谢','甲基化','有机硫','抗糖基化','辅酶','功能性脂质','甜味剂','辅料'];
   function major(o){ return (o.cls||'其他').split('/')[0].trim(); }
@@ -871,18 +1192,29 @@ function ingHTML(r){
     var n = Object.keys(ids).length;
     var split = '';
     if (n > 1){
-      split = o.items.map(function(i){ return esc(i.pname.split('·')[0].slice(0,7))+' '+fmtNum(i.v); }).join(' / ');
+      split = o.items.map(function(i){
+        var tip = i.pname + (i.potency && i.rawValue != null && i.rawUnit && i.rawUnit !== o.unit
+          ? ' · 原料量 ' + fmtVal(i.rawValue, i.rawUnit) : '');
+        return '<span class="split-i" style="--sc:'+(productColors[i.pid]||'#8d8678')+'">'+
+          '<span title="'+escAttr(tip)+'">'+esc(i.pname.split('·')[0].slice(0,7))+' '+fmtNum(i.v)+'</span></span>';
+      }).join('');
+    }
+    var rawNote = '';
+    if (o.potency && n === 1 && o.items[0] && o.items[0].rawValue != null &&
+        o.items[0].rawUnit && o.items[0].rawUnit !== o.unit){
+      rawNote = '<span class="raw-note">原料量 '+fmtVal(o.items[0].rawValue, o.items[0].rawUnit)+'</span>';
     }
     return '<div class="row"><span class="no">'+no+'</span><div class="nm" style="--c:'+clsColor(o.cls)+'">'+
-      '<span class="cls">'+esc(o.cls)+'</span>'+esc(o.name)+
+      '<span class="cls">'+esc(o.cls)+'</span><span class="ing-name">'+esc(o.name)+'</span>'+
       (o.alias?'<span class="al">'+esc(o.alias)+'</span>':'')+
+      rawNote+
       (n>1?'<span class="multi">'+n+' 个产品</span>':'')+
       (split?'<div class="split">'+split+'</div>':'')+
-      '</div><div class="val">'+fmtVal(o.total, o.unit)+'</div></div>';
+      '</div><div class="val">'+(o.approx?'约 ':'')+fmtVal(o.total, o.unit)+'</div></div>';
   }).join('');
 
-  return '<section><div class="sect-head"><h2>成分合计（按每日吃量）</h2>'+
-    '<span class="hint">'+list.length+' 项 · 同类不同形态不合并</span></div>'+
+  return '<section id="ingredients"><div class="sect-head"><h2>成分合计（按每日吃量）</h2>'+
+    '<span class="hint">'+list.length+' 项 · 维A/D3按IU · 不同形态不合并</span></div>'+
     '<div class="fchips">'+chips+'</div>'+
     '<div class="card">'+rows+'</div></section>';
 }
@@ -940,7 +1272,7 @@ function howHTML(r){
       dose + more + '</div>';
   }).join('');
 
-  return '<section><div class="sect-head"><h2>怎么吃</h2>' +
+  return '<section id="how"><div class="sect-head"><h2>怎么吃</h2>' +
     '<span class="hint">右侧数字 = 你填的份数 · 「原文」= 卡片写的量</span></div>' +
     '<div class="card">' + items + '</div></section>';
 }
@@ -967,9 +1299,46 @@ function notesHTML(r){
   }).join('');
   var more = arr.length>40 ? '<div class="note note-more"><span class="no"></span>'+
     '<div class="txt">还有 '+(arr.length-40)+' 条，见各产品详情</div></div>' : '';
-  return '<section><div class="sect-head"><h2>注意事项</h2>'+
+  return '<section id="notes"><div class="sect-head"><h2>注意事项</h2>'+
     '<span class="hint">'+arr.length+' 条，已去重</span></div>'+
     '<div class="card">'+body+more+'</div></section>';
+}
+
+function setQuickNavOpen(open){
+  var nav = q('#quicknav'), btn = q('#quicknavToggle');
+  if (!nav || !btn) return;
+  nav.classList.toggle('open', !!open);
+  btn.setAttribute('aria-expanded', String(!!open));
+  btn.setAttribute('aria-label', open ? '关闭快速跳转' : '打开快速跳转');
+}
+function syncQuickNav(){
+  var nav = q('#quicknav');
+  if (!nav) return;
+  var any = false;
+  nav.querySelectorAll('[data-jump]').forEach(function(btn){
+    var found = !!q('#' + btn.dataset.jump);
+    btn.hidden = !found;
+    if (found) any = true;
+  });
+  nav.hidden = !SEL.length || !any;
+  if (nav.hidden) setQuickNavOpen(false);
+}
+var quickJumpTimer = null;
+function jumpToSection(id){
+  var target = q('#' + id);
+  if (!target) return;
+  setQuickNavOpen(false);
+  if (SEL.length >= 2) setHeaderCollapsed(true, 'jump');
+  if (quickJumpTimer) clearTimeout(quickJumpTimer);
+  var go = function(){
+    var current = q('#' + id);
+    if (!current) return;
+    var offset = SEL.length >= 2 ? 58 : q('header').getBoundingClientRect().height + 12;
+    var top = current.getBoundingClientRect().top + (window.scrollY || 0) - offset;
+    window.scrollTo({top: Math.max(0, top), behavior:'smooth'});
+  };
+  if (SEL.length >= 2) quickJumpTimer = setTimeout(go, 280);
+  else go();
 }
 
 function bindUI(){
@@ -979,6 +1348,7 @@ function bindUI(){
 /* ---------------- 选品面板 ---------------- */
 function openPicker(){
   q('#picker').classList.add('on');
+  syncSheetLock();
   q('#psearch').value = '';
   FILTER = '全部';
   renderFilters(); renderList();
@@ -1011,7 +1381,8 @@ function pRow(it, kw, hit){
     sub = '<span class="whyhit">含 ' + hit.slice(0, 4).map(function(x){ return esc(x); }).join('、') +
           (hit.length > 4 ? ' 等 ' + hit.length + ' 个成分' : '') + '</span>';
   }
-  return '<button class="pitem" data-add="' + it.id + '"' + (on ? ' style="opacity:.45"' : '') + '>' +
+  return '<button class="pitem' + (on ? ' on' : '') + '" data-toggle="' + it.id + '" ' +
+    'aria-pressed="' + (on ? 'true' : 'false') + '" aria-label="' + (on ? '取消选择 ' : '选择 ') + escAttr(it.name) + '">' +
     '<span class="id">' + it.id + '</span>' +
     '<span class="tx"><span class="n">' + hl(it.name, kw) + '</span>' +
     '<span class="m">' + esc(it.spec) + ' · 每' + esc(it.basis.replace(/^每/, '')) + ' · ' + esc(it.group) + '</span>' +
@@ -1077,31 +1448,39 @@ function renderList(){
 }
 
 /* ---------------- 详情 ---------------- */
+function detailSection(title, body, cls){
+  return '<section class="dsec ' + (cls || '') + '"><h2>' + esc(title) +
+    '</h2><div class="dsec-body">' + body + '</div></section>';
+}
 async function openDetail(id){
   var p = await product(id);
   q('#dtitle').textContent = p.name;
-  var html = '<div style="font-size:12px;color:var(--ink3);margin:6px 0 2px">'+p.id+' · '+esc(p.spec)+' · 计量基准 '+esc(p.basis.raw)+
+  q('#dtitle').title = p.name;
+  var html = '<div class="dmeta">'+p.id+' · '+esc(p.spec)+' · 计量基准 '+esc(p.basis.raw)+
       (p.grade?' · 覆盖 '+esc(p.grade)+' 级':'')+'</div>';
-  if (p.oneLine) html += '<blockquote style="font-size:13.5px">'+esc(p.oneLine)+'</blockquote>';
-  if (p.advice) html += '<p><b>建议用量：</b>'+esc(p.advice)+
-    (p.dose&&p.dose.confidence?'　<span style="color:var(--ink3);font-size:12px">（置信度 '+esc(p.dose.confidence)+'）</span>':'')+'</p>';
+  if (p.oneLine) html += '<blockquote class="d-oneline">'+esc(p.oneLine)+'</blockquote>';
+  if (p.advice) html += '<div class="d-advice"><b>建议用量：</b>'+esc(p.advice)+
+    (p.dose&&p.dose.confidence?'　<span style="color:var(--ink3);font-size:12px">（置信度 '+esc(p.dose.confidence)+'）</span>':'')+'</div>';
   var h = p.how||{};
   howKeys(h).forEach(function(k){
-    if (h[k] && h[k].html) html += '<h2>'+esc(k)+'</h2>'+h[k].html;
+    if (h[k] && h[k].html) html += detailSection(k, h[k].html, k === '剂量' ? 'dsec-dose' : '');
   });
   (p.sections||[]).forEach(function(s){
     if (!s.html) return;
-    html += '<h2>'+esc(s.title)+'</h2>'+s.html;
+    html += detailSection(s.title, s.html);
   });
   if ((p.notes||[]).length){
-    html += '<h2>注意事项</h2>';
-    p.notes.forEach(function(n){ html += '<div style="margin-bottom:6px">'+n.html+'</div>'; });
+    var notes = '';
+    p.notes.forEach(function(n){ notes += '<div style="margin-bottom:6px">'+n.html+'</div>'; });
+    html += detailSection('注意事项', notes, 'dsec-notes');
   }
   if (p.composite){
     html += '<p style="color:var(--ink3);font-size:12px">套装的成分 = '+p.composite.join(' + ')+' 四款单品各 1 份合并。</p>';
   }
   q('#dbody').innerHTML = html;
+  q('#dbody').scrollTop = 0;
   q('#detail').classList.add('on');
+  syncSheetLock();
 }
 
 /* ---------------- 启动 ---------------- */
@@ -1140,15 +1519,29 @@ async function openDetail(id){
     renderSum(null);
   }
 
-  q('#pclose').onclick = function(){ q('#picker').classList.remove('on'); };
-  q('#picker').onclick = function(e){ if (e.target===this) this.classList.remove('on'); };
-  q('#dclose').onclick = function(){ q('#detail').classList.remove('on'); };
-  q('#detail').onclick = function(e){ if (e.target===this) this.classList.remove('on'); };
+  q('.hd').onclick = function(e){
+    if (e.target.closest && e.target.closest('.hd-tools')) return;
+    if (SEL.length >= 2) setHeaderCollapsed(!headerCollapsed, 'tap');
+  };
+  q('#themeToggle').onclick = toggleTheme;
+  q('#zoomOut').onclick = function(){ applyContentZoom(contentZoom - ZOOM_STEP, true); };
+  q('#zoomIn').onclick = function(){ applyContentZoom(contentZoom + ZOOM_STEP, true); };
+  q('#detailZoomOut').onclick = function(){ applyDetailZoom(detailZoom - ZOOM_STEP, true); };
+  q('#detailZoomIn').onclick = function(){ applyDetailZoom(detailZoom + ZOOM_STEP, true); };
+  q('#pclose').onclick = function(){ q('#picker').classList.remove('on'); syncSheetLock(); };
+  q('#picker').onclick = function(e){ if (e.target===this){ this.classList.remove('on'); syncSheetLock(); } };
+  q('#dclose').onclick = function(){ q('#detail').classList.remove('on'); syncSheetLock(); };
+  q('#detail').onclick = function(e){ if (e.target===this){ this.classList.remove('on'); syncSheetLock(); } };
+  q('#quicknavToggle').onclick = function(e){
+    e.stopPropagation();
+    setQuickNavOpen(!q('#quicknav').classList.contains('open'));
+  };
   q('#psearch').oninput = renderList;
 
   document.addEventListener('click', function(e){
-    var t = e.target.closest ? e.target.closest('[data-rm],[data-detail],[data-add],[data-quick],[data-ingf],[data-step]') : null;
+    var t = e.target.closest ? e.target.closest('[data-rm],[data-detail],[data-toggle],[data-quick],[data-ingf],[data-step],[data-jump]') : null;
     if (!t) return;
+    if (t.dataset.jump){ jumpToSection(t.dataset.jump); return; }
     if (t.dataset.step){
       var id = t.dataset.step, dir = parseFloat(t.dataset.dir) || 1;
       var it = SEL.find(x=>x.id===id);
@@ -1162,13 +1555,24 @@ async function openDetail(id){
     }
     if (t.dataset.rm){ rmP(t.dataset.rm); return; }
     if (t.dataset.detail){ openDetail(t.dataset.detail); return; }
-    if (t.dataset.add){ addP(t.dataset.add); renderList(); return; }
+    if (t.dataset.toggle){
+      if (SEL.some(x=>x.id===t.dataset.toggle)) rmP(t.dataset.toggle);
+      else addP(t.dataset.toggle);
+      renderList(); return;
+    }
     if (t.dataset.quick){ addP(t.dataset.quick); return; }
     if (t.dataset.ingf){ INGF = t.dataset.ingf; render(); return; }
     if (t.classList.contains('grp-hd')){
       var gp = t.parentNode; gp.dataset.open = gp.dataset.open==='1' ? '0' : '1';
     }
   });
+  document.addEventListener('click', function(e){
+    if (!e.target.closest('#quicknav')) setQuickNavOpen(false);
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') setQuickNavOpen(false);
+  });
+  window.addEventListener('scroll', function(){ setQuickNavOpen(false); }, {passive:true});
   document.addEventListener('input', function(e){
     var id = e.target.dataset && e.target.dataset.amt;
     if (id){
