@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>成分组合台 · 一起吃到底吃了多少</title>
+<title>营养配方盘 · 一起吃到底吃了多少</title>
 <style>
 :root{
   --bg:#f5f3ee; --panel:#fffdf9; --line:#e2ddd2; --line2:#efeae0;
@@ -151,7 +151,7 @@ section{margin:18px 0}
 .el-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(208px,1fr));gap:10px}
 .el-cell{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 13px 11px;
   box-shadow:var(--shadow);position:relative;overflow:hidden}
-.el-cell::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c,#c9c2b4);opacity:.85}
+.el-cell::after{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:var(--c,#c9c2b4);opacity:.9}
 .el-cell .el-hd{display:flex;align-items:center;gap:7px}
 .el-cell .el-hd .sym{display:flex;align-items:center;gap:5px;font-family:var(--mono);
   font-size:12px;font-weight:600;color:var(--c,var(--ink2));letter-spacing:.04em}
@@ -205,14 +205,20 @@ section{margin:18px 0}
 .ec-sug{margin-top:11px;padding-top:11px;border-top:1px dashed var(--line2)}
 .ec-sug .lb{display:block;font-size:11px;color:var(--ink3);letter-spacing:.03em;margin-bottom:8px}
 .ec-sug-list{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.ec-sug-i{min-width:0;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--c,#8d8678);
-  border-radius:var(--r-sm);padding:9px 10px 8px;box-shadow:var(--shadow)}
+.ec-sug-i{position:relative;min-width:0;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--c,#8d8678);
+  border-radius:var(--r-sm);padding:9px 26px 8px 10px;box-shadow:var(--shadow);text-align:left}
+.ec-sug-i:active{border-color:var(--c,var(--accent));background:color-mix(in srgb,var(--c,var(--accent)) 8%,var(--panel))}
 .ec-sug-i .n{font-size:11.5px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ec-sug-i .v{display:flex;align-items:baseline;gap:4px;margin-top:2px;
   font-family:var(--mono);font-variant-numeric:tabular-nums}
 .ec-sug-i .v b{font-size:24px;line-height:1.15;font-weight:700;letter-spacing:-.035em;
   color:var(--c,#1f6b52)}
 .ec-sug-i .v span{font-size:12px;color:var(--ink3)}
+.ec-sug-i .pick{display:block;margin-top:4px;font-size:9.5px;line-height:1.3;color:var(--ink3);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ec-sug-i .plus{position:absolute;top:7px;right:7px;width:17px;height:17px;display:grid;
+  place-items:center;border-radius:50%;background:var(--c,var(--accent));color:var(--inverse);
+  font-size:12px;font-weight:700;line-height:1}
 .ec-sug .ec-note{display:block;margin-top:8px;font-size:11px;color:var(--ink3);line-height:1.5}
 @media(max-width:400px){
   .ec-sug-list{gap:6px}
@@ -220,6 +226,18 @@ section{margin:18px 0}
   .ec-sug-i .n{font-size:11px}
   .ec-sug-i .v b{font-size:21px}
 }
+
+/* 缺口补充产品选择 */
+.gap-sheet .panel{max-height:min(78vh,640px)}
+.gap-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:12px 16px 24px}
+.gap-opt{display:flex;align-items:center;gap:12px;width:100%;padding:12px 13px;border:1px solid var(--line);
+  border-radius:10px;background:var(--panel);text-align:left;margin-bottom:8px;box-shadow:var(--shadow)}
+.gap-opt .tx{flex:1;min-width:0}
+.gap-opt .nm{display:block;font-size:14px;font-weight:700;color:var(--ink)}
+.gap-opt .meta{display:block;margin-top:3px;font-size:11.5px;line-height:1.45;color:var(--ink3)}
+.gap-opt .add{flex:none;width:28px;height:28px;display:grid;place-items:center;border-radius:50%;
+  background:var(--accent-bg);color:var(--accent);font-size:17px;font-weight:600}
+.gap-opt:active,.gap-opt.on{border-color:var(--accent);background:var(--accent-bg)}
 
 /* 成分清单 */
 .grp{border-top:1px solid var(--line2)}
@@ -252,7 +270,7 @@ section{margin:18px 0}
 .row .raw-note{display:block;margin-top:1px;font-size:10.5px;line-height:1.45;color:var(--ink3);font-family:var(--mono)}
 .multi{background:var(--accent-bg);border-radius:5px;padding:0 5px;font-size:10.5px;color:var(--accent);margin-left:4px;font-family:inherit}
 
-/* 怎么吃：--hc / --hc-rgb 由 howHTML() 按产品注入，单产品时退回默认墨绿 */
+/* 合计用量：--hc / --hc-rgb 由 howHTML() 按产品注入，单产品时退回默认墨绿 */
 .how-item{--hc:var(--accent);--hc-rgb:31,107,82;padding:12px 14px 13px;border-top:1px solid var(--line2)}
 .how-item:first-child{border-top:0}
 .how-item.hwc .nm::before{content:"";display:inline-block;width:7px;height:7px;
@@ -402,14 +420,62 @@ details .bd hr{border:0;border-top:1px dashed var(--line2);margin:10px 0}
 .dbody ul,.dbody ol{padding-left:19px;margin:0 0 9px}
 .dbody blockquote{margin:0 0 9px;padding:7px 11px;background:var(--panel);border-left:2px solid var(--line);border-radius:0 6px 6px 0}
 
+/* AI 功用科普 */
+.ai-btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;flex:none;
+  min-height:30px;padding:4px 10px;border:1px solid rgba(31,107,82,.24);border-radius:999px;
+  background:var(--accent-bg);color:var(--accent);font-size:11.5px;font-weight:600;white-space:nowrap}
+.ai-btn svg{width:14px;height:14px;flex:none}
+.ai-btn:active{filter:brightness(.96)}
+.ai-btn.strong{background:var(--accent);border-color:var(--accent);color:var(--inverse);
+  box-shadow:var(--shadow-lift)}
+.ai-combo-row{display:flex;justify-content:flex-start;margin:-2px 0 10px}
+.ai-combo-row .ai-btn{width:100%;min-height:40px;justify-content:flex-start;padding:8px 12px;
+  font-size:13px;border-radius:9px}
+.hw-ai-row{display:flex;margin:7px 0 1px}
+.hw-ai-row .ai-btn{width:100%;min-height:34px;justify-content:center;
+  background:var(--hc,var(--accent));border-color:var(--hc,var(--accent));color:#fff}
+.ai-sheet .panel{height:min(82vh,720px);max-height:min(82vh,720px);
+  height:min(82dvh,720px);max-height:min(82dvh,720px)}
+.ai-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:12px 16px 24px}
+.ai-context{display:flex;align-items:center;gap:7px;margin-bottom:10px;font-size:12px;color:var(--ink2)}
+.ai-context b{color:var(--ink);font-size:13px}
+.ai-context span{color:var(--ink3)}
+.ai-label{display:block;font-size:11.5px;color:var(--ink3);margin:0 0 7px;letter-spacing:.02em}
+.ai-prompt{display:block;width:100%;height:290px;min-height:190px;resize:vertical;padding:11px 12px;
+  border:1px solid var(--line);border-radius:var(--r-sm);background:var(--field);color:var(--ink);
+  font-size:12.5px;line-height:1.7;outline:none}
+.ai-prompt:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(31,107,82,.08)}
+.ai-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px;
+  font-size:10.5px;color:var(--ink3)}
+.ai-reset{padding:2px 0;color:var(--ink3);text-decoration:underline;text-underline-offset:2px}
+.ai-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.ai-primary,.ai-secondary{min-height:42px;border-radius:9px;padding:8px 10px;font-size:12.5px;font-weight:600}
+.ai-primary{background:var(--accent);color:var(--inverse);box-shadow:var(--shadow)}
+.ai-secondary{border:1px solid var(--line);background:var(--field);color:var(--ink2)}
+.ai-status{margin-top:11px;padding:9px 11px;border-radius:var(--r-sm);background:var(--line2);
+  font-size:11.5px;line-height:1.65;color:var(--ink2)}
+.ai-status.ok{background:var(--accent-bg);color:var(--accent)}
+.ai-status.bad{background:var(--danger-bg);color:var(--danger)}
+.ai-status a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+
 /* 右下角模块快捷跳转 */
-.quicknav{position:fixed;right:max(14px,env(safe-area-inset-right));
-  bottom:max(16px,calc(env(safe-area-inset-bottom) + 12px));z-index:55;
-  display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.quicknav{position:fixed;width:58px;height:58px;z-index:55}
+.quicknav:not(.dragging){transition:left .18s ease,right .18s ease,top .18s ease,bottom .18s ease,transform .18s ease}
+.quicknav[data-side="left"]{left:max(14px,env(safe-area-inset-left));right:auto}
+.quicknav[data-side="right"]{right:max(14px,env(safe-area-inset-right));left:auto}
+.quicknav[data-y="top"]{top:max(14px,env(safe-area-inset-top));bottom:auto;transform:none}
+.quicknav[data-y="mid"]{top:50%;bottom:auto;transform:translateY(-50%)}
+.quicknav[data-y="bottom"]{bottom:max(16px,calc(env(safe-area-inset-bottom) + 12px));top:auto;transform:none}
+.quicknav.dragging{transition:none;transform:none!important}
 .quicknav[hidden]{display:none}
-.quicknav-toggle{position:relative;width:48px;height:48px;display:grid;place-items:center;border:1px solid var(--line);
-  border-radius:50%;background:var(--panel);color:var(--accent);box-shadow:var(--shadow-lift)}
-.quicknav-toggle::after{
+.quicknav-toggle{position:relative;width:58px;height:58px;display:grid;place-items:center;
+  border:0;background:transparent;touch-action:none;cursor:grab}
+.quicknav-face{position:relative;width:48px;height:48px;display:grid;place-items:center;
+  border:1px solid var(--line);border-radius:50%;background:var(--panel);color:var(--accent);
+  box-shadow:var(--shadow-lift)}
+.quicknav.dragging .quicknav-toggle{cursor:grabbing}
+.quicknav.dragging .quicknav-face::after{animation-play-state:paused}
+.quicknav-face::after{
   content:"";position:absolute;inset:-5px;z-index:0;border-radius:50%;pointer-events:none;
   background:conic-gradient(#37698F,#1f6b52,#B07C28,#8f2f2f,#37698F);
   -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));
@@ -417,22 +483,48 @@ details .bd hr{border:0;border-top:1px dashed var(--line2);margin:10px 0}
   filter:drop-shadow(0 0 3px rgba(31,107,82,.3));
   animation:quicknavMarquee 3s linear infinite;will-change:transform;
 }
-.quicknav-toggle::before{content:"";width:10px;height:10px;border-left:2px solid currentColor;
+.quicknav-face::before{content:"";width:10px;height:10px;border-left:2px solid currentColor;
   border-top:2px solid currentColor;transform:rotate(45deg) translate(2px,2px);transition:transform .16s ease}
-.quicknav.open .quicknav-toggle::before{transform:rotate(225deg) translate(2px,2px)}
-.quicknav-menu{display:none;min-width:142px;padding:6px;border:1px solid var(--line);border-radius:10px;
-  background:var(--panel);box-shadow:var(--shadow-lift)}
-.quicknav.open .quicknav-menu{display:grid;gap:2px}
+.quicknav.open .quicknav-face::before{transform:rotate(225deg) translate(2px,2px)}
+.quicknav-panel{position:absolute;display:none;width:min(280px,calc(100vw - 48px));
+  max-height:var(--qpanel-max,min(70vh,560px));
+  overflow-y:auto;overscroll-behavior:contain;padding:8px;border:1px solid var(--line);
+  border-radius:12px;background:var(--panel);box-shadow:var(--shadow-lift)}
+.quicknav[data-side="right"] .quicknav-panel{right:0;left:auto}
+.quicknav[data-side="left"] .quicknav-panel{left:0;right:auto}
+.quicknav.panel-up .quicknav-panel{bottom:calc(100% + 10px);top:auto}
+.quicknav.panel-down .quicknav-panel{top:calc(100% + 10px);bottom:auto}
+.quicknav.open .quicknav-panel{display:block}
+.quicknav-tabs{position:sticky;top:0;z-index:3;display:grid;grid-template-columns:1fr 1fr;gap:4px;
+  padding:3px;margin-bottom:7px;border-radius:9px;background:var(--line2);
+  box-shadow:0 5px 8px -7px rgba(35,33,29,.38)}
+.quicknav-tabs button{padding:7px 9px;border-radius:7px;font-size:12.5px;font-weight:600;color:var(--ink3)}
+.quicknav-tabs button.on{background:var(--panel);color:var(--ink);box-shadow:var(--shadow)}
+.quicknav-tabs button:disabled{opacity:.45;cursor:default}
+.quickadd-pane[hidden],.quicknav-menu[hidden]{display:none}
+.qa-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:3px 3px 8px;font-size:12px;color:var(--ink3)}
+.qa-hd b{font-size:13px;color:var(--ink)}
+.qa-count{font-family:var(--mono);font-size:11px;font-variant-numeric:tabular-nums}
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.qa-item{position:relative;min-height:56px;padding:8px 24px 8px 8px;border:1px solid var(--line);
+  border-radius:8px;background:var(--bg);text-align:left;line-height:1.35}
+.qa-item .qa-id{display:block;font-family:var(--mono);font-size:9.5px;color:var(--ink3)}
+.qa-item .qa-name{display:block;margin-top:2px;font-size:12.5px;font-weight:600;color:var(--ink)}
+.qa-item .qa-check{position:absolute;top:6px;right:5px;width:16px;height:16px;display:grid;
+  place-items:center;border:1px solid var(--line);border-radius:50%;font-size:11px;color:var(--ink3)}
+.qa-item.on{border-color:var(--accent);background:var(--accent-bg)}
+.qa-item.on .qa-check{border-color:var(--accent);background:var(--accent);color:var(--inverse)}
+.quicknav-menu{display:grid;gap:3px}
 .quicknav-menu button{display:flex;align-items:center;gap:9px;width:100%;padding:9px 11px;
   border:1px solid transparent;border-radius:7px;text-align:left;font-size:13.5px;color:var(--ink);
   background:var(--line2);background:color-mix(in srgb,var(--nav-c) 17%,var(--panel))}
 .quicknav-menu button[hidden]{display:none}
-.quicknav-menu button::before{content:"";flex:none;width:3px;height:16px;border-radius:2px;
-  background:var(--nav-c,var(--accent))}
+.quicknav-menu .qnav-icon{flex:none;width:18px;height:18px;color:var(--nav-c,var(--accent))}
 .quicknav-menu button:active{background:color-mix(in srgb,var(--nav-c) 28%,var(--panel))}
 @keyframes quicknavMarquee{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){
-  .quicknav-toggle::after{animation:none}
+  .quicknav-face::after{animation:none}
 }
 
 footer{border-top:1px solid var(--line);margin-top:26px;padding:16px 0 26px;font-size:11.5px;color:var(--ink3);line-height:1.8}
@@ -478,7 +570,7 @@ footer .ver{font-family:var(--mono);margin-top:6px}
 <header>
   <div class="wrap">
     <div class="hd">
-      <h1>成分组合台</h1>
+      <h1>营养配方盘</h1>
       <span class="sub" id="cnt">— 个产品</span>
       <div class="hd-tools">
         <button type="button" class="hd-tool" id="themeToggle" aria-pressed="false" aria-label="切换到夜间模式" title="切换到夜间模式">
@@ -541,16 +633,76 @@ footer .ver{font-family:var(--mono);margin-top:6px}
   </div>
 </div>
 
-<nav class="quicknav" id="quicknav" aria-label="快速跳转" hidden>
-  <div class="quicknav-menu" id="quicknavMenu">
-    <button type="button" data-jump="elements" style="--nav-c:#A9734A">矿物质元素</button>
-    <button type="button" data-jump="elec" style="--nav-c:#37698F">电解质平衡</button>
-    <button type="button" data-jump="ingredients" style="--nav-c:#1f6b52">成分合计列表</button>
-    <button type="button" data-jump="how" style="--nav-c:#B07C28">怎么吃</button>
-    <button type="button" data-jump="notes" style="--nav-c:#8f2f2f">注意事项</button>
+<div class="sheet gap-sheet" id="gapSheet">
+  <div class="panel">
+    <div class="ph">
+      <h3 id="gapTitle">补镁缺口 · 选择一种</h3>
+      <button type="button" class="sheet-close" id="gapClose">关闭</button>
+    </div>
+    <div class="gap-body" id="gapBody"></div>
+  </div>
+</div>
+
+<div class="sheet ai-sheet" id="aiSheet">
+  <div class="panel">
+    <div class="ph">
+      <h3>AI 功用科普</h3>
+      <button type="button" class="sheet-close" id="aiClose">关闭</button>
+    </div>
+    <div class="ai-body">
+      <div class="ai-context" id="aiContext"></div>
+      <label class="ai-label" for="aiPrompt">将发送给元宝的提问稿 · 可直接修改</label>
+      <textarea class="ai-prompt" id="aiPrompt" spellcheck="false"></textarea>
+      <div class="ai-meta">
+        <span id="aiCount"></span>
+        <button type="button" class="ai-reset" id="aiReset">恢复默认提问稿</button>
+      </div>
+      <div class="ai-actions">
+        <button type="button" class="ai-primary" id="aiGo">复制并打开元宝</button>
+        <button type="button" class="ai-secondary" id="aiCopy">仅复制</button>
+      </div>
+      <div class="ai-status" id="aiStatus">元宝暂不支持网页自动填入，复制后请粘贴并发送。</div>
+    </div>
+  </div>
+</div>
+
+<nav class="quicknav" id="quicknav" aria-label="快捷工具" hidden>
+  <div class="quicknav-panel" id="quicknavPanel">
+    <div class="quicknav-tabs" role="tablist" aria-label="快捷工具切换">
+      <button type="button" id="qtabAdd" class="on" data-qtab="add" role="tab" aria-selected="true">加产品</button>
+      <button type="button" id="qtabJump" data-qtab="jump" role="tab" aria-selected="false">看模块</button>
+    </div>
+    <div class="quickadd-pane" id="quickaddPane" role="tabpanel">
+      <div class="qa-hd"><b>三板斧</b><span class="qa-count" id="qaCount">已选 0 / 0</span></div>
+      <div class="qa-grid" id="quickAddGrid"></div>
+    </div>
+    <div class="quicknav-menu" id="quicknavMenu" role="tabpanel" hidden>
+      <button type="button" data-jump="elements" style="--nav-c:#A9734A">
+        <svg class="qnav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>
+        矿物质元素
+      </button>
+      <button type="button" data-jump="elec" style="--nav-c:#37698F">
+        <svg class="qnav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5S12.5 4 12 1c-.5 3-2 5-4 6.5S5 13 5 15a7 7 0 0 0 7 7Z"/></svg>
+        电解质平衡
+      </button>
+      <button type="button" data-jump="ingredients" style="--nav-c:#1f6b52">
+        <svg class="qnav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg>
+        成分合计列表
+      </button>
+      <button type="button" data-jump="how" style="--nav-c:#B07C28">
+        <svg class="qnav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
+        合计用量
+      </button>
+      <button type="button" data-jump="notes" style="--nav-c:#8f2f2f">
+        <svg class="qnav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        注意事项
+      </button>
+    </div>
   </div>
   <button type="button" class="quicknav-toggle" id="quicknavToggle"
-    aria-controls="quicknavMenu" aria-expanded="false" aria-label="打开快速跳转"></button>
+    aria-controls="quicknavPanel" aria-expanded="false" aria-label="打开快捷工具">
+    <span class="quicknav-face" aria-hidden="true"></span>
+  </button>
 </nav>
 
 <script>
@@ -619,6 +771,26 @@ var DB = null;                 // {index, ref, version}
 var PD = {};                   // 已加载的产品
 var SEL = [];                  // [{id, amount}]
 var INGF = '全部';             // 成分合计的类别筛选
+var QUICK_PRODUCTS = [
+  {id:'P003', label:'B族粉 A版'},
+  {id:'P004', label:'B族粉 B版'},
+  {id:'P005', label:'B族胶囊'},
+  {id:'P009', label:'胶原蛋白肽'},
+  {id:'P015', label:'四合一油 柠檬'},
+  {id:'P016', label:'三合一油 原味'},
+  {id:'P017', label:'三合一·无藻油'},
+  {id:'P044', label:'VC泡腾 A版'},
+  {id:'P045', label:'VC泡腾 B版'},
+  {id:'P046', label:'九合一油 原味'},
+  {id:'P047', label:'九合一油 柠檬'},
+  {id:'P101', label:'三丁酸甘油酯'},
+  {id:'P104', label:'UDCA'},
+  {id:'P105', label:'TUDCA'},
+  {id:'P108', label:'A版基础·胶囊'},
+  {id:'P109', label:'基础全营养 A粉'},
+  {id:'P111', label:'基础全营养 B粉'},
+  {id:'P117', label:'岩藻多糖'}
+];
 
 function product(id){
   if (PD[id]) return Promise.resolve(PD[id]);
@@ -637,7 +809,7 @@ var CLSC = {'维生素':'#B07C28','矿物质':'#37698F','氨基酸':'#3C7A68','�
 function elColor(n){ return ELC[n] || '#a39b8c'; }
 function clsColor(c){ return CLSC[String(c||'').split('/')[0].trim()] || '#cfc8b9'; }
 
-/* 多产品时给「怎么吃」逐产品分色（只影响显示，不动数据）
+/* 多产品时给「合计用量」逐产品分色（只影响显示，不动数据）
    按产品 ID 稳定散列取起始色，再依次避重 + 色距过滤（RGB 距离 > 55）：
    看起来是随机多彩，且同一组合内固定，改份数/刷新不跳色；产品超过 12 个才可能重复。 */
 var HWC = ['#1f6b52','#B07C28','#37698F','#9C5B45','#6B5E98','#5E7A46',
@@ -809,16 +981,90 @@ function syncSheetLock(){
 }
 
 /* ---------------- 选品 ---------------- */
-function addP(id){
+function addP(id, opts){
+  opts = opts || {};
   if (SEL.some(x=>x.id===id)) return;
   var it = DB.index.find(x=>x.id===id);
   if (!it) return;
   SEL.push({id:id, amount: it.defaultAmount});
   renderChips();
   product(id).then(function(){ render(); }, function(){ render(); });
-  if (SEL.length===1) window.scrollTo({top:0});
+  if (SEL.length===1 && !opts.keepPosition) window.scrollTo({top:0});
 }
 function rmP(id){ SEL = SEL.filter(x=>x.id!==id); renderChips(); render(); }
+
+var GAP_SINGLE = {'钠':'P119', '钾':'P063'};
+var GAP_MG_IDS = ['P065','P057','P096'];
+var GAP_MG_LABELS = {'P065':'甘氨酸镁', 'P057':'L-苏糖酸镁', 'P096':'柠檬酸镁'};
+var gapState = null;
+function gapProductAmount(p, element, gapMg){
+  var e = (p.elements||[]).find(function(x){ return x.el === element; });
+  var perMg = e ? toMg(e.value, e.unit) : 0;
+  if (!(perMg > 0)) return null;
+  return gapMg / perMg * ((p.basis && p.basis.value) || 1);
+}
+function closeGapSheet(){
+  q('#gapSheet').classList.remove('on');
+  syncSheetLock();
+}
+async function addGapProduct(pid, element, gapMg, replaceMg){
+  var p = await product(pid);
+  var amount = gapProductAmount(p, element, gapMg);
+  if (amount == null) return;
+  amount = Math.max(0.01, Math.ceil(amount * 100) / 100);
+  if (replaceMg) SEL = SEL.filter(function(x){ return GAP_MG_IDS.indexOf(x.id) < 0; });
+  var selected = SEL.find(function(x){ return x.id === pid; });
+  if (selected) selected.amount = Math.ceil(((selected.amount || 0) + amount) * 100) / 100;
+  else SEL.push({id:pid, amount:amount});
+  closeGapSheet();
+  renderChips();
+  render();
+  syncHash();
+}
+function magnesiumBaseGap(){
+  var r = compute(), total = 0;
+  var row = Array.from(r.els.values()).find(function(o){ return o.el === '镁'; });
+  if (row){
+    row.items.forEach(function(i){
+      if (GAP_MG_IDS.indexOf(i.pid) < 0) total += toMg(i.v, row.unit);
+    });
+  }
+  return Math.max(0, TY['镁'].low - total);
+}
+async function openGapSheet(gapMg){
+  var baseGap = magnesiumBaseGap();
+  if (!(baseGap > 0)) baseGap = gapMg;
+  gapState = {element:'镁', gapMg:baseGap};
+  q('#gapTitle').textContent = '补镁缺口 · 基础缺口 ' + fmtNum(baseGap) + ' mg';
+  q('#gapBody').innerHTML = '<div class="loading" style="padding:28px 10px">正在计算三种产品用量…</div>';
+  q('#gapSheet').classList.add('on');
+  syncSheetLock();
+  try{
+    var list = await Promise.all(GAP_MG_IDS.map(function(pid){ return product(pid); }));
+    q('#gapBody').innerHTML = list.map(function(p){
+      var amount = gapProductAmount(p, '镁', baseGap);
+      if (amount == null) return '';
+      amount = Math.max(0.01, Math.ceil(amount * 100) / 100);
+      var e = p.elements.find(function(x){ return x.el === '镁'; });
+      var per = e ? fmtNum(toMg(e.value, e.unit)) + ' mg/份' : '';
+      return '<button type="button" class="gap-opt'+(SEL.some(function(s){ return s.id===p.id; })?' on':'')+
+        '" data-gap-add="'+p.id+'" aria-label="添加'+esc(GAP_MG_LABELS[p.id]||p.name)+'">'+
+        '<span class="tx"><span class="nm">'+esc(GAP_MG_LABELS[p.id]||p.name)+'</span>'+
+        '<span class="meta">'+p.id+' · 约需 '+fmtNum(amount)+' '+esc(p.basis.unit)+' · '+per+'</span></span>'+
+        '<span class="add" aria-hidden="true">+</span></button>';
+    }).join('');
+  }catch(e){
+    q('#gapBody').innerHTML = '<div class="errbox"><div>产品数据没加载出来</div><button class="retry" onclick="openGapSheet('+gapMg+')">重试</button></div>';
+  }
+}
+function handleGapCard(element, gapMg){
+  if (element === '镁'){
+    openGapSheet(gapMg);
+    return;
+  }
+  var pid = GAP_SINGLE[element];
+  if (pid) addGapProduct(pid, element, gapMg, false);
+}
 
 function renderChips(){
   var box = q('#chips'); box.innerHTML = '';
@@ -848,6 +1094,7 @@ function renderChips(){
   }
   box.appendChild(actions);
   syncHeaderControl();
+  if (DB) syncQuickAddUI();
 }
 
 /* 多产品时，向下浏览自动收起顶部选品区；点击标题栏可随时展开。 */
@@ -970,6 +1217,151 @@ function compute(){
   return {ing:ing, els:els, cls:cls, unm:unm, list:list};
 }
 
+/* ---------------- AI 功用科普 ---------------- */
+var AI_YUANBAO_URL = 'https://yuanbao.tencent.com/';
+var AI_COMBO_SUFFIX = '请详细评价一下，这些营养素一起补充有什么功能和作用？请从正分子医学、功能医学、生理分子调节机制的角度，对其功能和作用进行系统分析。';
+var aiDefaultPrompt = '';
+
+function uniqueIngredientNames(items){
+  var seen = {}, out = [];
+  (items||[]).forEach(function(g){
+    var key = (g.name||'') + '|' + (g.cls||'');
+    if (!g.name || seen[key]) return;
+    seen[key] = 1;
+    out.push({name:g.name, cls:g.cls||'', alias:g.alias||''});
+  });
+  return out;
+}
+
+function firstEnglishAlias(alias){
+  var found = '';
+  String(alias||'').split('/').some(function(part){
+    part = part.trim();
+    if (/[A-Za-z]/.test(part)){ found = part; return true; }
+    return false;
+  });
+  return found;
+}
+function singleIngredientQuestion(g){
+  var en = firstEnglishAlias(g.alias);
+  var label = '【' + g.name + (en ? ' · ' + en : '') + '】';
+  return '请详细评价一下，' + label +
+    '有什么功能和作用？请从正分子医学、功能医学、生理分子调节机制的角度，对其功能和作用进行系统分析。';
+}
+function buildProductAIPrompt(p){
+  var rows = uniqueIngredientNames(p.ingredients);
+  var single = rows.length === 1;
+  var selected = SEL.find(function(x){ return x.id===p.id; });
+  var amount = selected ? selected.amount : p.defaultAmount;
+  var lines = [];
+  if (!single) lines.push('请从功能医学、生理分子机制和营养素配伍角度，科普以下产品。', '');
+  lines.push(
+    '产品：' + p.name,
+    '规格：' + (p.spec || '—'),
+    '计量基准：' + ((p.basis && p.basis.raw) || '—'),
+    '当前每日份数：' + fmtNum(amount) + ' ' + ((p.basis && p.basis.unit) || '份'),
+    '',
+    '成分清单（仅列名称与类别，不含剂量）：'
+  );
+  rows.forEach(function(g,i){
+    lines.push((i+1) + '. ' + g.name + (g.cls ? ' — ' + g.cls : ''));
+  });
+  lines.push('', single ? singleIngredientQuestion(rows[0]) : AI_COMBO_SUFFIX);
+  return lines.join('\n');
+}
+
+function buildComboAIPrompt(){
+  var r = compute();
+  var rows = Array.from(r.ing.values()).filter(function(o){ return o.total > 0; });
+  rows.sort(function(a,b){ return String(a.cls||'').localeCompare(String(b.cls||''),'zh-CN'); });
+  var lines = ['合计后的成分清单（同名同单位已合并，不同形态保留）：'];
+  rows.forEach(function(o,i){
+    var ids = {};
+    o.items.forEach(function(x){ ids[x.pid]=1; });
+    var n = Object.keys(ids).length;
+    lines.push((i+1) + '. ' + o.name + (o.cls ? ' — ' + o.cls : '') + (n>1 ? '（来自 ' + n + ' 个产品）' : ''));
+  });
+  lines.push('', AI_COMBO_SUFFIX);
+  return lines.join('\n');
+}
+
+function updateAICount(){
+  var text = q('#aiPrompt').value;
+  q('#aiCount').textContent = text.length + ' 字符 · ' + text.split('\n').length + ' 行';
+}
+function setAIStatus(kind, html){
+  var el = q('#aiStatus');
+  el.className = 'ai-status ' + (kind || '');
+  el.innerHTML = html;
+}
+async function openAISheet(mode, pid){
+  var prompt = '', context = '';
+  if (mode === 'product'){
+    var p = await product(pid);
+    prompt = buildProductAIPrompt(p);
+    context = '<b>'+esc(p.name)+'</b><span>'+p.id+' · 单个产品</span>';
+  }else{
+    prompt = buildComboAIPrompt();
+    context = '<b>当前组合</b><span>'+SEL.length+' 个产品 · 成分合计</span>';
+  }
+  aiDefaultPrompt = prompt;
+  q('#aiPrompt').value = prompt;
+  q('#aiContext').innerHTML = context;
+  updateAICount();
+  setAIStatus('', '复制提问稿后，在元宝输入框粘贴并发送。');
+  q('#aiSheet').classList.add('on');
+  syncSheetLock();
+  q('#aiPrompt').scrollTop = 0;
+}
+function closeAISheet(){
+  q('#aiSheet').classList.remove('on');
+  syncSheetLock();
+}
+
+function copyTextSync(text){
+  try{
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly','');
+    ta.style.cssText = 'position:fixed;top:-9999px;left:0;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, ta.value.length);
+    var ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    return ok;
+  }catch(e){ return false; }
+}
+function manualYuanbaolink(){
+  return ' 若没自动打开，<a href="'+AI_YUANBAO_URL+'" target="_blank" rel="noopener">点此手动打开元宝</a>。';
+}
+function copyAndOpenYuanbao(openYB){
+  var text = q('#aiPrompt').value;
+  var syncOK = copyTextSync(text);
+  if (openYB){
+    try{
+      var win = window.open(AI_YUANBAO_URL, '_blank');
+      if (win) win.opener = null;
+    }catch(e){}
+  }
+  var finish = function(ok){
+    if (ok){
+      setAIStatus('ok', '已复制 ' + text.length + ' 字。' +
+        (openYB ? '在元宝粘贴并发送。' : '') + (openYB ? manualYuanbaolink() : ''));
+    }else{
+      q('#aiPrompt').focus();
+      q('#aiPrompt').select();
+      setAIStatus('bad', '自动复制没成功，已选中提问稿，请按 Ctrl+C。' + (openYB ? manualYuanbaolink() : ''));
+    }
+  };
+  if (syncOK) finish(true);
+  else if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){ finish(true); }, function(){ finish(false); });
+  }else{
+    finish(false);
+  }
+}
+
 /* ---------------- 渲染 ---------------- */
 function render(){
   var main = q('#main');
@@ -991,30 +1383,15 @@ function render(){
 }
 
 function emptyHTML(){
-  // 三板斧（与 sps 店 h4uy8「三板斧」类目对齐；一物多版取主推版）
-  var quick = [
-    ['P111','B版基础全营养素'],['P110','活性B族胶囊'],['P117','岩藻多糖'],
-    ['P101','三丁酸甘油酯胶囊'],['P044','VC泡腾电解质'],['P009','胶原蛋白肽'],
-    ['P046','九合一油'],['P016','三合一油'],['P069','盐酸甜菜碱'],
-    ['P105','TUDCA']
-  ];
-  // 另外常用：不在「三板斧」类目里，单独一组，避免 12 个胶囊挤成参差的 5+6+1
-  var quickMore = [
-    ['P104','熊去氧胆酸'],['P109','A版基础全营养素']
-  ];
-  var btns = function(arr){
-    return arr.map(function(x){
-      return DB.index.some(i=>i.id===x[0]) ? '<button data-quick="'+x[0]+'">'+esc(x[1])+'</button>' : '';
-    }).join('');
-  };
+  var quick = QUICK_PRODUCTS.map(function(x){
+    return DB.index.some(i=>i.id===x.id) ? '<button data-quick="'+x.id+'">'+esc(x.label)+'</button>' : '';
+  }).join('');
   return '<div class="empty">'+
     '<div class="ico"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>'+
     '<div class="big">先选几样你正在吃的</div>'+
     '<p>选好之后，这里会算出：每样成分每天一共吃了多少、<br>这些产品一天怎么排、注意事项有哪些重复。</p>'+
     '<div class="quick-hd">三板斧 · 点一下加进来</div>'+
-    '<div class="quick">'+btns(quick)+'</div>'+
-    '<div class="quick-hd" style="margin-top:14px">另外常用 · 点一下加进来</div>'+
-    '<div class="quick">'+btns(quickMore)+'</div>'+
+    '<div class="quick">'+quick+'</div>'+
     '<p style="margin-top:18px;font-size:12px;color:var(--ink3)">也可以点上面的「添加产品」，从 '+DB.index.length+' 个里挑，能搜成分名。</p>'+
   '</div>';
 }
@@ -1139,13 +1516,17 @@ function elecHTML(r){
     var ty = TY[el], g = got[el], mg = g ? g.mg : 0;
     if (mg >= ty.low) return '';   /* 完全不含时也照算：缺口就是整个下限 */
     var r = SUP_RATE[el];
-    var gram = (ty.low - mg) / r.per;
+    var gapMg = ty.low - mg;
+    var gram = gapMg / r.per;
     if (!(gram > 0)) return '';
     var num = gram < 1 ? gram.toFixed(2) : gram.toFixed(1);
-    return '<div class="ec-sug-i" style="--c:'+elColor(el)+'" title="'+esc(r.alt||'')+'">'+
+    var pick = el === '镁' ? '3 种可选' : (el === '钠' ? 'P119 盐胶囊' : 'P063 柠檬酸钾');
+    return '<button type="button" class="ec-sug-i" style="--c:'+elColor(el)+'" data-gap-el="'+esc(el)+
+      '" data-gap-mg="'+gapMg.toFixed(4)+'" aria-label="添加'+esc(r.name)+'补充产品">'+
       '<div class="n">'+esc(r.name)+'</div>'+
       '<div class="v"><b>'+num+'</b><span>g</span></div>'+
-    '</div>';
+      '<span class="pick">'+esc(pick)+'</span><span class="plus" aria-hidden="true">+</span>'+
+    '</button>';
   }).filter(Boolean).join('');
   var sugLine = sug ? '<div class="ec-sug"><span class="lb">缺口折算 · 补到目标下限约需</span>'+
     '<div class="ec-sug-list">'+sug+'</div>'+
@@ -1215,6 +1596,11 @@ function ingHTML(r){
 
   return '<section id="ingredients"><div class="sect-head"><h2>成分合计（按每日吃量）</h2>'+
     '<span class="hint">'+list.length+' 项 · 维A/D3按IU · 不同形态不合并</span></div>'+
+    '<div class="ai-combo-row">'+
+      '<button type="button" class="ai-btn strong" data-ai-combo aria-label="用 AI 科普当前组合的成分">'+
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3-1.9 5.8L4 10.7l6.1 1.9L12 18.4l1.9-5.8 6.1-1.9-6.1-1.9L12 3Z"/><path d="M5 3v4"/><path d="M3 5h4"/><path d="M19 17v4"/><path d="M17 19h4"/></svg>'+
+        'AI 功用科普 · 本组合'+
+      '</button></div>'+
     '<div class="fchips">'+chips+'</div>'+
     '<div class="card">'+rows+'</div></section>';
 }
@@ -1264,15 +1650,20 @@ function howHTML(r){
 
     var dose = pl.dose ? '<div class="hw-dose"><span class="k">原文</span>' +
       '<span class="v">' + esc(pl.dose) + '</span></div>' : '';
+    var aiRow = '<div class="hw-ai-row">'+
+      '<button type="button" class="ai-btn" data-ai-product="'+p.id+'" aria-label="用 AI 科普本品成分">'+
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3-1.9 5.8L4 10.7l6.1 1.9L12 18.4l1.9-5.8 6.1-1.9-6.1-1.9L12 3Z"/><path d="M5 3v4"/><path d="M3 5h4"/><path d="M19 17v4"/><path d="M17 19h4"/></svg>'+
+        'AI 功用科普 · 本品</button></div>';
 
     return '<div class="how-item' + (col ? ' hwc' : '') + '"' + sty + '>' +
       '<div class="hw-top"><span class="nm" data-detail="' + p.id + '">' + esc(p.name) + '</span>' +
       '<span class="hw-qty"><b>' + fmtNum(x.amount) + '</b><i>' + esc(unit) + '/天</i></span></div>' +
+      aiRow +
       (tags ? '<div class="hw-tags">' + tags + '</div>' : '') +
       dose + more + '</div>';
   }).join('');
 
-  return '<section id="how"><div class="sect-head"><h2>怎么吃</h2>' +
+  return '<section id="how"><div class="sect-head"><h2>合计用量</h2>' +
     '<span class="hint">右侧数字 = 你填的份数 · 「原文」= 卡片写的量</span></div>' +
     '<div class="card">' + items + '</div></section>';
 }
@@ -1304,23 +1695,159 @@ function notesHTML(r){
     '<div class="card">'+body+more+'</div></section>';
 }
 
+var quickNavTab = lsGet('cf_quick_tab') === 'jump' ? 'jump' : 'add';
+var QUICK_ANCHORS = ['tl','ml','bl','tr','mr','br'];
+var savedQuickAnchor = lsGet('cf_quicknav_anchor');
+var quickNavAnchor = QUICK_ANCHORS.indexOf(savedQuickAnchor) >= 0 ? savedQuickAnchor : 'br';
+var quickDrag = null, quickSuppressClickUntil = 0;
+function syncQuickPanelLayout(){
+  var nav = q('#quicknav');
+  if (!nav || nav.hidden) return;
+  var r = nav.getBoundingClientRect();
+  var gap = 22;
+  var up = Math.max(0, r.top - gap);
+  var down = Math.max(0, window.innerHeight - r.bottom - gap);
+  var row = nav.dataset.y;
+  var openDown = row === 'top' || (row !== 'bottom' && down > up);
+  var room = openDown ? down : up;
+  var maxH = Math.max(180, Math.min(560, window.innerHeight * 0.7, room || 180));
+  nav.classList.toggle('panel-down', openDown);
+  nav.classList.toggle('panel-up', !openDown);
+  nav.style.setProperty('--qpanel-max', maxH + 'px');
+}
+function applyQuickNavAnchor(anchor, save){
+  if (QUICK_ANCHORS.indexOf(anchor) < 0) anchor = 'br';
+  var nav = q('#quicknav');
+  if (!nav) return;
+  quickNavAnchor = anchor;
+  nav.dataset.side = anchor.charAt(1) === 'l' ? 'left' : 'right';
+  nav.dataset.y = anchor.charAt(0) === 't' ? 'top' : (anchor.charAt(0) === 'b' ? 'bottom' : 'mid');
+  nav.style.left = '';
+  nav.style.right = '';
+  nav.style.top = '';
+  nav.style.bottom = '';
+  nav.style.transform = '';
+  nav.classList.remove('dragging');
+  syncQuickPanelLayout();
+  if (save) lsSet('cf_quicknav_anchor', anchor);
+}
+function quickDragPosition(clientX, clientY){
+  var nav = q('#quicknav');
+  if (!nav || !quickDrag) return;
+  var margin = 14;
+  var size = nav.offsetWidth || 58;
+  var left = Math.max(margin, Math.min(window.innerWidth - size - margin, clientX - quickDrag.offsetX));
+  var top = Math.max(margin, Math.min(window.innerHeight - size - margin, clientY - quickDrag.offsetY));
+  nav.style.left = left + 'px';
+  nav.style.top = top + 'px';
+  nav.style.right = 'auto';
+  nav.style.bottom = 'auto';
+  nav.style.transform = 'none';
+  quickDrag.left = left;
+  quickDrag.top = top;
+}
+function nearestQuickAnchor(left, top){
+  var size = q('#quicknav').offsetWidth || 58;
+  var cx = left + size / 2, cy = top + size / 2;
+  var side = cx < window.innerWidth / 2 ? 'l' : 'r';
+  var row = cy < window.innerHeight / 3 ? 't' : (cy > window.innerHeight * 2 / 3 ? 'b' : 'm');
+  return row + side;
+}
+function finishQuickDrag(cancel){
+  var nav = q('#quicknav');
+  if (!nav || !quickDrag) return;
+  if (quickDrag.moved){
+    var next = cancel ? quickNavAnchor : nearestQuickAnchor(quickDrag.left, quickDrag.top);
+    quickSuppressClickUntil = performance.now() + 120;
+    applyQuickNavAnchor(next, !cancel);
+  }
+  quickDrag = null;
+  nav.classList.remove('dragging');
+}
+function renderQuickAdd(){
+  var grid = q('#quickAddGrid');
+  if (!grid || !DB) return;
+  grid.innerHTML = QUICK_PRODUCTS.map(function(x){
+    if (!DB.index.some(function(it){ return it.id === x.id; })) return '';
+    return '<button type="button" class="qa-item" data-quick-toggle="'+x.id+'">'+
+      '<span class="qa-id">'+x.id+'</span><span class="qa-name">'+esc(x.label)+'</span>'+
+      '<span class="qa-check" aria-hidden="true">+</span></button>';
+  }).join('');
+  syncQuickAddUI();
+}
+function syncQuickAddUI(){
+  var addPane = q('#quickaddPane'), jumpPane = q('#quicknavMenu');
+  var tabAdd = q('#qtabAdd'), tabJump = q('#qtabJump'), count = q('#qaCount');
+  if (!addPane || !jumpPane || !tabAdd || !tabJump) return;
+  var present = DB ? QUICK_PRODUCTS.filter(function(x){
+    return DB.index.some(function(it){ return it.id === x.id; });
+  }) : [];
+  var selected = present.filter(function(x){
+    return SEL.some(function(s){ return s.id === x.id; });
+  }).length;
+  if (count) count.textContent = '已选 ' + selected + ' / ' + present.length;
+  addPane.querySelectorAll('[data-quick-toggle]').forEach(function(btn){
+    var on = SEL.some(function(s){ return s.id === btn.dataset.quickToggle; });
+    btn.classList.toggle('on', on);
+    btn.setAttribute('aria-pressed', String(on));
+    btn.setAttribute('aria-label', (on ? '取消 ' : '添加 ') + btn.querySelector('.qa-name').textContent);
+    btn.querySelector('.qa-check').textContent = on ? '✓' : '+';
+  });
+  var hasJump = [...jumpPane.querySelectorAll('[data-jump]')].some(function(btn){ return !btn.hidden; });
+  tabJump.disabled = !SEL.length || !hasJump;
+  if (tabJump.disabled && quickNavTab === 'jump'){
+    quickNavTab = 'add';
+    lsSet('cf_quick_tab', quickNavTab);
+  }
+  var addOn = quickNavTab === 'add';
+  tabAdd.classList.toggle('on', addOn);
+  tabJump.classList.toggle('on', !addOn);
+  tabAdd.setAttribute('aria-selected', String(addOn));
+  tabJump.setAttribute('aria-selected', String(!addOn));
+  addPane.hidden = !addOn;
+  jumpPane.hidden = addOn;
+}
+function setQuickNavTab(tab){
+  if (tab === 'jump' && q('#qtabJump').disabled) tab = 'add';
+  quickNavTab = tab === 'jump' ? 'jump' : 'add';
+  lsSet('cf_quick_tab', quickNavTab);
+  syncQuickAddUI();
+}
+function toggleQuickProduct(id){
+  if (SEL.some(function(s){ return s.id === id; })) rmP(id);
+  else addP(id, {keepPosition:true});
+  renderQuickAdd();
+  syncHash();
+}
 function setQuickNavOpen(open){
   var nav = q('#quicknav'), btn = q('#quicknavToggle');
   if (!nav || !btn) return;
   nav.classList.toggle('open', !!open);
+  if (open){
+    renderQuickAdd();
+    syncQuickPanelLayout();
+  }
   btn.setAttribute('aria-expanded', String(!!open));
-  btn.setAttribute('aria-label', open ? '关闭快速跳转' : '打开快速跳转');
+  btn.setAttribute('aria-label', open ? '关闭快捷工具' : '打开快捷工具');
 }
 function syncQuickNav(){
   var nav = q('#quicknav');
   if (!nav) return;
-  var any = false;
+  var anyJump = false;
   nav.querySelectorAll('[data-jump]').forEach(function(btn){
     var found = !!q('#' + btn.dataset.jump);
     btn.hidden = !found;
-    if (found) any = true;
+    if (found) anyJump = true;
   });
-  nav.hidden = !SEL.length || !any;
+  var hasQuick = !!DB && QUICK_PRODUCTS.some(function(x){
+    return DB.index.some(function(it){ return it.id === x.id; });
+  });
+  nav.hidden = !hasQuick;
+  if (hasQuick){
+    renderQuickAdd();
+    syncQuickPanelLayout();
+  }
+  else if (anyJump) syncQuickAddUI();
   if (nav.hidden) setQuickNavOpen(false);
 }
 var quickJumpTimer = null;
@@ -1493,6 +2020,7 @@ async function openDetail(id){
     q('#ver').textContent = '数据 ' + (v.builtAt||'本地') + ' · ' + (v.products||DB.index.length) + ' 个产品' +
       (DB.remote? '' : ' · 离线预览');
     PD = PD || {};
+    applyQuickNavAnchor(quickNavAnchor, false);
 
     // 分享链接：#s=P032:1,P005:2
     var m = location.hash.match(/s=([^&]+)/);
@@ -1532,15 +2060,70 @@ async function openDetail(id){
   q('#picker').onclick = function(e){ if (e.target===this){ this.classList.remove('on'); syncSheetLock(); } };
   q('#dclose').onclick = function(){ q('#detail').classList.remove('on'); syncSheetLock(); };
   q('#detail').onclick = function(e){ if (e.target===this){ this.classList.remove('on'); syncSheetLock(); } };
-  q('#quicknavToggle').onclick = function(e){
+  q('#gapClose').onclick = closeGapSheet;
+  q('#gapSheet').onclick = function(e){ if (e.target===this) closeGapSheet(); };
+  q('#aiClose').onclick = closeAISheet;
+  q('#aiSheet').onclick = function(e){ if (e.target===this) closeAISheet(); };
+  q('#aiPrompt').addEventListener('input', updateAICount);
+  q('#aiReset').onclick = function(){
+    q('#aiPrompt').value = aiDefaultPrompt;
+    updateAICount();
+    setAIStatus('', '已恢复默认提问稿。');
+  };
+  q('#aiCopy').onclick = function(){ copyAndOpenYuanbao(false); };
+  q('#aiGo').onclick = function(){ copyAndOpenYuanbao(true); };
+  var quickToggle = q('#quicknavToggle');
+  quickToggle.addEventListener('pointerdown', function(e){
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    var nav = q('#quicknav'), r = nav.getBoundingClientRect();
+    quickDrag = {
+      pointerId: e.pointerId, startX: e.clientX, startY: e.clientY,
+      offsetX: e.clientX - r.left, offsetY: e.clientY - r.top,
+      left: r.left, top: r.top, moved: false
+    };
+    try{ if (quickToggle.setPointerCapture) quickToggle.setPointerCapture(e.pointerId); }catch(err){}
+  });
+  window.addEventListener('pointermove', function(e){
+    if (!quickDrag || quickDrag.pointerId !== e.pointerId) return;
+    var dx = e.clientX - quickDrag.startX, dy = e.clientY - quickDrag.startY;
+    if (!quickDrag.moved && Math.sqrt(dx*dx + dy*dy) < 5) return;
+    if (!quickDrag.moved){
+      quickDrag.moved = true;
+      setQuickNavOpen(false);
+      q('#quicknav').classList.add('dragging');
+    }
+    e.preventDefault();
+    quickDragPosition(e.clientX, e.clientY);
+  }, {passive:false});
+  window.addEventListener('pointerup', function(e){
+    if (!quickDrag || quickDrag.pointerId !== e.pointerId) return;
+    finishQuickDrag(false);
+  });
+  window.addEventListener('pointercancel', function(e){
+    if (!quickDrag || quickDrag.pointerId !== e.pointerId) return;
+    finishQuickDrag(true);
+  });
+  quickToggle.onclick = function(e){
+    if (performance.now() < quickSuppressClickUntil){
+      e.preventDefault(); e.stopPropagation(); return;
+    }
     e.stopPropagation();
     setQuickNavOpen(!q('#quicknav').classList.contains('open'));
   };
+  window.addEventListener('resize', function(){
+    if (!quickDrag) applyQuickNavAnchor(quickNavAnchor, false);
+  });
   q('#psearch').oninput = renderList;
 
   document.addEventListener('click', function(e){
-    var t = e.target.closest ? e.target.closest('[data-rm],[data-detail],[data-toggle],[data-quick],[data-ingf],[data-step],[data-jump]') : null;
+    var t = e.target.closest ? e.target.closest('[data-rm],[data-detail],[data-toggle],[data-quick-toggle],[data-quick],[data-qtab],[data-gap-el],[data-gap-add],[data-ai-product],[data-ai-combo],[data-ingf],[data-step],[data-jump]') : null;
     if (!t) return;
+    if (t.dataset.aiProduct){ openAISheet('product', t.dataset.aiProduct); return; }
+    if (t.hasAttribute('data-ai-combo')){ openAISheet('combo'); return; }
+    if (t.dataset.gapEl){ handleGapCard(t.dataset.gapEl, parseFloat(t.dataset.gapMg)); return; }
+    if (t.dataset.gapAdd && gapState){ addGapProduct(t.dataset.gapAdd, gapState.element, gapState.gapMg, true); return; }
+    if (t.dataset.qtab){ setQuickNavTab(t.dataset.qtab); return; }
+    if (t.dataset.quickToggle){ toggleQuickProduct(t.dataset.quickToggle); return; }
     if (t.dataset.jump){ jumpToSection(t.dataset.jump); return; }
     if (t.dataset.step){
       var id = t.dataset.step, dir = parseFloat(t.dataset.dir) || 1;
@@ -1567,12 +2150,14 @@ async function openDetail(id){
     }
   });
   document.addEventListener('click', function(e){
-    if (!e.target.closest('#quicknav')) setQuickNavOpen(false);
+    var nav = q('#quicknav');
+    var path = e.composedPath ? e.composedPath() : [];
+    var inNav = path.length ? path.indexOf(nav) >= 0 : !!(e.target.closest && e.target.closest('#quicknav'));
+    if (!inNav) setQuickNavOpen(false);
   });
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape') setQuickNavOpen(false);
   });
-  window.addEventListener('scroll', function(){ setQuickNavOpen(false); }, {passive:true});
   document.addEventListener('input', function(e){
     var id = e.target.dataset && e.target.dataset.amt;
     if (id){
