@@ -1,11 +1,347 @@
 {
   "version": 1,
   "families": {
+    "baolin": {
+      "label": "鲍林粉",
+      "keywords": ["鲍林粉"],
+      "products": ["P001", "P002"]
+    },
     "active_b": {
       "label": "活性B族",
       "sourceIds": ["711", "712", "713"],
       "keywords": ["活性B族"],
       "products": ["P003", "P004", "P005"]
+    },
+    "collagen": {
+      "label": "胶原蛋白肽",
+      "sourceIds": ["10"],
+      "keywords": ["胶原蛋白肽", "胶原蛋白"],
+      "products": ["P009"]
+    },
+    "anti_aging": {
+      "label": "抗衰组合",
+      "sourceIds": ["111", "112"],
+      "keywords": ["抗衰"],
+      "products": ["P010", "P011"]
+    },
+    "nitrogen_pump": {
+      "label": "复合氮泵氨基酸",
+      "keywords": ["复合氮泵氨基酸"],
+      "products": ["P012", "P013"]
+    },
+    "tri_quad_oil": {
+      "label": "三合一 / 四合一油",
+      "sourceIds": ["14"],
+      "keywords": ["三合一", "四合一"],
+      "products": ["P015", "P016", "P017"]
+    },
+    "dream_sleep": {
+      "label": "甜梦静息",
+      "sourceIds": ["151", "152"],
+      "keywords": ["甜梦", "睡眠粉"],
+      "products": ["P018", "P019", "P035", "P036"]
+    },
+    "eaa": {
+      "label": "EAA 必需氨基酸",
+      "sourceIds": ["16"],
+      "keywords": ["EAA"],
+      "products": ["P020", "P034"]
+    },
+    "nine_oil": {
+      "label": "九合一营养油",
+      "sourceIds": ["13"],
+      "keywords": ["九合一油"],
+      "products": ["P046", "P047"]
+    },
+    "akg": {
+      "label": "AKG",
+      "keywords": ["AKG"],
+      "products": ["P021", "P033"]
+    },
+    "dk": {
+      "label": "维生素D / K",
+      "keywords": ["维生素DK"],
+      "products": ["P022", "P023", "P024"]
+    },
+    "adk": {
+      "label": "复合ADK",
+      "keywords": ["ADK复合维生素"],
+      "products": ["P025"]
+    },
+    "vitamin_a": {
+      "label": "维生素A",
+      "keywords": ["维生素A"],
+      "products": ["P026", "P027"]
+    },
+    "big_white": {
+      "label": "大白",
+      "keywords": ["大白", "全功能营养素", "全营养补剂"],
+      "products": ["P028"]
+    },
+    "little_white": {
+      "label": "小白",
+      "keywords": ["小白", "ELV氨基酸胶原蛋白肽"],
+      "products": ["P029"]
+    },
+    "red_elv": {
+      "label": "小红",
+      "keywords": ["小红"],
+      "products": ["P030"]
+    },
+    "yellow_elv": {
+      "label": "小黄",
+      "keywords": ["小黄"],
+      "products": ["P031"]
+    },
+    "new_four": {
+      "label": "新四件套",
+      "keywords": ["新四件套"],
+      "products": ["P032"]
+    },
+    "old_electrolyte": {
+      "label": "电解质矿物质",
+      "keywords": ["电解质", "电解质粉"],
+      "products": ["P038", "P039", "P041", "P042", "P043"]
+    },
+    "choline": {
+      "label": "胆碱",
+      "keywords": ["胆碱"],
+      "products": ["P040"]
+    },
+    "vc_effervescent": {
+      "label": "维生素C泡腾",
+      "keywords": ["维生素C泡腾粉", "维C泡腾粉"],
+      "products": ["P044", "P045"]
+    },
+    "melatonin": {
+      "label": "褪黑素",
+      "keywords": ["褪黑素", "甜梦(褪黑素)"],
+      "products": ["P048"]
+    },
+    "k2": {
+      "label": "维生素K2",
+      "keywords": ["维生素K2"],
+      "products": ["P049", "P050"]
+    },
+    "taurine": {
+      "label": "牛磺酸",
+      "keywords": ["牛磺酸"],
+      "products": ["P051"]
+    },
+    "vc_sodium": {
+      "label": "VC钠",
+      "keywords": ["VC钠"],
+      "products": ["P052"]
+    },
+    "creatine": {
+      "label": "肌酸",
+      "keywords": ["肌酸"],
+      "products": ["P055"]
+    },
+    "vitamin_c": {
+      "label": "维生素C",
+      "keywords": ["维生素C", "脂质体维生素C"],
+      "products": ["P053", "P054"]
+    },
+    "glutamine": {
+      "label": "谷氨酰胺",
+      "keywords": ["谷氨酰胺"],
+      "products": ["P056"]
+    },
+    "magnesium_threonate": {
+      "label": "苏糖酸镁",
+      "keywords": ["苏糖酸镁"],
+      "products": ["P057"]
+    },
+    "betaine_anhydrous": {
+      "label": "无水甜菜碱",
+      "keywords": ["无水甜菜碱", "甜菜碱"],
+      "products": ["P058"]
+    },
+    "biotin": {
+      "label": "生物素",
+      "keywords": ["生物素"],
+      "products": ["P059"]
+    },
+    "niacin": {
+      "label": "烟酸",
+      "keywords": ["烟酸"],
+      "products": ["P060", "P061"]
+    },
+    "benfotiamine": {
+      "label": "苯磷硫胺",
+      "keywords": ["苯磷硫胺"],
+      "products": ["P062"]
+    },
+    "potassium_citrate": {
+      "label": "柠檬酸钾",
+      "keywords": ["柠檬酸钾"],
+      "products": ["P063"]
+    },
+    "magnesium_glycinate": {
+      "label": "甘氨酸镁",
+      "keywords": ["甘氨酸镁"],
+      "products": ["P065"]
+    },
+    "glycine": {
+      "label": "甘氨酸",
+      "keywords": ["甘氨酸"],
+      "products": ["P066", "P067"]
+    },
+    "betaine_hcl": {
+      "label": "盐酸甜菜碱",
+      "keywords": ["盐酸甜菜碱", "甜菜碱"],
+      "products": ["P068", "P069"]
+    },
+    "nac": {
+      "label": "NAC",
+      "keywords": ["NAC", "N-乙酰半胱氨酸"],
+      "products": ["P070", "P071"]
+    },
+    "coq10": {
+      "label": "辅酶Q10",
+      "keywords": ["辅酶Q10"],
+      "products": ["P072", "P073"]
+    },
+    "lipoic_acid": {
+      "label": "硫辛酸",
+      "keywords": ["硫辛酸", "R-硫辛酸"],
+      "products": ["P074"]
+    },
+    "inositol": {
+      "label": "肌醇",
+      "keywords": ["肌醇"],
+      "products": ["P075"]
+    },
+    "stearic_acid": {
+      "label": "硬脂酸",
+      "keywords": ["硬脂酸"],
+      "products": ["P076"]
+    },
+    "mct_oil": {
+      "label": "MCT油",
+      "keywords": ["MCT油"],
+      "products": ["P077", "P078"]
+    },
+    "zinc_carnosine": {
+      "label": "肌肽锌",
+      "sourceIds": ["731", "732"],
+      "keywords": ["肌肽锌", "纯肌肽锌"],
+      "products": ["P080", "P081", "P082"]
+    },
+    "white_tomato": {
+      "label": "白番茄浓缩粉",
+      "keywords": ["白番茄浓缩粉", "白番茄"],
+      "products": ["P083"]
+    },
+    "ergothioneine": {
+      "label": "麦角硫因",
+      "keywords": ["麦角硫因"],
+      "products": ["P084"]
+    },
+    "ashwagandha": {
+      "label": "南非醉茄",
+      "keywords": ["南非醉茄"],
+      "products": ["P085", "P125"]
+    },
+    "allulose": {
+      "label": "阿洛酮糖",
+      "keywords": ["阿洛酮糖"],
+      "products": ["P086", "P087"]
+    },
+    "glutathione": {
+      "label": "谷胱甘肽",
+      "keywords": ["谷胱甘肽"],
+      "products": ["P088", "P089"]
+    },
+    "theanine": {
+      "label": "茶氨酸",
+      "keywords": ["茶氨酸"],
+      "products": ["P093"]
+    },
+    "trace_minerals": {
+      "label": "定制微量元素",
+      "keywords": ["微量元素"],
+      "products": ["P090", "P091"]
+    },
+    "calcium_citrate": {
+      "label": "柠檬酸钙",
+      "keywords": ["柠檬酸钙"],
+      "products": ["P094", "P095"]
+    },
+    "magnesium_citrate": {
+      "label": "柠檬酸镁",
+      "keywords": ["柠檬酸镁", "镁"],
+      "products": ["P096"]
+    },
+    "tributyrin": {
+      "label": "三丁酸甘油酯",
+      "sourceIds": ["611", "612"],
+      "keywords": ["三丁酸甘油酯"],
+      "products": ["P097", "P101", "P102"]
+    },
+    "lecithin": {
+      "label": "葵花卵磷脂",
+      "keywords": ["卵磷脂"],
+      "products": ["P098", "P099"]
+    },
+    "bile_acid": {
+      "label": "胆汁酸",
+      "keywords": ["胆汁酸"],
+      "products": ["P104"]
+    },
+    "tudca": {
+      "label": "TUDCA",
+      "keywords": ["TUDCA", "牛磺熊去氧胆酸"],
+      "products": ["P105"]
+    },
+    "base_nutrition": {
+      "label": "基础全营养素",
+      "sourceIds": ["681", "682"],
+      "keywords": ["基础全营养素"],
+      "products": ["P108", "P109", "P110", "P111", "P112"]
+    },
+    "b2": {
+      "label": "维生素B2",
+      "keywords": ["维生素B2", "B2"],
+      "products": ["P113", "P115"]
+    },
+    "water_soluble_zinc": {
+      "label": "水溶锌",
+      "keywords": ["锌"],
+      "products": ["P106"]
+    },
+    "five_magnesium": {
+      "label": "五重镁",
+      "keywords": ["镁"],
+      "products": ["P107"]
+    },
+    "zinc_picolinate": {
+      "label": "吡啶甲酸锌",
+      "sourceIds": ["733"],
+      "keywords": ["锌"],
+      "products": ["P114"]
+    },
+    "fucoidan": {
+      "label": "复合岩藻多糖",
+      "sourceIds": ["77"],
+      "keywords": ["复合岩藻多糖", "岩藻多糖"],
+      "products": ["P117"]
+    },
+    "sea_salt": {
+      "label": "食用海盐",
+      "keywords": ["海盐"],
+      "products": ["P119"]
+    },
+    "ps": {
+      "label": "PS燕窝酸",
+      "keywords": ["PS"],
+      "products": ["P124"]
+    },
+    "digestive_enzyme": {
+      "label": "消化酶",
+      "keywords": ["消化酶"],
+      "products": ["P121"]
     }
   }
 }

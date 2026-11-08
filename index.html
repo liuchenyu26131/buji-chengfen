@@ -492,30 +492,56 @@ details .bd hr{border:0;border-top:1px dashed var(--line2);margin:10px 0}
   height:min(88dvh,780px);max-height:min(88dvh,780px)}
 .case-lead{flex:none;padding:9px 16px;border-bottom:1px solid var(--line);
   background:var(--warn-bg);color:var(--warn);font-size:11.5px;line-height:1.55}
+.case-filters{flex:none;display:flex;gap:6px;overflow-x:auto;padding:9px 12px;
+  border-bottom:1px solid var(--line);background:var(--bg);scrollbar-width:none}
+.case-filters::-webkit-scrollbar{display:none}
+.case-filter{white-space:nowrap;padding:5px 8px;border:1px solid var(--line);
+  border-radius:999px;background:var(--panel);color:var(--ink2);font-size:11.5px;line-height:1.45}
+.case-filter b{font-family:var(--mono);font-size:10.5px;margin-left:3px;color:var(--ink3)}
+.case-filter.on{background:var(--accent);border-color:var(--accent);color:var(--inverse);font-weight:700}
+.case-filter.on b{color:inherit;opacity:.8}
+@media(max-width:360px){.case-filters{display:grid;grid-template-columns:1fr 1fr;overflow:visible}
+  .case-filter{text-align:center}}
 .case-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;
   -webkit-overflow-scrolling:touch;padding:12px 16px 24px}
 .case-item{padding:12px;border:1px solid var(--line);border-radius:10px;
   background:var(--panel);box-shadow:var(--shadow)}
 .case-item + .case-item{margin-top:9px}
 .case-head{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:7px}
-.case-user{font-size:13px;font-weight:700;color:var(--ink)}
+.case-user{display:inline-flex;align-items:center;min-height:23px;padding:2px 9px;
+  border-radius:999px;background:var(--accent);color:var(--inverse);
+  font-size:11.5px;font-weight:700;line-height:1.4}
 .case-id{font-family:var(--mono);font-size:10.5px;color:var(--ink3)}
-.case-badge{margin-left:auto;padding:2px 8px;border-radius:999px;background:var(--accent-bg);
-  color:var(--accent);font-size:10.5px;font-weight:700}
-.case-badge.good{background:var(--accent-bg);color:var(--accent)}
+.case-badge{margin-left:auto;padding:3px 9px;border-radius:999px;background:var(--line2);
+  color:var(--ink2);font-size:10.5px;font-weight:700;line-height:1.4}
+.case-badge.good{background:var(--accent);color:var(--inverse)}
+.case-badge.mid{background:var(--warn-bg);color:var(--warn)}
 .case-badge.disc{background:var(--warn-bg);color:var(--warn)}
-.case-row{display:grid;grid-template-columns:34px minmax(0,1fr);gap:7px;
-  margin-top:5px;font-size:12.5px;line-height:1.65;color:var(--ink2)}
-.case-row b{font-size:11px;color:var(--ink3);font-weight:600;line-height:1.9}
-.case-supp{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
-.case-supp span{padding:1px 7px;border-radius:5px;background:var(--line2);
-  color:var(--ink2);font-size:10.5px;line-height:1.7}
-.case-summary{margin-top:8px;padding:8px 10px;border-radius:7px;background:var(--bg);
-  color:var(--ink2);font-size:12px;line-height:1.65}
-.case-imgs{display:flex;gap:7px;overflow-x:auto;margin-top:9px;padding-bottom:2px;scrollbar-width:none}
-.case-imgs::-webkit-scrollbar{display:none}
-.case-imgs img{flex:none;width:82px;height:82px;object-fit:cover;border:1px solid var(--line);
-  border-radius:8px;background:var(--line2);cursor:zoom-in}
+.case-problem{display:flex;align-items:flex-start;gap:6px;flex-wrap:wrap;margin:2px 0 8px;
+  font-size:11.5px;line-height:1.6;color:var(--ink2)}
+.case-problem b{flex:none;color:var(--ink3);font-weight:600}
+.case-problem span{padding:1px 7px;border-radius:5px;background:var(--accent-bg);color:var(--accent)}
+.case-block{margin-top:7px;padding:8px 10px;border-left:3px solid var(--line);
+  border-radius:6px;line-height:1.65}
+.case-block.supp{background:var(--warn-bg);border-left-color:var(--warn)}
+.case-block.effect{background:rgba(107,94,152,.08);border-left-color:#6B5E98}
+.case-label{display:block;margin-bottom:3px;font-size:10.5px;font-weight:700;
+  letter-spacing:.02em;color:var(--ink3)}
+.case-block.supp .case-label{color:var(--warn)}
+.case-block.effect .case-label{color:#6B5E98}
+.case-effect{font-size:12.5px;line-height:1.7;color:var(--ink2)}
+.case-supp{display:flex;flex-wrap:wrap;gap:4px}
+.case-supp span{padding:2px 8px;border-radius:999px;background:var(--panel);
+  border:1px solid rgba(138,75,18,.14);
+  color:var(--warn);font-size:10.5px;font-weight:600;line-height:1.65}
+.case-story{margin-top:8px;padding:7px 10px;border-radius:6px;border-left:3px solid var(--line);
+  background:var(--bg);color:var(--ink3);font-size:11.5px;line-height:1.65}
+.case-gallery{height:260px;overflow-y:auto;overscroll-behavior:contain;margin-top:9px;
+  padding:6px;border:1px solid var(--line);border-radius:8px;background:var(--bg);
+  -webkit-overflow-scrolling:touch}
+.case-imgs{display:flex;flex-direction:column;gap:8px;margin:0}
+.case-imgs img{display:block;width:100%;height:auto;object-fit:contain;border-radius:6px;
+  border:1px solid var(--line);background:var(--line2);cursor:zoom-in}
 .case-more{display:block;width:100%;margin-top:10px;min-height:40px;border:1px solid var(--line);
   border-radius:9px;background:var(--panel);color:var(--accent);font-size:12.5px;font-weight:700}
 .case-empty,.case-error{padding:42px 16px;text-align:center;color:var(--ink3);font-size:13px;line-height:1.8}
@@ -524,10 +550,27 @@ details .bd hr{border:0;border-top:1px dashed var(--line2);margin:10px 0}
 .case-lightbox{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;
   padding:18px;background:rgba(10,12,11,.92)}
 .case-lightbox.on{display:flex}
-.case-lightbox img{max-width:100%;max-height:calc(100vh - 90px);object-fit:contain;border-radius:8px}
-.case-lightbox button{position:fixed;top:14px;right:14px;min-width:52px;min-height:40px;
-  border:1px solid rgba(255,255,255,.35);border-radius:9px;background:rgba(0,0,0,.45);
-  color:#fff;font-size:13px}
+.case-lightbox-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;touch-action:none;user-select:none}
+.case-lightbox-stage img{max-width:100%;max-height:100%;object-fit:contain;border-radius:4px;
+  transform-origin:center center;will-change:transform;pointer-events:none;-webkit-user-drag:none}
+.case-lightbox-close{position:fixed;top:max(14px,env(safe-area-inset-top));right:14px;z-index:2;
+  width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.38);
+  border-radius:50%;background:rgba(0,0,0,.5);color:#fff;backdrop-filter:blur(8px)}
+.case-lightbox-close svg,.case-lightbox-nav svg{width:20px;height:20px}
+.case-lightbox-nav{position:fixed;top:50%;z-index:2;width:40px;height:48px;display:grid;place-items:center;
+  transform:translateY(-50%);border-radius:10px;border:1px solid rgba(255,255,255,.25);
+  background:rgba(0,0,0,.38);color:#fff}
+.case-lightbox-nav.prev{left:10px}
+.case-lightbox-nav.next{right:10px}
+.case-lightbox-nav:disabled{opacity:0;pointer-events:none}
+.case-lightbox-meta{position:fixed;left:50%;bottom:max(14px,env(safe-area-inset-bottom));
+  z-index:2;transform:translateX(-50%);display:flex;align-items:center;gap:9px;max-width:calc(100% - 120px);
+  padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.5);color:rgba(255,255,255,.82);
+  font-size:10.5px;line-height:1.4;white-space:nowrap}
+.case-lightbox-meta b{font-family:var(--mono);font-size:11px;color:#fff;font-weight:700}
+html[data-theme="night"] .case-block.effect{background:rgba(138,106,160,.16);border-left-color:#b69bd0}
+html[data-theme="night"] .case-block.effect .case-label{color:#c8b4e5}
 
 /* 右下角模块快捷跳转 */
 .quicknav{position:fixed;width:58px;height:58px;z-index:55}
@@ -744,13 +787,25 @@ footer .ver{font-family:var(--mono);margin-top:6px}
       <button type="button" class="sheet-close" id="caseClose">关闭</button>
     </div>
     <div class="case-lead" id="caseLead">群友个案体验，不等同于疗效结论；请勿据此自行诊断或调整治疗。</div>
+    <div class="case-filters" id="caseFilters" aria-label="案例反馈筛选" hidden></div>
     <div class="case-body" id="caseBody"></div>
   </div>
 </div>
 
 <div class="case-lightbox" id="caseLightbox">
-  <button type="button" id="caseLightboxClose">关闭</button>
-  <img id="caseLightboxImg" alt="案例截图">
+  <div class="case-lightbox-stage" id="caseLightboxStage">
+    <img id="caseLightboxImg" alt="案例截图" draggable="false">
+  </div>
+  <button type="button" class="case-lightbox-close" id="caseLightboxClose" aria-label="关闭图片">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+  </button>
+  <button type="button" class="case-lightbox-nav prev" id="casePrev" aria-label="上一张图片">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+  </button>
+  <button type="button" class="case-lightbox-nav next" id="caseNext" aria-label="下一张图片">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+  </button>
+  <div class="case-lightbox-meta"><b id="caseLightboxCount">1 / 1</b><span>双指缩放 · 左右滑动切换</span></div>
 </div>
 
 <nav class="quicknav" id="quicknav" aria-label="快捷工具" hidden>
@@ -878,6 +933,7 @@ var CASE_BASE = '';
 var CASE_CACHE = {};
 var CASE_BUSY = {};
 var caseView = null;
+var caseGallery = {images:[], index:0, scale:1, x:0, y:0, pointers:new Map(), single:null, pinch:null};
 var PD = {};                   // 已加载的产品
 var SEL = [];                  // [{id, amount}]
 var INGF = '全部';             // 成分合计的类别筛选
@@ -1488,38 +1544,76 @@ function safeCaseImageUrl(value){
   return /^https:\/\//i.test(url) ? url : '';
 }
 
+function caseBucket(item){
+  if (item.type === 'discussion') return 'discussion';
+  return item.status === '明显改善' ? 'good' : 'other';
+}
+
+function filteredCaseItems(){
+  var items = caseView && caseView.data && caseView.data.items || [];
+  if (!caseView || !caseView.filter || caseView.filter === 'all') return items;
+  return items.filter(function(item){ return caseBucket(item) === caseView.filter; });
+}
+
+function renderCaseFilters(){
+  if (!caseView || !caseView.data){
+    q('#caseFilters').hidden = true;
+    return;
+  }
+  var all = caseView.data.items || [];
+  var counts = {all:all.length, good:0, other:0, discussion:0};
+  all.forEach(function(item){ counts[caseBucket(item)]++; });
+  var defs = [
+    {id:'all', label:'全部'},
+    {id:'good', label:'明显改善'},
+    {id:'other', label:'其他案例'},
+    {id:'discussion', label:'讨论'}
+  ];
+  q('#caseFilters').innerHTML = defs.map(function(def){
+    return '<button type="button" class="case-filter'+(caseView.filter === def.id ? ' on' : '')+
+      '" data-case-filter="'+def.id+'">'+def.label+'<b>'+counts[def.id]+'</b></button>';
+  }).join('');
+  q('#caseFilters').hidden = false;
+}
+
 function renderCaseList(){
   if (!caseView || !caseView.data) return;
-  var items = caseView.data.items || [];
+  var items = filteredCaseItems();
   var shown = Math.min(caseView.shown, items.length);
   var body = items.slice(0, shown).map(function(item){
-    var discussion = item.type === 'discussion';
-    var status = discussion ? '讨论' : (item.status || '个案');
-    var badgeClass = discussion ? 'disc' : (item.status === '明显改善' ? 'good' : '');
-    var problem = (item.problem || []).join('、');
+    var bucket = caseBucket(item);
+    var status = bucket === 'discussion' ? '讨论' : (item.status || '未标结果');
+    var badgeClass = bucket === 'discussion' ? 'disc' : (bucket === 'good' ? 'good' : 'mid');
+    var problems = (item.problem || []).map(function(name){
+      return '<span>' + esc(name) + '</span>';
+    }).join('');
     var supplements = (item.supplement || []).map(function(name){
       return '<span>' + esc(name) + '</span>';
     }).join('');
     var images = (item.images || []).map(function(url){
       var safe = safeCaseImageUrl(url);
       return safe ? '<img loading="lazy" src="' + escAttr(safe) + '" data-case-img="' + escAttr(safe) + '" alt="案例截图">' : '';
-    }).join('');
+    }).filter(Boolean);
     var summary = item.summary && item.summary !== item.effect
-      ? '<div class="case-summary">' + esc(item.summary) + '</div>' : '';
+      ? '<div class="case-story">「' + esc(item.summary) + '」</div>' : '';
     return '<article class="case-item">' +
       '<div class="case-head"><span class="case-user">' + esc(item.user || '群友') + '</span>' +
       '<span class="case-id">' + esc(item.id || '') + '</span>' +
       '<span class="case-badge ' + badgeClass + '">' + esc(status) + '</span></div>' +
-      (problem ? '<div class="case-row"><b>症状</b><span>' + esc(problem) + '</span></div>' : '') +
-      (supplements ? '<div class="case-supp">' + supplements + '</div>' : '') +
-      (item.effect ? '<div class="case-row"><b>效果</b><span>' + esc(item.effect) + '</span></div>' : '') +
+      (problems ? '<div class="case-problem"><b>相关症状</b>' + problems + '</div>' : '') +
+      (supplements ? '<div class="case-block supp"><span class="case-label">补剂方案</span>' +
+        '<div class="case-supp">' + supplements + '</div></div>' : '') +
+      (item.effect ? '<div class="case-block effect"><span class="case-label">效果</span>' +
+        '<div class="case-effect">' + esc(item.effect) + '</div></div>' : '') +
       summary +
-      (images ? '<div class="case-imgs">' + images + '</div>' : '') +
+      (images.length ? '<div class="case-gallery"><div class="case-imgs">' +
+        images.join('') + '</div></div>' : '') +
       '</article>';
   }).join('');
+  if (!body) body = '<div class="case-empty">这个筛选下暂无案例</div>';
   var more = shown < items.length
     ? '<button type="button" class="case-more" data-case-more>已显示 ' + shown + ' / ' + items.length +
-      ' 条 · 显示更多</button>'
+      ' 条 · 继续查看</button>'
     : '';
   var caseBody = q('#caseBody');
   var previousScroll = caseBody.scrollTop;
@@ -1531,10 +1625,12 @@ async function openCaseSheet(pid){
   var meta = caseMeta(pid);
   if (!meta) return;
   var productData = PD[pid] || DB.index.find(function(item){ return item.id === pid; }) || {};
-  caseView = {pid:pid, data:null, shown:10};
+  caseView = {pid:pid, data:null, shown:5, filter:'all'};
   q('#caseTitle').textContent = (productData.name || pid) + ' · 相关案例（' + meta.count + ' 条）';
   q('#caseLead').textContent = (CASE_INDEX && CASE_INDEX.disclaimer) ||
     '群友个案体验，不等同于疗效结论；请勿据此自行诊断或调整治疗。';
+  q('#caseFilters').hidden = true;
+  q('#caseFilters').innerHTML = '';
   q('#caseBody').innerHTML = '<div class="case-loading"><span class="spin"></span>正在读取案例反馈…</div>';
   q('#caseSheet').classList.add('on');
   syncSheetLock();
@@ -1542,10 +1638,12 @@ async function openCaseSheet(pid){
     var data = await loadCaseFile(pid);
     if (!caseView || caseView.pid !== pid) return;
     if (!data || !data.items || !data.items.length){
+      q('#caseFilters').hidden = true;
       q('#caseBody').innerHTML = '<div class="case-empty">暂未收录与该产品相关的案例反馈</div>';
       return;
     }
     caseView.data = data;
+    renderCaseFilters();
     renderCaseList();
     q('#caseBody').scrollTop = 0;
   }catch(e){
@@ -1559,16 +1657,150 @@ function closeCaseSheet(){
   syncSheetLock();
 }
 
-function openCaseLightbox(url){
+function caseGalleryResetTransform(){
+  caseGallery.scale = 1;
+  caseGallery.x = 0;
+  caseGallery.y = 0;
+  caseGalleryApplyTransform();
+}
+
+function caseGalleryClampPan(){
+  var stage = q('#caseLightboxStage');
+  var maxX = Math.max(0, stage.clientWidth * (caseGallery.scale - 1) / 2);
+  var maxY = Math.max(0, stage.clientHeight * (caseGallery.scale - 1) / 2);
+  caseGallery.x = Math.max(-maxX, Math.min(maxX, caseGallery.x));
+  caseGallery.y = Math.max(-maxY, Math.min(maxY, caseGallery.y));
+}
+
+function caseGalleryApplyTransform(){
+  caseGalleryClampPan();
+  q('#caseLightboxImg').style.transform = 'translate3d(' + caseGallery.x + 'px,' +
+    caseGallery.y + 'px,0) scale(' + caseGallery.scale + ')';
+}
+
+function caseGallerySetIndex(index){
+  var total = caseGallery.images.length;
+  if (!total) return;
+  caseGallery.index = (index + total) % total;
+  q('#caseLightboxImg').src = caseGallery.images[caseGallery.index];
+  q('#caseLightboxCount').textContent = (caseGallery.index + 1) + ' / ' + total;
+  q('#casePrev').disabled = total < 2;
+  q('#caseNext').disabled = total < 2;
+  caseGallery.pointers.clear();
+  caseGallery.single = null;
+  caseGallery.pinch = null;
+  caseGalleryResetTransform();
+}
+
+function caseGalleryStep(delta){
+  if (caseGallery.images.length < 2) return;
+  caseGallerySetIndex(caseGallery.index + delta);
+}
+
+function openCaseLightbox(url, imageEl){
   var safe = safeCaseImageUrl(url);
   if (!safe) return;
-  q('#caseLightboxImg').src = safe;
+  var card = imageEl && imageEl.closest ? imageEl.closest('.case-item') : null;
+  var urls = card ? Array.from(card.querySelectorAll('.case-imgs img')).map(function(img){
+    return safeCaseImageUrl(img.dataset.caseImg || img.src);
+  }).filter(Boolean) : [];
+  urls = urls.filter(function(item, index){ return urls.indexOf(item) === index; });
+  if (!urls.length) urls = [safe];
+  var index = urls.indexOf(safe);
+  caseGallery.images = urls;
   q('#caseLightbox').classList.add('on');
+  caseGallerySetIndex(index < 0 ? 0 : index);
 }
 
 function closeCaseLightbox(){
+  caseGallery.pointers.clear();
+  caseGallery.single = null;
+  caseGallery.pinch = null;
+  q('#caseLightboxImg').style.transform = '';
   q('#caseLightbox').classList.remove('on');
   q('#caseLightboxImg').removeAttribute('src');
+}
+
+function caseGalleryDistance(a, b){
+  var dx = a.x - b.x, dy = a.y - b.y;
+  return Math.sqrt(dx*dx + dy*dy);
+}
+
+function caseGalleryMidpoint(a, b){
+  return {x:(a.x + b.x) / 2, y:(a.y + b.y) / 2};
+}
+
+function caseGalleryPointerDown(e){
+  if (!q('#caseLightbox').classList.contains('on')) return;
+  e.preventDefault();
+  caseGallery.pointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  try{ q('#caseLightboxStage').setPointerCapture(e.pointerId); }catch(err){}
+  var points = Array.from(caseGallery.pointers.values());
+  if (points.length === 1){
+    caseGallery.single = {
+      id:e.pointerId, startX:points[0].x, startY:points[0].y,
+      startTx:caseGallery.x, startTy:caseGallery.y, dx:0, dy:0
+    };
+    caseGallery.pinch = null;
+  }else if (points.length === 2){
+    var mid = caseGalleryMidpoint(points[0], points[1]);
+    caseGallery.pinch = {
+      distance:caseGalleryDistance(points[0], points[1]),
+      midX:mid.x, midY:mid.y,
+      startScale:caseGallery.scale, startX:caseGallery.x, startY:caseGallery.y
+    };
+    caseGallery.single = null;
+  }
+}
+
+function caseGalleryPointerMove(e){
+  if (!caseGallery.pointers.has(e.pointerId)) return;
+  e.preventDefault();
+  caseGallery.pointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  var points = Array.from(caseGallery.pointers.values());
+  if (points.length >= 2 && caseGallery.pinch){
+    var distance = caseGalleryDistance(points[0], points[1]);
+    var mid = caseGalleryMidpoint(points[0], points[1]);
+    var scale = caseGallery.pinch.startScale * distance / Math.max(1, caseGallery.pinch.distance);
+    caseGallery.scale = Math.max(1, Math.min(4, scale));
+    caseGallery.x = caseGallery.pinch.startX + (mid.x - caseGallery.pinch.midX);
+    caseGallery.y = caseGallery.pinch.startY + (mid.y - caseGallery.pinch.midY);
+    caseGalleryApplyTransform();
+  }else if (points.length === 1 && caseGallery.single){
+    var dx = points[0].x - caseGallery.single.startX;
+    var dy = points[0].y - caseGallery.single.startY;
+    caseGallery.single.dx = dx;
+    caseGallery.single.dy = dy;
+    if (caseGallery.scale > 1.01){
+      caseGallery.x = caseGallery.single.startTx + dx;
+      caseGallery.y = caseGallery.single.startTy + dy;
+      caseGalleryApplyTransform();
+    }
+  }
+}
+
+function caseGalleryPointerUp(e, cancelled){
+  if (!caseGallery.pointers.has(e.pointerId)) return;
+  caseGallery.pointers.delete(e.pointerId);
+  try{ q('#caseLightboxStage').releasePointerCapture(e.pointerId); }catch(err){}
+  if (!caseGallery.pointers.size){
+    var moved = caseGallery.single;
+    if (!cancelled && caseGallery.scale <= 1.01 && moved &&
+        Math.abs(moved.dx) > 55 && Math.abs(moved.dx) > Math.abs(moved.dy) * 1.2){
+      caseGalleryStep(moved.dx < 0 ? 1 : -1);
+    }else if (caseGallery.scale <= 1.01){
+      caseGalleryResetTransform();
+    }
+    caseGallery.single = null;
+    caseGallery.pinch = null;
+  }else if (caseGallery.pointers.size === 1){
+    var point = Array.from(caseGallery.pointers.values())[0];
+    caseGallery.single = {
+      id:e.pointerId, startX:point.x, startY:point.y,
+      startTx:caseGallery.x, startTy:caseGallery.y, dx:0, dy:0
+    };
+    caseGallery.pinch = null;
+  }
 }
 
 function copyTextSync(text){
@@ -2330,7 +2562,13 @@ async function openDetail(id){
   q('#caseClose').onclick = closeCaseSheet;
   q('#caseSheet').onclick = function(e){ if (e.target===this) closeCaseSheet(); };
   q('#caseLightboxClose').onclick = closeCaseLightbox;
+  q('#casePrev').onclick = function(){ caseGalleryStep(-1); };
+  q('#caseNext').onclick = function(){ caseGalleryStep(1); };
   q('#caseLightbox').onclick = function(e){ if (e.target===this) closeCaseLightbox(); };
+  q('#caseLightboxStage').addEventListener('pointerdown', caseGalleryPointerDown, {passive:false});
+  q('#caseLightboxStage').addEventListener('pointermove', caseGalleryPointerMove, {passive:false});
+  q('#caseLightboxStage').addEventListener('pointerup', function(e){ caseGalleryPointerUp(e, false); });
+  q('#caseLightboxStage').addEventListener('pointercancel', function(e){ caseGalleryPointerUp(e, true); });
   q('#aiPrompt').addEventListener('input', updateAICount);
   q('#aiReset').onclick = function(){
     q('#aiPrompt').value = aiDefaultPrompt;
@@ -2383,15 +2621,23 @@ async function openDetail(id){
   q('#psearch').oninput = renderList;
 
   document.addEventListener('click', function(e){
-    var t = e.target.closest ? e.target.closest('[data-rm],[data-detail],[data-toggle],[data-quick-toggle],[data-quick],[data-qtab],[data-gap-el],[data-gap-add],[data-ai-product],[data-ai-combo],[data-case-product],[data-case-more],[data-case-img],[data-ingf],[data-step],[data-jump]') : null;
+    var t = e.target.closest ? e.target.closest('[data-rm],[data-detail],[data-toggle],[data-quick-toggle],[data-quick],[data-qtab],[data-gap-el],[data-gap-add],[data-ai-product],[data-ai-combo],[data-case-product],[data-case-filter],[data-case-more],[data-case-img],[data-ingf],[data-step],[data-jump]') : null;
     if (!t) return;
     if (t.dataset.caseProduct){ openCaseSheet(t.dataset.caseProduct); return; }
+    if (t.dataset.caseFilter && caseView){
+      caseView.filter = t.dataset.caseFilter;
+      caseView.shown = 5;
+      renderCaseFilters();
+      renderCaseList();
+      q('#caseBody').scrollTop = 0;
+      return;
+    }
     if (t.hasAttribute('data-case-more') && caseView){
-      caseView.shown += 10;
+      caseView.shown += 5;
       renderCaseList();
       return;
     }
-    if (t.dataset.caseImg){ openCaseLightbox(t.dataset.caseImg); return; }
+    if (t.dataset.caseImg){ openCaseLightbox(t.dataset.caseImg, t); return; }
     if (t.dataset.aiProduct){ openAISheet('product', t.dataset.aiProduct); return; }
     if (t.hasAttribute('data-ai-combo')){ openAISheet('combo'); return; }
     if (t.dataset.gapEl){ handleGapCard(t.dataset.gapEl, parseFloat(t.dataset.gapMg)); return; }
@@ -2434,6 +2680,9 @@ async function openDetail(id){
       if (q('#caseLightbox').classList.contains('on')) closeCaseLightbox();
       else if (q('#caseSheet').classList.contains('on')) closeCaseSheet();
       setQuickNavOpen(false);
+    }else if (q('#caseLightbox').classList.contains('on')){
+      if (e.key === 'ArrowLeft') caseGalleryStep(-1);
+      else if (e.key === 'ArrowRight') caseGalleryStep(1);
     }
   });
   document.addEventListener('input', function(e){

@@ -147,6 +147,9 @@ def main():
         "products": products,
         "disclaimer": "群友个案体验，不等同于疗效结论；请勿据此自行诊断或调整治疗。",
     }
+    for path in OUT.glob("P*.json"):
+        if path.stem not in products:
+            path.unlink()
     write_json(OUT / "index.json", manifest, indent=1)
     print(f"案例文件已生成：{len(products)} 个产品，来源 {source}")
     for product_id, meta in sorted(products.items()):

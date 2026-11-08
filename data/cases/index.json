@@ -1,12 +1,87 @@
 {
- "builtAt": "2026-11-08T20:58:39+08:00",
+ "builtAt": "2026-11-08T21:34:54+08:00",
  "sourceCommit": "9a25468",
  "sourceRecords": 2300,
  "eligibleRecords": 2297,
  "families": {
-  "active_b": 85
+  "baolin": 156,
+  "active_b": 85,
+  "collagen": 63,
+  "anti_aging": 29,
+  "nitrogen_pump": 1,
+  "tri_quad_oil": 5,
+  "dream_sleep": 40,
+  "eaa": 31,
+  "nine_oil": 11,
+  "akg": 2,
+  "dk": 16,
+  "adk": 1,
+  "vitamin_a": 53,
+  "big_white": 17,
+  "little_white": 8,
+  "red_elv": 7,
+  "yellow_elv": 3,
+  "new_four": 11,
+  "old_electrolyte": 125,
+  "choline": 2,
+  "vc_effervescent": 9,
+  "melatonin": 6,
+  "k2": 74,
+  "taurine": 3,
+  "vc_sodium": 2,
+  "creatine": 1,
+  "vitamin_c": 523,
+  "glutamine": 19,
+  "magnesium_threonate": 3,
+  "betaine_anhydrous": 47,
+  "biotin": 11,
+  "niacin": 30,
+  "benfotiamine": 3,
+  "potassium_citrate": 4,
+  "magnesium_glycinate": 21,
+  "glycine": 49,
+  "betaine_hcl": 47,
+  "nac": 36,
+  "coq10": 13,
+  "lipoic_acid": 25,
+  "inositol": 8,
+  "stearic_acid": 3,
+  "mct_oil": 4,
+  "zinc_carnosine": 10,
+  "white_tomato": 2,
+  "ergothioneine": 2,
+  "ashwagandha": 3,
+  "allulose": 1,
+  "glutathione": 17,
+  "theanine": 1,
+  "trace_minerals": 1,
+  "calcium_citrate": 16,
+  "magnesium_citrate": 101,
+  "tributyrin": 33,
+  "lecithin": 2,
+  "bile_acid": 4,
+  "tudca": 7,
+  "base_nutrition": 60,
+  "b2": 34,
+  "water_soluble_zinc": 39,
+  "five_magnesium": 101,
+  "zinc_picolinate": 39,
+  "fucoidan": 0,
+  "sea_salt": 20,
+  "ps": 1,
+  "digestive_enzyme": 9
  },
  "products": {
+  "P001": {
+   "count": 156,
+   "file": "P001.json",
+   "family": "鲍林粉"
+  },
+  "P002": {
+   "count": 156,
+   "file": "P002.json",
+   "family": "鲍林粉"
+  },
   "P003": {
    "count": 85,
    "file": "P003.json",
@@ -21,6 +96,526 @@
    "count": 85,
    "file": "P005.json",
    "family": "活性B族"
+  },
+  "P009": {
+   "count": 63,
+   "file": "P009.json",
+   "family": "胶原蛋白肽"
+  },
+  "P010": {
+   "count": 29,
+   "file": "P010.json",
+   "family": "抗衰组合"
+  },
+  "P011": {
+   "count": 29,
+   "file": "P011.json",
+   "family": "抗衰组合"
+  },
+  "P012": {
+   "count": 1,
+   "file": "P012.json",
+   "family": "复合氮泵氨基酸"
+  },
+  "P013": {
+   "count": 1,
+   "file": "P013.json",
+   "family": "复合氮泵氨基酸"
+  },
+  "P015": {
+   "count": 5,
+   "file": "P015.json",
+   "family": "三合一 / 四合一油"
+  },
+  "P016": {
+   "count": 5,
+   "file": "P016.json",
+   "family": "三合一 / 四合一油"
+  },
+  "P017": {
+   "count": 5,
+   "file": "P017.json",
+   "family": "三合一 / 四合一油"
+  },
+  "P018": {
+   "count": 40,
+   "file": "P018.json",
+   "family": "甜梦静息"
+  },
+  "P019": {
+   "count": 40,
+   "file": "P019.json",
+   "family": "甜梦静息"
+  },
+  "P035": {
+   "count": 40,
+   "file": "P035.json",
+   "family": "甜梦静息"
+  },
+  "P036": {
+   "count": 40,
+   "file": "P036.json",
+   "family": "甜梦静息"
+  },
+  "P020": {
+   "count": 31,
+   "file": "P020.json",
+   "family": "EAA 必需氨基酸"
+  },
+  "P034": {
+   "count": 31,
+   "file": "P034.json",
+   "family": "EAA 必需氨基酸"
+  },
+  "P046": {
+   "count": 11,
+   "file": "P046.json",
+   "family": "九合一营养油"
+  },
+  "P047": {
+   "count": 11,
+   "file": "P047.json",
+   "family": "九合一营养油"
+  },
+  "P021": {
+   "count": 2,
+   "file": "P021.json",
+   "family": "AKG"
+  },
+  "P033": {
+   "count": 2,
+   "file": "P033.json",
+   "family": "AKG"
+  },
+  "P022": {
+   "count": 16,
+   "file": "P022.json",
+   "family": "维生素D / K"
+  },
+  "P023": {
+   "count": 16,
+   "file": "P023.json",
+   "family": "维生素D / K"
+  },
+  "P024": {
+   "count": 16,
+   "file": "P024.json",
+   "family": "维生素D / K"
+  },
+  "P025": {
+   "count": 1,
+   "file": "P025.json",
+   "family": "复合ADK"
+  },
+  "P026": {
+   "count": 53,
+   "file": "P026.json",
+   "family": "维生素A"
+  },
+  "P027": {
+   "count": 53,
+   "file": "P027.json",
+   "family": "维生素A"
+  },
+  "P028": {
+   "count": 17,
+   "file": "P028.json",
+   "family": "大白"
+  },
+  "P029": {
+   "count": 8,
+   "file": "P029.json",
+   "family": "小白"
+  },
+  "P030": {
+   "count": 7,
+   "file": "P030.json",
+   "family": "小红"
+  },
+  "P031": {
+   "count": 3,
+   "file": "P031.json",
+   "family": "小黄"
+  },
+  "P032": {
+   "count": 11,
+   "file": "P032.json",
+   "family": "新四件套"
+  },
+  "P038": {
+   "count": 125,
+   "file": "P038.json",
+   "family": "电解质矿物质"
+  },
+  "P039": {
+   "count": 125,
+   "file": "P039.json",
+   "family": "电解质矿物质"
+  },
+  "P041": {
+   "count": 125,
+   "file": "P041.json",
+   "family": "电解质矿物质"
+  },
+  "P042": {
+   "count": 125,
+   "file": "P042.json",
+   "family": "电解质矿物质"
+  },
+  "P043": {
+   "count": 125,
+   "file": "P043.json",
+   "family": "电解质矿物质"
+  },
+  "P040": {
+   "count": 2,
+   "file": "P040.json",
+   "family": "胆碱"
+  },
+  "P044": {
+   "count": 9,
+   "file": "P044.json",
+   "family": "维生素C泡腾"
+  },
+  "P045": {
+   "count": 9,
+   "file": "P045.json",
+   "family": "维生素C泡腾"
+  },
+  "P048": {
+   "count": 6,
+   "file": "P048.json",
+   "family": "褪黑素"
+  },
+  "P049": {
+   "count": 74,
+   "file": "P049.json",
+   "family": "维生素K2"
+  },
+  "P050": {
+   "count": 74,
+   "file": "P050.json",
+   "family": "维生素K2"
+  },
+  "P051": {
+   "count": 3,
+   "file": "P051.json",
+   "family": "牛磺酸"
+  },
+  "P052": {
+   "count": 2,
+   "file": "P052.json",
+   "family": "VC钠"
+  },
+  "P055": {
+   "count": 1,
+   "file": "P055.json",
+   "family": "肌酸"
+  },
+  "P053": {
+   "count": 523,
+   "file": "P053.json",
+   "family": "维生素C"
+  },
+  "P054": {
+   "count": 523,
+   "file": "P054.json",
+   "family": "维生素C"
+  },
+  "P056": {
+   "count": 19,
+   "file": "P056.json",
+   "family": "谷氨酰胺"
+  },
+  "P057": {
+   "count": 3,
+   "file": "P057.json",
+   "family": "苏糖酸镁"
+  },
+  "P058": {
+   "count": 47,
+   "file": "P058.json",
+   "family": "无水甜菜碱"
+  },
+  "P059": {
+   "count": 11,
+   "file": "P059.json",
+   "family": "生物素"
+  },
+  "P060": {
+   "count": 30,
+   "file": "P060.json",
+   "family": "烟酸"
+  },
+  "P061": {
+   "count": 30,
+   "file": "P061.json",
+   "family": "烟酸"
+  },
+  "P062": {
+   "count": 3,
+   "file": "P062.json",
+   "family": "苯磷硫胺"
+  },
+  "P063": {
+   "count": 4,
+   "file": "P063.json",
+   "family": "柠檬酸钾"
+  },
+  "P065": {
+   "count": 21,
+   "file": "P065.json",
+   "family": "甘氨酸镁"
+  },
+  "P066": {
+   "count": 49,
+   "file": "P066.json",
+   "family": "甘氨酸"
+  },
+  "P067": {
+   "count": 49,
+   "file": "P067.json",
+   "family": "甘氨酸"
+  },
+  "P068": {
+   "count": 47,
+   "file": "P068.json",
+   "family": "盐酸甜菜碱"
+  },
+  "P069": {
+   "count": 47,
+   "file": "P069.json",
+   "family": "盐酸甜菜碱"
+  },
+  "P070": {
+   "count": 36,
+   "file": "P070.json",
+   "family": "NAC"
+  },
+  "P071": {
+   "count": 36,
+   "file": "P071.json",
+   "family": "NAC"
+  },
+  "P072": {
+   "count": 13,
+   "file": "P072.json",
+   "family": "辅酶Q10"
+  },
+  "P073": {
+   "count": 13,
+   "file": "P073.json",
+   "family": "辅酶Q10"
+  },
+  "P074": {
+   "count": 25,
+   "file": "P074.json",
+   "family": "硫辛酸"
+  },
+  "P075": {
+   "count": 8,
+   "file": "P075.json",
+   "family": "肌醇"
+  },
+  "P076": {
+   "count": 3,
+   "file": "P076.json",
+   "family": "硬脂酸"
+  },
+  "P077": {
+   "count": 4,
+   "file": "P077.json",
+   "family": "MCT油"
+  },
+  "P078": {
+   "count": 4,
+   "file": "P078.json",
+   "family": "MCT油"
+  },
+  "P080": {
+   "count": 10,
+   "file": "P080.json",
+   "family": "肌肽锌"
+  },
+  "P081": {
+   "count": 10,
+   "file": "P081.json",
+   "family": "肌肽锌"
+  },
+  "P082": {
+   "count": 10,
+   "file": "P082.json",
+   "family": "肌肽锌"
+  },
+  "P083": {
+   "count": 2,
+   "file": "P083.json",
+   "family": "白番茄浓缩粉"
+  },
+  "P084": {
+   "count": 2,
+   "file": "P084.json",
+   "family": "麦角硫因"
+  },
+  "P085": {
+   "count": 3,
+   "file": "P085.json",
+   "family": "南非醉茄"
+  },
+  "P125": {
+   "count": 3,
+   "file": "P125.json",
+   "family": "南非醉茄"
+  },
+  "P086": {
+   "count": 1,
+   "file": "P086.json",
+   "family": "阿洛酮糖"
+  },
+  "P087": {
+   "count": 1,
+   "file": "P087.json",
+   "family": "阿洛酮糖"
+  },
+  "P088": {
+   "count": 17,
+   "file": "P088.json",
+   "family": "谷胱甘肽"
+  },
+  "P089": {
+   "count": 17,
+   "file": "P089.json",
+   "family": "谷胱甘肽"
+  },
+  "P093": {
+   "count": 1,
+   "file": "P093.json",
+   "family": "茶氨酸"
+  },
+  "P090": {
+   "count": 1,
+   "file": "P090.json",
+   "family": "定制微量元素"
+  },
+  "P091": {
+   "count": 1,
+   "file": "P091.json",
+   "family": "定制微量元素"
+  },
+  "P094": {
+   "count": 16,
+   "file": "P094.json",
+   "family": "柠檬酸钙"
+  },
+  "P095": {
+   "count": 16,
+   "file": "P095.json",
+   "family": "柠檬酸钙"
+  },
+  "P096": {
+   "count": 101,
+   "file": "P096.json",
+   "family": "柠檬酸镁"
+  },
+  "P097": {
+   "count": 33,
+   "file": "P097.json",
+   "family": "三丁酸甘油酯"
+  },
+  "P101": {
+   "count": 33,
+   "file": "P101.json",
+   "family": "三丁酸甘油酯"
+  },
+  "P102": {
+   "count": 33,
+   "file": "P102.json",
+   "family": "三丁酸甘油酯"
+  },
+  "P098": {
+   "count": 2,
+   "file": "P098.json",
+   "family": "葵花卵磷脂"
+  },
+  "P099": {
+   "count": 2,
+   "file": "P099.json",
+   "family": "葵花卵磷脂"
+  },
+  "P104": {
+   "count": 4,
+   "file": "P104.json",
+   "family": "胆汁酸"
+  },
+  "P105": {
+   "count": 7,
+   "file": "P105.json",
+   "family": "TUDCA"
+  },
+  "P108": {
+   "count": 60,
+   "file": "P108.json",
+   "family": "基础全营养素"
+  },
+  "P109": {
+   "count": 60,
+   "file": "P109.json",
+   "family": "基础全营养素"
+  },
+  "P110": {
+   "count": 60,
+   "file": "P110.json",
+   "family": "基础全营养素"
+  },
+  "P111": {
+   "count": 60,
+   "file": "P111.json",
+   "family": "基础全营养素"
+  },
+  "P112": {
+   "count": 60,
+   "file": "P112.json",
+   "family": "基础全营养素"
+  },
+  "P113": {
+   "count": 34,
+   "file": "P113.json",
+   "family": "维生素B2"
+  },
+  "P115": {
+   "count": 34,
+   "file": "P115.json",
+   "family": "维生素B2"
+  },
+  "P106": {
+   "count": 39,
+   "file": "P106.json",
+   "family": "水溶锌"
+  },
+  "P107": {
+   "count": 101,
+   "file": "P107.json",
+   "family": "五重镁"
+  },
+  "P114": {
+   "count": 39,
+   "file": "P114.json",
+   "family": "吡啶甲酸锌"
+  },
+  "P119": {
+   "count": 20,
+   "file": "P119.json",
+   "family": "食用海盐"
+  },
+  "P124": {
+   "count": 1,
+   "file": "P124.json",
+   "family": "PS燕窝酸"
+  },
+  "P121": {
+   "count": 9,
+   "file": "P121.json",
+   "family": "消化酶"
   }
  },
  "disclaimer": "群友个案体验，不等同于疗效结论；请勿据此自行诊断或调整治疗。"
