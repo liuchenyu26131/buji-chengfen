@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "families": {
+    "active_b": {
+      "label": "活性B族",
+      "sourceIds": ["711", "712", "713"],
+      "keywords": ["活性B族"],
+      "products": ["P003", "P004", "P005"]
+    }
+  }
+}

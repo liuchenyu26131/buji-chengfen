@@ -1,0 +1,27 @@
+{
+ "builtAt": "2026-11-08T20:58:39+08:00",
+ "sourceCommit": "9a25468",
+ "sourceRecords": 2300,
+ "eligibleRecords": 2297,
+ "families": {
+  "active_b": 85
+ },
+ "products": {
+  "P003": {
+   "count": 85,
+   "file": "P003.json",
+   "family": "活性B族"
+  },
+  "P004": {
+   "count": 85,
+   "file": "P004.json",
+   "family": "活性B族"
+  },
+  "P005": {
+   "count": 85,
+   "file": "P005.json",
+   "family": "活性B族"
+  }
+ },
+ "disclaimer": "群友个案体验，不等同于疗效结论；请勿据此自行诊断或调整治疗。"
+}

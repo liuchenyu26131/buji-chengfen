@@ -113,15 +113,32 @@ header.is-collapsed .selbar{max-height:0;padding-bottom:0;opacity:0;pointer-even
 /* ---------- 区块 ---------- */
 section{margin:18px 0}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
-.sect-head{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:0 0 11px;
-  padding:0 0 9px;border-bottom:1px solid var(--line);position:relative}
-.sect-head::after{content:'';position:absolute;left:0;bottom:-1px;width:64px;height:2px;
-  border-radius:2px;background:linear-gradient(90deg,var(--accent),rgba(31,107,82,0))}
-.sect-head h2{display:flex;align-items:center;gap:8px;font-size:16px;margin:0;font-weight:700;
-  letter-spacing:.01em;color:var(--ink);line-height:1.35}
-.sect-head h2::before{content:'';flex:none;width:4px;height:17px;border-radius:2px;background:var(--accent)}
-.sect-head .hint{margin-left:auto;max-width:100%;font-size:11.5px;line-height:1.4;
-  color:var(--accent);background:var(--accent-bg);border:1px solid rgba(31,107,82,.16);
+#main{counter-reset:main-sec}
+#main > section{counter-increment:main-sec}
+#elements{--sec-c:#A9734A;--sec-rgb:169,115,74}
+#elec{--sec-c:#37698F;--sec-rgb:55,105,143}
+#ingredients{--sec-c:#1f6b52;--sec-rgb:31,107,82}
+#how{--sec-c:#B07C28;--sec-rgb:176,124,40}
+#notes{--sec-c:#8f2f2f;--sec-rgb:143,47,47}
+html[data-theme="night"] #elements{--sec-c:#dfad7d;--sec-rgb:223,173,125}
+html[data-theme="night"] #elec{--sec-c:#8db7df;--sec-rgb:141,183,223}
+html[data-theme="night"] #ingredients{--sec-c:#80caa8;--sec-rgb:128,202,168}
+html[data-theme="night"] #how{--sec-c:#dfbd72;--sec-rgb:223,189,114}
+html[data-theme="night"] #notes{--sec-c:#e3a1a1;--sec-rgb:227,161,161}
+.sect-head{display:flex;align-items:flex-end;flex-wrap:wrap;gap:8px;margin:0 0 14px;
+  min-height:47px;padding:4px 0 11px 2px;border-bottom:3px solid var(--line2);position:relative}
+.sect-head::before{content:counter(main-sec,decimal-leading-zero);position:absolute;left:-3px;top:-12px;
+  font-size:58px;font-weight:900;line-height:.9;letter-spacing:-.07em;pointer-events:none;user-select:none;
+  background:linear-gradient(135deg,rgba(var(--sec-rgb),.58) 12%,rgba(var(--sec-rgb),.12) 88%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+  opacity:.72;z-index:0}
+.sect-head::after{content:'';position:absolute;left:0;bottom:-3px;width:88px;height:3px;
+  border-radius:2px;background:linear-gradient(90deg,var(--sec-c),rgba(var(--sec-rgb),0))}
+.sect-head h2{display:flex;align-items:center;gap:8px;font-size:20px;margin:0;font-weight:800;
+  letter-spacing:.01em;color:var(--ink);line-height:1.35;position:relative;z-index:1}
+.sect-head h2::before{content:'';flex:none;width:4px;height:22px;border-radius:2px;background:var(--sec-c)}
+.sect-head .hint{position:relative;z-index:1;margin-left:auto;max-width:100%;font-size:11.5px;line-height:1.4;
+  color:var(--sec-c);background:rgba(var(--sec-rgb),.08);border:1px solid rgba(var(--sec-rgb),.2);
   border-radius:999px;padding:2px 9px;text-align:right}
 @media(max-width:480px){.sect-head .hint{font-size:11px;padding:2px 8px}}
 .pad{padding:14px}
@@ -273,9 +290,14 @@ section{margin:18px 0}
 /* 合计用量：--hc / --hc-rgb 由 howHTML() 按产品注入，单产品时退回默认墨绿 */
 .how-item{--hc:var(--accent);--hc-rgb:31,107,82;padding:12px 14px 13px;border-top:1px solid var(--line2)}
 .how-item:first-child{border-top:0}
-.how-item.hwc .nm::before{content:"";display:inline-block;width:7px;height:7px;
-  border-radius:2px;background:var(--hc);margin-right:6px;vertical-align:1px}
 .hw-top{display:flex;align-items:flex-start;gap:10px}
+.hw-no{flex:none;display:inline-flex;align-items:center;justify-content:center;
+  min-width:24px;height:19px;padding:0 5px;margin-top:1px;box-sizing:border-box;
+  background:linear-gradient(135deg,var(--hc),rgba(var(--hc-rgb),.68));color:#fff;
+  font:700 10.5px/1 var(--mono);letter-spacing:.02em;
+  border-radius:3px 0 3px 0;transform:skewX(-10deg);
+  box-shadow:0 2px 5px rgba(var(--hc-rgb),.18)}
+.hw-no span{display:inline-block;transform:skewX(10deg)}
 .hw-top .nm{flex:1;min-width:0;font-size:13.5px;font-weight:700;line-height:1.45;cursor:pointer}
 .hw-qty{flex:none;text-align:right;white-space:nowrap}
 .hw-qty b{font-family:var(--mono);font-size:18px;font-weight:600;letter-spacing:-.02em}
@@ -434,6 +456,13 @@ details .bd hr{border:0;border-top:1px dashed var(--line2);margin:10px 0}
 .hw-ai-row{display:flex;margin:7px 0 1px}
 .hw-ai-row .ai-btn{width:100%;min-height:34px;justify-content:center;
   background:var(--hc,var(--accent));border-color:var(--hc,var(--accent));color:#fff}
+.hw-ai-row.has-case{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px}
+.hw-case-btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:34px;
+  padding:4px 10px;border:1px solid rgba(var(--hc-rgb),.34);border-radius:999px;
+  background:var(--panel);color:var(--hc);font-size:11.5px;font-weight:700;white-space:nowrap}
+.hw-case-btn b{font-family:var(--mono);font-size:10.5px;font-weight:700;padding:0 5px;
+  border-radius:999px;background:rgba(var(--hc-rgb),.1)}
+.hw-case-btn:active{background:rgba(var(--hc-rgb),.08)}
 .ai-sheet .panel{height:min(82vh,720px);max-height:min(82vh,720px);
   height:min(82dvh,720px);max-height:min(82dvh,720px)}
 .ai-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:12px 16px 24px}
@@ -457,6 +486,48 @@ details .bd hr{border:0;border-top:1px dashed var(--line2);margin:10px 0}
 .ai-status.ok{background:var(--accent-bg);color:var(--accent)}
 .ai-status.bad{background:var(--danger-bg);color:var(--danger)}
 .ai-status a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+
+/* 相关案例 */
+.case-sheet .panel{height:min(88vh,780px);max-height:min(88vh,780px);
+  height:min(88dvh,780px);max-height:min(88dvh,780px)}
+.case-lead{flex:none;padding:9px 16px;border-bottom:1px solid var(--line);
+  background:var(--warn-bg);color:var(--warn);font-size:11.5px;line-height:1.55}
+.case-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;padding:12px 16px 24px}
+.case-item{padding:12px;border:1px solid var(--line);border-radius:10px;
+  background:var(--panel);box-shadow:var(--shadow)}
+.case-item + .case-item{margin-top:9px}
+.case-head{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:7px}
+.case-user{font-size:13px;font-weight:700;color:var(--ink)}
+.case-id{font-family:var(--mono);font-size:10.5px;color:var(--ink3)}
+.case-badge{margin-left:auto;padding:2px 8px;border-radius:999px;background:var(--accent-bg);
+  color:var(--accent);font-size:10.5px;font-weight:700}
+.case-badge.good{background:var(--accent-bg);color:var(--accent)}
+.case-badge.disc{background:var(--warn-bg);color:var(--warn)}
+.case-row{display:grid;grid-template-columns:34px minmax(0,1fr);gap:7px;
+  margin-top:5px;font-size:12.5px;line-height:1.65;color:var(--ink2)}
+.case-row b{font-size:11px;color:var(--ink3);font-weight:600;line-height:1.9}
+.case-supp{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.case-supp span{padding:1px 7px;border-radius:5px;background:var(--line2);
+  color:var(--ink2);font-size:10.5px;line-height:1.7}
+.case-summary{margin-top:8px;padding:8px 10px;border-radius:7px;background:var(--bg);
+  color:var(--ink2);font-size:12px;line-height:1.65}
+.case-imgs{display:flex;gap:7px;overflow-x:auto;margin-top:9px;padding-bottom:2px;scrollbar-width:none}
+.case-imgs::-webkit-scrollbar{display:none}
+.case-imgs img{flex:none;width:82px;height:82px;object-fit:cover;border:1px solid var(--line);
+  border-radius:8px;background:var(--line2);cursor:zoom-in}
+.case-more{display:block;width:100%;margin-top:10px;min-height:40px;border:1px solid var(--line);
+  border-radius:9px;background:var(--panel);color:var(--accent);font-size:12.5px;font-weight:700}
+.case-empty,.case-error{padding:42px 16px;text-align:center;color:var(--ink3);font-size:13px;line-height:1.8}
+.case-loading{display:flex;align-items:center;justify-content:center;gap:9px;padding:50px 16px;
+  color:var(--ink3);font-size:13px}
+.case-lightbox{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;
+  padding:18px;background:rgba(10,12,11,.92)}
+.case-lightbox.on{display:flex}
+.case-lightbox img{max-width:100%;max-height:calc(100vh - 90px);object-fit:contain;border-radius:8px}
+.case-lightbox button{position:fixed;top:14px;right:14px;min-width:52px;min-height:40px;
+  border:1px solid rgba(255,255,255,.35);border-radius:9px;background:rgba(0,0,0,.45);
+  color:#fff;font-size:13px}
 
 /* 右下角模块快捷跳转 */
 .quicknav{position:fixed;width:58px;height:58px;z-index:55}
@@ -666,6 +737,22 @@ footer .ver{font-family:var(--mono);margin-top:6px}
   </div>
 </div>
 
+<div class="sheet case-sheet" id="caseSheet">
+  <div class="panel">
+    <div class="ph">
+      <h3 id="caseTitle">相关案例</h3>
+      <button type="button" class="sheet-close" id="caseClose">关闭</button>
+    </div>
+    <div class="case-lead" id="caseLead">群友个案体验，不等同于疗效结论；请勿据此自行诊断或调整治疗。</div>
+    <div class="case-body" id="caseBody"></div>
+  </div>
+</div>
+
+<div class="case-lightbox" id="caseLightbox">
+  <button type="button" id="caseLightboxClose">关闭</button>
+  <img id="caseLightboxImg" alt="案例截图">
+</div>
+
 <nav class="quicknav" id="quicknav" aria-label="快捷工具" hidden>
   <div class="quicknav-panel" id="quicknavPanel">
     <div class="quicknav-tabs" role="tablist" aria-label="快捷工具切换">
@@ -691,7 +778,7 @@ footer .ver{font-family:var(--mono);margin-top:6px}
       </button>
       <button type="button" data-jump="how" style="--nav-c:#B07C28">
         <svg class="qnav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
-        合计用量
+        合计用量.Ai科普
       </button>
       <button type="button" data-jump="notes" style="--nav-c:#8f2f2f">
         <svg class="qnav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
@@ -713,13 +800,14 @@ footer .ver{font-family:var(--mono);margin-top:6px}
    ============================================================ */
 var BUNDLE = /*__DATA__*/null;
 var REPO = 'liuchenyu26131/buji-chengfen';
-var BUILD_SHA = ''; // 由 push 脚本自动改写，可留空
+var BUILD_SHA = 'd28b064'; // 固定到本次数据提交，避免旧 cf_ver 缓存
 var BASE = '';
 
 function lsGet(k){ try{ return JSON.parse(localStorage.getItem(k)||'null'); }catch(e){ return null; } }
 function lsSet(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
 
 async function resolveSha(){
+  if (BUILD_SHA) return BUILD_SHA;
   var c = lsGet('cf_ver');
   if (c && c.sha && (Date.now()-c.t) < 600000) return c.sha;
   try{
@@ -730,7 +818,22 @@ async function resolveSha(){
       if (sha){ lsSet('cf_ver', {sha:sha, t:Date.now()}); return sha; }
     }
   }catch(e){}
-  return BUILD_SHA || 'main';
+  return 'main';
+}
+
+async function resolveCaseSha(){
+  if (BUNDLE) return '';
+  var c = lsGet('cf_case_ver');
+  if (c && c.sha && (Date.now()-c.t) < 600000) return c.sha;
+  try{
+    var r = await fetch('https://api.github.com/repos/'+REPO+'/commits/main', {cache:'no-store'});
+    if (r.ok){
+      var j = await r.json();
+      var sha = (j.sha||'').slice(0,7);
+      if (sha){ lsSet('cf_case_ver', {sha:sha, t:Date.now()}); return sha; }
+    }
+  }catch(e){}
+  return 'main';
 }
 
 async function boot(){
@@ -768,6 +871,13 @@ function prepIng(){
 }
 
 var DB = null;                 // {index, ref, version}
+var CASE_INDEX = null;
+var CASE_INDEX_READY = false;
+var CASE_INDEX_BUSY = null;
+var CASE_BASE = '';
+var CASE_CACHE = {};
+var CASE_BUSY = {};
+var caseView = null;
 var PD = {};                   // 已加载的产品
 var SEL = [];                  // [{id, amount}]
 var INGF = '全部';             // 成分合计的类别筛选
@@ -1225,10 +1335,10 @@ var aiDefaultPrompt = '';
 function uniqueIngredientNames(items){
   var seen = {}, out = [];
   (items||[]).forEach(function(g){
-    var key = (g.name||'') + '|' + (g.cls||'');
+    var key = g.name||'';
     if (!g.name || seen[key]) return;
     seen[key] = 1;
-    out.push({name:g.name, cls:g.cls||'', alias:g.alias||''});
+    out.push({name:g.name, alias:g.alias||''});
   });
   return out;
 }
@@ -1261,10 +1371,10 @@ function buildProductAIPrompt(p){
     '计量基准：' + ((p.basis && p.basis.raw) || '—'),
     '当前每日份数：' + fmtNum(amount) + ' ' + ((p.basis && p.basis.unit) || '份'),
     '',
-    '成分清单（仅列名称与类别，不含剂量）：'
+    '成分清单（仅列成分名称）：'
   );
   rows.forEach(function(g,i){
-    lines.push((i+1) + '. ' + g.name + (g.cls ? ' — ' + g.cls : ''));
+    lines.push((i+1) + '. ' + g.name);
   });
   lines.push('', single ? singleIngredientQuestion(rows[0]) : AI_COMBO_SUFFIX);
   return lines.join('\n');
@@ -1273,13 +1383,10 @@ function buildProductAIPrompt(p){
 function buildComboAIPrompt(){
   var r = compute();
   var rows = Array.from(r.ing.values()).filter(function(o){ return o.total > 0; });
-  rows.sort(function(a,b){ return String(a.cls||'').localeCompare(String(b.cls||''),'zh-CN'); });
-  var lines = ['合计后的成分清单（同名同单位已合并，不同形态保留）：'];
+  rows.sort(function(a,b){ return String(a.name||'').localeCompare(String(b.name||''),'zh-CN'); });
+  var lines = ['合计后的成分清单（仅列成分名称）：'];
   rows.forEach(function(o,i){
-    var ids = {};
-    o.items.forEach(function(x){ ids[x.pid]=1; });
-    var n = Object.keys(ids).length;
-    lines.push((i+1) + '. ' + o.name + (o.cls ? ' — ' + o.cls : '') + (n>1 ? '（来自 ' + n + ' 个产品）' : ''));
+    lines.push((i+1) + '. ' + o.name);
   });
   lines.push('', AI_COMBO_SUFFIX);
   return lines.join('\n');
@@ -1316,6 +1423,152 @@ async function openAISheet(mode, pid){
 function closeAISheet(){
   q('#aiSheet').classList.remove('on');
   syncSheetLock();
+}
+
+function caseMeta(pid){
+  return CASE_INDEX && CASE_INDEX.products && CASE_INDEX.products[pid] || null;
+}
+
+async function ensureCaseIndex(){
+  if (CASE_INDEX_READY) return CASE_INDEX;
+  if (CASE_INDEX_BUSY) return CASE_INDEX_BUSY;
+  CASE_INDEX_BUSY = (async function(){
+    try{
+      if (BUNDLE && BUNDLE.cases && BUNDLE.cases.index){
+        CASE_INDEX = BUNDLE.cases.index;
+      }else{
+        var sha = await resolveCaseSha();
+        CASE_BASE = 'https://fastly.jsdelivr.net/gh/'+REPO+'@'+sha+'/data/cases';
+        var res = await fetch(CASE_BASE+'/index.json', {cache:'no-store'});
+        if (!res.ok) throw new Error('case index '+res.status);
+        CASE_INDEX = await res.json();
+      }
+    }catch(e){
+      CASE_INDEX = {products:{}};
+    }finally{
+      CASE_INDEX_READY = true;
+      CASE_INDEX_BUSY = null;
+    }
+    return CASE_INDEX;
+  })();
+  return CASE_INDEX_BUSY;
+}
+
+async function loadCaseFile(pid){
+  if (CASE_CACHE[pid]) return CASE_CACHE[pid];
+  if (!CASE_INDEX_READY) await ensureCaseIndex();
+  var meta = caseMeta(pid);
+  if (!meta) return null;
+  if (BUNDLE && BUNDLE.cases && BUNDLE.cases.products){
+    var bundled = BUNDLE.cases.products[pid] || null;
+    if (bundled) CASE_CACHE[pid] = bundled;
+    return bundled;
+  }
+  if (CASE_BUSY[pid]) return CASE_BUSY[pid];
+  CASE_BUSY[pid] = fetch(CASE_BASE+'/'+encodeURIComponent(meta.file), {cache:'force-cache'})
+    .then(function(res){
+      if (!res.ok) throw new Error('case file '+res.status);
+      return res.json();
+    })
+    .then(function(data){
+      if (!data || !Array.isArray(data.items)) throw new Error('case file malformed');
+      CASE_CACHE[pid] = data;
+      delete CASE_BUSY[pid];
+      return data;
+    })
+    .catch(function(err){
+      delete CASE_BUSY[pid];
+      throw err;
+    });
+  return CASE_BUSY[pid];
+}
+
+function safeCaseImageUrl(value){
+  var url = String(value || '');
+  return /^https:\/\//i.test(url) ? url : '';
+}
+
+function renderCaseList(){
+  if (!caseView || !caseView.data) return;
+  var items = caseView.data.items || [];
+  var shown = Math.min(caseView.shown, items.length);
+  var body = items.slice(0, shown).map(function(item){
+    var discussion = item.type === 'discussion';
+    var status = discussion ? '讨论' : (item.status || '个案');
+    var badgeClass = discussion ? 'disc' : (item.status === '明显改善' ? 'good' : '');
+    var problem = (item.problem || []).join('、');
+    var supplements = (item.supplement || []).map(function(name){
+      return '<span>' + esc(name) + '</span>';
+    }).join('');
+    var images = (item.images || []).map(function(url){
+      var safe = safeCaseImageUrl(url);
+      return safe ? '<img loading="lazy" src="' + escAttr(safe) + '" data-case-img="' + escAttr(safe) + '" alt="案例截图">' : '';
+    }).join('');
+    var summary = item.summary && item.summary !== item.effect
+      ? '<div class="case-summary">' + esc(item.summary) + '</div>' : '';
+    return '<article class="case-item">' +
+      '<div class="case-head"><span class="case-user">' + esc(item.user || '群友') + '</span>' +
+      '<span class="case-id">' + esc(item.id || '') + '</span>' +
+      '<span class="case-badge ' + badgeClass + '">' + esc(status) + '</span></div>' +
+      (problem ? '<div class="case-row"><b>症状</b><span>' + esc(problem) + '</span></div>' : '') +
+      (supplements ? '<div class="case-supp">' + supplements + '</div>' : '') +
+      (item.effect ? '<div class="case-row"><b>效果</b><span>' + esc(item.effect) + '</span></div>' : '') +
+      summary +
+      (images ? '<div class="case-imgs">' + images + '</div>' : '') +
+      '</article>';
+  }).join('');
+  var more = shown < items.length
+    ? '<button type="button" class="case-more" data-case-more>已显示 ' + shown + ' / ' + items.length +
+      ' 条 · 显示更多</button>'
+    : '';
+  var caseBody = q('#caseBody');
+  var previousScroll = caseBody.scrollTop;
+  caseBody.innerHTML = body + more;
+  caseBody.scrollTop = previousScroll;
+}
+
+async function openCaseSheet(pid){
+  var meta = caseMeta(pid);
+  if (!meta) return;
+  var productData = PD[pid] || DB.index.find(function(item){ return item.id === pid; }) || {};
+  caseView = {pid:pid, data:null, shown:10};
+  q('#caseTitle').textContent = (productData.name || pid) + ' · 相关案例（' + meta.count + ' 条）';
+  q('#caseLead').textContent = (CASE_INDEX && CASE_INDEX.disclaimer) ||
+    '群友个案体验，不等同于疗效结论；请勿据此自行诊断或调整治疗。';
+  q('#caseBody').innerHTML = '<div class="case-loading"><span class="spin"></span>正在读取案例反馈…</div>';
+  q('#caseSheet').classList.add('on');
+  syncSheetLock();
+  try{
+    var data = await loadCaseFile(pid);
+    if (!caseView || caseView.pid !== pid) return;
+    if (!data || !data.items || !data.items.length){
+      q('#caseBody').innerHTML = '<div class="case-empty">暂未收录与该产品相关的案例反馈</div>';
+      return;
+    }
+    caseView.data = data;
+    renderCaseList();
+    q('#caseBody').scrollTop = 0;
+  }catch(e){
+    if (!caseView || caseView.pid !== pid) return;
+    q('#caseBody').innerHTML = '<div class="case-error">案例数据暂时没有加载出来，请稍后再试。</div>';
+  }
+}
+
+function closeCaseSheet(){
+  q('#caseSheet').classList.remove('on');
+  syncSheetLock();
+}
+
+function openCaseLightbox(url){
+  var safe = safeCaseImageUrl(url);
+  if (!safe) return;
+  q('#caseLightboxImg').src = safe;
+  q('#caseLightbox').classList.add('on');
+}
+
+function closeCaseLightbox(){
+  q('#caseLightbox').classList.remove('on');
+  q('#caseLightboxImg').removeAttribute('src');
 }
 
 function copyTextSync(text){
@@ -1369,6 +1622,11 @@ function render(){
   if (SEL.some(s=>!PD[s.id])){ main.innerHTML = '<div class="loading"><div class="spin"></div>读取产品数据…</div>'; syncQuickNav(); return; }
 
   var r = compute();
+  if (!CASE_INDEX_READY){
+    ensureCaseIndex().then(function(){
+      if (SEL.length) render();
+    });
+  }
   renderSum(r);
   var html = '';
   html += alertsHTML(r);
@@ -1594,7 +1852,7 @@ function ingHTML(r){
       '</div><div class="val">'+(o.approx?'约 ':'')+fmtVal(o.total, o.unit)+'</div></div>';
   }).join('');
 
-  return '<section id="ingredients"><div class="sect-head"><h2>成分合计（按每日吃量）</h2>'+
+  return '<section id="ingredients"><div class="sect-head"><h2>成分合计（按每日用量）</h2>'+
     '<span class="hint">'+list.length+' 项 · 维A/D3按IU · 不同形态不合并</span></div>'+
     '<div class="ai-combo-row">'+
       '<button type="button" class="ai-btn strong" data-ai-combo aria-label="用 AI 科普当前组合的成分">'+
@@ -1620,6 +1878,7 @@ function howHTML(r){
     var p = x.p, h = p.how || {}, pl = p.plan || {};
     var unit = (p.basis && p.basis.unit) || '份';
     var col = cols[i];
+    var no = (i + 1) < 10 ? '0' + (i + 1) : String(i + 1);
     var sty = col ? ' style="--hc:' + col + ';--hc-rgb:' + hwRGB(col) + '"' : '';
 
     // 时机标签：勿X 表示这个时段要避开（红色 + ✕），不是建议
@@ -1650,13 +1909,17 @@ function howHTML(r){
 
     var dose = pl.dose ? '<div class="hw-dose"><span class="k">原文</span>' +
       '<span class="v">' + esc(pl.dose) + '</span></div>' : '';
-    var aiRow = '<div class="hw-ai-row">'+
+    var cm = caseMeta(p.id);
+    var caseBtn = cm ? '<button type="button" class="hw-case-btn" data-case-product="'+p.id+'" '+
+      'aria-label="查看本品相关案例反馈">案例反馈 <b>'+cm.count+'</b></button>' : '';
+    var aiRow = '<div class="hw-ai-row'+(cm?' has-case':'')+'">'+
       '<button type="button" class="ai-btn" data-ai-product="'+p.id+'" aria-label="用 AI 科普本品成分">'+
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3-1.9 5.8L4 10.7l6.1 1.9L12 18.4l1.9-5.8 6.1-1.9-6.1-1.9L12 3Z"/><path d="M5 3v4"/><path d="M3 5h4"/><path d="M19 17v4"/><path d="M17 19h4"/></svg>'+
-        'AI 功用科普 · 本品</button></div>';
+        'AI 功用科普 · 本品</button>'+caseBtn+'</div>';
 
     return '<div class="how-item' + (col ? ' hwc' : '') + '"' + sty + '>' +
-      '<div class="hw-top"><span class="nm" data-detail="' + p.id + '">' + esc(p.name) + '</span>' +
+      '<div class="hw-top"><span class="hw-no" aria-hidden="true"><span>' + no + '</span></span>' +
+      '<span class="nm" data-detail="' + p.id + '">' + esc(p.name) + '</span>' +
       '<span class="hw-qty"><b>' + fmtNum(x.amount) + '</b><i>' + esc(unit) + '/天</i></span></div>' +
       aiRow +
       (tags ? '<div class="hw-tags">' + tags + '</div>' : '') +
@@ -2064,6 +2327,10 @@ async function openDetail(id){
   q('#gapSheet').onclick = function(e){ if (e.target===this) closeGapSheet(); };
   q('#aiClose').onclick = closeAISheet;
   q('#aiSheet').onclick = function(e){ if (e.target===this) closeAISheet(); };
+  q('#caseClose').onclick = closeCaseSheet;
+  q('#caseSheet').onclick = function(e){ if (e.target===this) closeCaseSheet(); };
+  q('#caseLightboxClose').onclick = closeCaseLightbox;
+  q('#caseLightbox').onclick = function(e){ if (e.target===this) closeCaseLightbox(); };
   q('#aiPrompt').addEventListener('input', updateAICount);
   q('#aiReset').onclick = function(){
     q('#aiPrompt').value = aiDefaultPrompt;
@@ -2116,8 +2383,15 @@ async function openDetail(id){
   q('#psearch').oninput = renderList;
 
   document.addEventListener('click', function(e){
-    var t = e.target.closest ? e.target.closest('[data-rm],[data-detail],[data-toggle],[data-quick-toggle],[data-quick],[data-qtab],[data-gap-el],[data-gap-add],[data-ai-product],[data-ai-combo],[data-ingf],[data-step],[data-jump]') : null;
+    var t = e.target.closest ? e.target.closest('[data-rm],[data-detail],[data-toggle],[data-quick-toggle],[data-quick],[data-qtab],[data-gap-el],[data-gap-add],[data-ai-product],[data-ai-combo],[data-case-product],[data-case-more],[data-case-img],[data-ingf],[data-step],[data-jump]') : null;
     if (!t) return;
+    if (t.dataset.caseProduct){ openCaseSheet(t.dataset.caseProduct); return; }
+    if (t.hasAttribute('data-case-more') && caseView){
+      caseView.shown += 10;
+      renderCaseList();
+      return;
+    }
+    if (t.dataset.caseImg){ openCaseLightbox(t.dataset.caseImg); return; }
     if (t.dataset.aiProduct){ openAISheet('product', t.dataset.aiProduct); return; }
     if (t.hasAttribute('data-ai-combo')){ openAISheet('combo'); return; }
     if (t.dataset.gapEl){ handleGapCard(t.dataset.gapEl, parseFloat(t.dataset.gapMg)); return; }
@@ -2156,7 +2430,11 @@ async function openDetail(id){
     if (!inNav) setQuickNavOpen(false);
   });
   document.addEventListener('keydown', function(e){
-    if (e.key === 'Escape') setQuickNavOpen(false);
+    if (e.key === 'Escape'){
+      if (q('#caseLightbox').classList.contains('on')) closeCaseLightbox();
+      else if (q('#caseSheet').classList.contains('on')) closeCaseSheet();
+      setQuickNavOpen(false);
+    }
   });
   document.addEventListener('input', function(e){
     var id = e.target.dataset && e.target.dataset.amt;
