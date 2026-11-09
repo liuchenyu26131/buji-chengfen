@@ -87,8 +87,9 @@ header.is-collapsed .selbar{max-height:0;padding-bottom:0;opacity:0;pointer-even
   display:grid;place-items:center;font-size:13px;line-height:1;font-weight:600}
 .chip .stp button:active{background:var(--line)}
 .chip input{
-  width:46px;text-align:center;border:1px solid transparent;border-radius:7px;
-  background:transparent;padding:3px 0;font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums;
+  width:52px;text-align:center;border:1px solid transparent;border-radius:7px;
+  background:transparent;padding:3px 0;font-family:var(--mono);font-size:16px;
+  font-variant-numeric:tabular-nums;touch-action:manipulation;
 }
 .chip input:focus{outline:none;border-color:var(--line);background:var(--field)}
 .chip .un{font-size:11px;color:var(--ink3)}
@@ -288,7 +289,8 @@ html[data-theme="night"] #notes{--sec-c:#e3a1a1;--sec-rgb:227,161,161}
 .multi{background:var(--accent-bg);border-radius:5px;padding:0 5px;font-size:10.5px;color:var(--accent);margin-left:4px;font-family:inherit}
 
 /* 合计用量：--hc / --hc-rgb 由 howHTML() 按产品注入，单产品时退回默认墨绿 */
-.how-item{--hc:var(--accent);--hc-rgb:31,107,82;padding:12px 14px 13px;border-top:1px solid var(--line2)}
+.how-item{--hc:var(--accent);--hc-rgb:31,107,82;position:relative;padding:12px 14px 13px;
+  border-top:1px solid var(--line2)}
 .how-item:first-child{border-top:0}
 .hw-top{display:flex;align-items:flex-start;gap:10px}
 .hw-no{flex:none;display:inline-flex;align-items:center;justify-content:center;
@@ -299,9 +301,16 @@ html[data-theme="night"] #notes{--sec-c:#e3a1a1;--sec-rgb:227,161,161}
   box-shadow:0 2px 5px rgba(var(--hc-rgb),.18)}
 .hw-no span{display:inline-block;transform:skewX(10deg)}
 .hw-top .nm{flex:1;min-width:0;font-size:13.5px;font-weight:700;line-height:1.45;cursor:pointer}
-.hw-qty{flex:none;text-align:right;white-space:nowrap}
-.hw-qty b{font-family:var(--mono);font-size:18px;font-weight:600;letter-spacing:-.02em}
-.hw-qty i{font-style:normal;font-size:11px;color:var(--ink3);margin-left:3px}
+.hw-qty{position:relative;flex:none;min-width:76px;padding:5px 5px 5px 16px;
+  text-align:right;white-space:nowrap}
+.hw-qty::before{content:"";position:absolute;z-index:0;top:-12px;right:-14px;
+  width:96px;height:47px;pointer-events:none;
+  background:linear-gradient(220deg,rgba(var(--hc-rgb),.18) 0%,rgba(var(--hc-rgb),.09) 58%,rgba(var(--hc-rgb),0) 100%);
+  border-top:2px solid var(--hc);border-right:2px solid var(--hc);
+  border-radius:0 12px 0 30px}
+.hw-qty b,.hw-qty i{position:relative;z-index:1}
+.hw-qty b{font-family:var(--mono);font-size:19px;font-weight:700;letter-spacing:-.02em;color:var(--hc)}
+.hw-qty i{font-style:normal;font-size:11px;font-weight:600;color:var(--hc);margin-left:3px}
 .hw-tags{margin-top:2px}
 .tag{display:inline-block;font-size:11.5px;padding:1.5px 8px;border-radius:5px;background:var(--line2);color:var(--ink2);margin:5px 5px 0 0;line-height:1.5}
 .tag.ng{background:var(--danger-bg);color:var(--danger)}
@@ -421,7 +430,9 @@ details .bd hr{border:0;border-top:1px dashed var(--line2);margin:10px 0}
   -webkit-overflow-scrolling:touch;padding:4px 16px 30px;font-size:13.5px;line-height:1.8;color:var(--ink2)
 }
 .dmeta{font-size:12px;color:var(--ink3);margin:6px 0 2px}
-.d-oneline{font-size:13.5px}
+.d-oneline{margin:0;padding:11px 13px;border:1px solid rgba(31,107,82,.18);
+  border-left:3px solid var(--accent);border-radius:8px;background:var(--accent-bg);
+  color:var(--ink);font-size:14px;line-height:1.75}
 .d-advice{margin:12px 0 2px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);
   background:var(--panel);line-height:1.65}
 .dsec{margin:0;padding:16px 0 9px;border-top:1px solid var(--line)}
@@ -434,6 +445,7 @@ details .bd hr{border:0;border-top:1px dashed var(--line2);margin:10px 0}
 .dsec-dose{padding-top:20px;border-top:2px solid var(--accent)}
 .dsec-dose h2{font-size:20px;color:var(--accent)}
 .dsec-dose h2::before{width:5px;height:21px}
+.dsec-oneline h2{color:var(--accent)}
 .dsec-notes h2{color:var(--danger)}
 .dsec-notes h2::before{background:var(--danger)}
 .dsec-body > :last-child{margin-bottom:0}
@@ -488,65 +500,86 @@ details .bd hr{border:0;border-top:1px dashed var(--line2);margin:10px 0}
 .ai-status a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 
 /* 相关案例 */
+.case-sheet{--case-fs:1}
+.case-sheet.case-large{--case-fs:1.16}
 .case-sheet .panel{height:min(88vh,780px);max-height:min(88vh,780px);
   height:min(88dvh,780px);max-height:min(88dvh,780px)}
+.case-sheet .ph{position:relative;padding:14px 100px 10px 16px}
+.case-sheet .ph h3{margin:0;font-size:calc(15px * var(--case-fs));line-height:1.45;
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.case-head-tools{position:absolute;top:10px;right:12px;z-index:2;display:flex;align-items:center;gap:6px}
+.case-zoom-btn{width:34px;height:30px;display:grid;place-items:center;border:1px solid var(--line);
+  border-radius:8px;background:var(--panel);color:var(--ink2);font-family:var(--mono);
+  font-size:11px;font-weight:700;line-height:1}
+.case-sheet .ph .sheet-close{position:static;padding:4px 9px;background:var(--bg)}
 .case-lead{flex:none;padding:9px 16px;border-bottom:1px solid var(--line);
-  background:var(--warn-bg);color:var(--warn);font-size:11.5px;line-height:1.55}
+  background:var(--warn-bg);color:var(--warn);font-size:calc(11.5px * var(--case-fs));line-height:1.55}
 .case-filters{flex:none;display:flex;gap:6px;overflow-x:auto;padding:9px 12px;
   border-bottom:1px solid var(--line);background:var(--bg);scrollbar-width:none}
 .case-filters::-webkit-scrollbar{display:none}
 .case-filter{white-space:nowrap;padding:5px 8px;border:1px solid var(--line);
-  border-radius:999px;background:var(--panel);color:var(--ink2);font-size:11.5px;line-height:1.45}
-.case-filter b{font-family:var(--mono);font-size:10.5px;margin-left:3px;color:var(--ink3)}
+  border-radius:999px;background:var(--panel);color:var(--ink2);font-size:calc(11.5px * var(--case-fs));line-height:1.45}
+.case-filter b{font-family:var(--mono);font-size:calc(10.5px * var(--case-fs));margin-left:3px;color:var(--ink3)}
 .case-filter.on{background:var(--accent);border-color:var(--accent);color:var(--inverse);font-weight:700}
 .case-filter.on b{color:inherit;opacity:.8}
 @media(max-width:360px){.case-filters{display:grid;grid-template-columns:1fr 1fr;overflow:visible}
   .case-filter{text-align:center}}
+.case-sort{flex:none;display:flex;align-items:center;gap:6px;padding:7px 12px;
+  border-bottom:1px solid var(--line);background:var(--bg)}
+.case-sort .lbl{font-size:calc(11px * var(--case-fs));color:var(--ink3);margin-right:2px}
+.case-sort button{padding:4px 9px;border:1px solid var(--line);border-radius:999px;
+  background:var(--panel);color:var(--ink2);font-size:calc(11px * var(--case-fs));line-height:1.45}
+.case-sort button.on{background:var(--accent-bg);border-color:var(--accent);color:var(--accent);font-weight:700}
 .case-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;
-  -webkit-overflow-scrolling:touch;padding:12px 16px 24px}
+  -webkit-overflow-scrolling:touch;padding:12px 16px 24px;font-size:calc(12.5px * var(--case-fs))}
 .case-item{padding:12px;border:1px solid var(--line);border-radius:10px;
   background:var(--panel);box-shadow:var(--shadow)}
 .case-item + .case-item{margin-top:9px}
 .case-head{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:7px}
 .case-user{display:inline-flex;align-items:center;min-height:23px;padding:2px 9px;
   border-radius:999px;background:var(--accent);color:var(--inverse);
-  font-size:11.5px;font-weight:700;line-height:1.4}
-.case-id{font-family:var(--mono);font-size:10.5px;color:var(--ink3)}
+  font-size:calc(11.5px * var(--case-fs));font-weight:700;line-height:1.4}
+.case-id{font-family:var(--mono);font-size:calc(10.5px * var(--case-fs));color:var(--ink3)}
 .case-badge{margin-left:auto;padding:3px 9px;border-radius:999px;background:var(--line2);
-  color:var(--ink2);font-size:10.5px;font-weight:700;line-height:1.4}
+  color:var(--ink2);font-size:calc(10.5px * var(--case-fs));font-weight:700;line-height:1.4}
 .case-badge.good{background:var(--accent);color:var(--inverse)}
 .case-badge.mid{background:var(--warn-bg);color:var(--warn)}
 .case-badge.disc{background:var(--warn-bg);color:var(--warn)}
 .case-problem{display:flex;align-items:flex-start;gap:6px;flex-wrap:wrap;margin:2px 0 8px;
-  font-size:11.5px;line-height:1.6;color:var(--ink2)}
+  font-size:calc(11.5px * var(--case-fs));line-height:1.6;color:var(--ink2)}
 .case-problem b{flex:none;color:var(--ink3);font-weight:600}
 .case-problem span{padding:1px 7px;border-radius:5px;background:var(--accent-bg);color:var(--accent)}
 .case-block{margin-top:7px;padding:8px 10px;border-left:3px solid var(--line);
   border-radius:6px;line-height:1.65}
 .case-block.supp{background:var(--warn-bg);border-left-color:var(--warn)}
 .case-block.effect{background:rgba(107,94,152,.08);border-left-color:#6B5E98}
-.case-label{display:block;margin-bottom:3px;font-size:10.5px;font-weight:700;
+.case-label{display:block;margin-bottom:3px;font-size:calc(10.5px * var(--case-fs));font-weight:700;
   letter-spacing:.02em;color:var(--ink3)}
 .case-block.supp .case-label{color:var(--warn)}
 .case-block.effect .case-label{color:#6B5E98}
-.case-effect{font-size:12.5px;line-height:1.7;color:var(--ink2)}
+.case-effect{font-size:calc(12.5px * var(--case-fs));line-height:1.7;color:var(--ink2)}
 .case-supp{display:flex;flex-wrap:wrap;gap:4px}
 .case-supp span{padding:2px 8px;border-radius:999px;background:var(--panel);
   border:1px solid rgba(138,75,18,.14);
-  color:var(--warn);font-size:10.5px;font-weight:600;line-height:1.65}
+  color:var(--warn);font-size:calc(10.5px * var(--case-fs));font-weight:600;line-height:1.65}
 .case-story{margin-top:8px;padding:7px 10px;border-radius:6px;border-left:3px solid var(--line);
-  background:var(--bg);color:var(--ink3);font-size:11.5px;line-height:1.65}
+  background:var(--bg);color:var(--ink3);font-size:calc(11.5px * var(--case-fs));line-height:1.65}
 .case-gallery{height:260px;overflow-y:auto;overscroll-behavior:contain;margin-top:9px;
   padding:6px;border:1px solid var(--line);border-radius:8px;background:var(--bg);
   -webkit-overflow-scrolling:touch}
 .case-imgs{display:flex;flex-direction:column;gap:8px;margin:0}
+.case-img-item{position:relative;min-height:80px;border-radius:6px;background:var(--line2)}
 .case-imgs img{display:block;width:100%;height:auto;object-fit:contain;border-radius:6px;
   border:1px solid var(--line);background:var(--line2);cursor:zoom-in}
+.case-img-item img[hidden]{display:none}
+.case-img-retry{position:absolute;inset:0;width:100%;min-height:110px;border:1px dashed var(--line);
+  border-radius:6px;background:var(--panel);color:var(--ink3);font-size:calc(12px * var(--case-fs));line-height:1.7}
+.case-img-retry[hidden]{display:none}
 .case-more{display:block;width:100%;margin-top:10px;min-height:40px;border:1px solid var(--line);
-  border-radius:9px;background:var(--panel);color:var(--accent);font-size:12.5px;font-weight:700}
-.case-empty,.case-error{padding:42px 16px;text-align:center;color:var(--ink3);font-size:13px;line-height:1.8}
+  border-radius:9px;background:var(--panel);color:var(--accent);font-size:calc(12.5px * var(--case-fs));font-weight:700}
+.case-empty,.case-error{padding:42px 16px;text-align:center;color:var(--ink3);font-size:calc(13px * var(--case-fs));line-height:1.8}
 .case-loading{display:flex;align-items:center;justify-content:center;gap:9px;padding:50px 16px;
-  color:var(--ink3);font-size:13px}
+  color:var(--ink3);font-size:calc(13px * var(--case-fs))}
 .case-lightbox{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;
   padding:18px;background:rgba(10,12,11,.92)}
 .case-lightbox.on{display:flex}
@@ -784,10 +817,18 @@ footer .ver{font-family:var(--mono);margin-top:6px}
   <div class="panel">
     <div class="ph">
       <h3 id="caseTitle">相关案例</h3>
-      <button type="button" class="sheet-close" id="caseClose">关闭</button>
+      <div class="case-head-tools">
+        <button type="button" class="case-zoom-btn" id="caseZoomToggle" aria-label="放大案例文字">A+</button>
+        <button type="button" class="sheet-close" id="caseClose">关闭</button>
+      </div>
     </div>
     <div class="case-lead" id="caseLead">群友个案体验，不等同于疗效结论；请勿据此自行诊断或调整治疗。</div>
     <div class="case-filters" id="caseFilters" aria-label="案例反馈筛选" hidden></div>
+    <div class="case-sort" id="caseSort" aria-label="案例排序" hidden>
+      <span class="lbl">排序</span>
+      <button type="button" data-case-sort="latest">最近优先</button>
+      <button type="button" data-case-sort="earliest">最早优先</button>
+    </div>
     <div class="case-body" id="caseBody"></div>
   </div>
 </div>
@@ -805,7 +846,7 @@ footer .ver{font-family:var(--mono);margin-top:6px}
   <button type="button" class="case-lightbox-nav next" id="caseNext" aria-label="下一张图片">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
   </button>
-  <div class="case-lightbox-meta"><b id="caseLightboxCount">1 / 1</b><span>双指缩放 · 左右滑动切换</span></div>
+  <div class="case-lightbox-meta"><b id="caseLightboxCount">1 / 1</b><span id="caseLightboxHint">双指缩放 · 左右滑动切换</span></div>
 </div>
 
 <nav class="quicknav" id="quicknav" aria-label="快捷工具" hidden>
@@ -935,6 +976,7 @@ var CASE_CACHE = {};
 var CASE_BUSY = {};
 var caseView = null;
 var caseGallery = {images:[], index:0, scale:1, x:0, y:0, pointers:new Map(), single:null, pinch:null};
+var caseFontLarge = lsGet('cf_case_large') === true;
 var PD = {};                   // 已加载的产品
 var SEL = [];                  // [{id, amount}]
 var INGF = '全部';             // 成分合计的类别筛选
@@ -1241,7 +1283,7 @@ function renderChips(){
     el.className = 'chip fadein';
     el.innerHTML = '<span class="nm" data-detail="'+s.id+'" title="'+escAttr(it.name)+'">'+esc(it.name)+'</span>'+
       '<span class="stp"><button data-step="'+s.id+'" data-dir="-1" aria-label="减少">−</button>'+
-      '<input type="number" step="0.1" min="0" value="'+s.amount+'" data-amt="'+s.id+'">'+
+      '<input type="number" step="0.1" min="0" inputmode="decimal" value="'+s.amount+'" data-amt="'+s.id+'">'+
       '<button data-step="'+s.id+'" data-dir="1" aria-label="增加">+</button></span>'+
       '<span class="un">'+esc(it.defaultUnit||'份')+'/天</span>'+
       '<button class="x" data-rm="'+s.id+'" aria-label="移除">×</button>';
@@ -1542,7 +1584,85 @@ async function loadCaseFile(pid){
 
 function safeCaseImageUrl(value){
   var url = String(value || '');
-  return /^https:\/\//i.test(url) ? url : '';
+  try{
+    var parsed = new URL(url, location.href);
+    if (parsed.protocol !== 'https:') return '';
+    if (parsed.hostname.endsWith('jsdelivr.net')) parsed.hostname = 'gcore.jsdelivr.net';
+    return parsed.href;
+  }catch(e){
+    return '';
+  }
+}
+
+function caseImageFallbackUrl(value){
+  var url = safeCaseImageUrl(value);
+  if (!url) return '';
+  try{
+    var parsed = new URL(url);
+    if (parsed.hostname === 'gcore.jsdelivr.net') parsed.hostname = 'cdn.jsdelivr.net';
+    else if (parsed.hostname === 'cdn.jsdelivr.net' || parsed.hostname === 'fastly.jsdelivr.net') parsed.hostname = 'gcore.jsdelivr.net';
+    else return '';
+    return parsed.href;
+  }catch(e){
+    return '';
+  }
+}
+
+function retryCaseImageUrl(value){
+  var url = safeCaseImageUrl(value);
+  if (!url) return '';
+  return url + (url.indexOf('?') >= 0 ? '&' : '?') + 'case_retry=' + Date.now();
+}
+
+function markCaseImageFailed(img){
+  img.dataset.caseFailed = '1';
+  delete img.dataset.caseTimer;
+  if (img.id === 'caseLightboxImg'){
+    img.hidden = true;
+    q('#caseLightboxHint').textContent = '图片加载失败，请关闭后重试';
+    return;
+  }
+  var item = img.closest('.case-img-item');
+  if (!item) return;
+  img.hidden = true;
+  var retry = item.querySelector('.case-img-retry');
+  if (retry) retry.hidden = false;
+}
+
+function handleCaseImageError(img){
+  var fallback = img.dataset.caseFallback || '';
+  if (fallback && img.dataset.caseStage !== 'fallback'){
+    img.dataset.caseStage = 'fallback';
+    img.dataset.caseFailed = '';
+    img.hidden = false;
+    img.src = fallback;
+    armCaseImageTimeout(img);
+    return;
+  }
+  markCaseImageFailed(img);
+}
+
+function armCaseImageTimeout(img){
+  if (!img || img.dataset.caseFailed === '1') return;
+  var token = String(Date.now()) + Math.random();
+  img.dataset.caseTimer = token;
+  setTimeout(function(){
+    if (img.dataset.caseTimer !== token || img.dataset.caseFailed === '1') return;
+    if (img.naturalWidth > 0) return;
+    var fallback = img.dataset.caseFallback || '';
+    if (fallback && img.dataset.caseStage !== 'fallback'){
+      img.dataset.caseStage = 'fallback';
+      img.hidden = false;
+      img.src = fallback;
+      armCaseImageTimeout(img);
+    }else{
+      markCaseImageFailed(img);
+    }
+  }, 5000);
+}
+
+function watchCaseImages(root){
+  (root || document).querySelectorAll('.case-imgs img').forEach(armCaseImageTimeout);
 }
 
 function caseBucket(item){
@@ -1550,15 +1670,48 @@ function caseBucket(item){
   return item.status === '明显改善' ? 'good' : 'other';
 }
 
+function caseSortValue(item){
+  var match = String(item.id || '').match(/\d+/g);
+  return match && match.length ? Number(match[match.length - 1]) : 0;
+}
+
 function filteredCaseItems(){
   var items = caseView && caseView.data && caseView.data.items || [];
-  if (!caseView || !caseView.filter || caseView.filter === 'all') return items;
-  return items.filter(function(item){ return caseBucket(item) === caseView.filter; });
+  if (caseView && caseView.filter && caseView.filter !== 'all'){
+    items = items.filter(function(item){ return caseBucket(item) === caseView.filter; });
+  }
+  items = items.slice();
+  var latest = !caseView || caseView.sort !== 'earliest';
+  items.sort(function(a, b){
+    var diff = caseSortValue(a) - caseSortValue(b);
+    if (!diff) diff = String(a.id || '').localeCompare(String(b.id || ''), 'zh-CN');
+    return latest ? -diff : diff;
+  });
+  return items;
+}
+
+function renderCaseSort(){
+  if (!caseView || !caseView.data){
+    q('#caseSort').hidden = true;
+    return;
+  }
+  q('#caseSort').hidden = false;
+  q('#caseSort').querySelectorAll('[data-case-sort]').forEach(function(button){
+    button.classList.toggle('on', button.dataset.caseSort === caseView.sort);
+  });
+}
+
+function applyCaseFontSize(persist){
+  q('#caseSheet').classList.toggle('case-large', caseFontLarge);
+  q('#caseZoomToggle').textContent = caseFontLarge ? 'A−' : 'A+';
+  q('#caseZoomToggle').setAttribute('aria-label', caseFontLarge ? '缩小案例文字' : '放大案例文字');
+  if (persist) lsSet('cf_case_large', caseFontLarge);
 }
 
 function renderCaseFilters(){
   if (!caseView || !caseView.data){
     q('#caseFilters').hidden = true;
+    q('#caseSort').hidden = true;
     return;
   }
   var all = caseView.data.items || [];
@@ -1575,13 +1728,14 @@ function renderCaseFilters(){
       '" data-case-filter="'+def.id+'">'+def.label+'<b>'+counts[def.id]+'</b></button>';
   }).join('');
   q('#caseFilters').hidden = false;
+  renderCaseSort();
 }
 
 function renderCaseList(){
   if (!caseView || !caseView.data) return;
   var items = filteredCaseItems();
   var shown = Math.min(caseView.shown, items.length);
-  var body = items.slice(0, shown).map(function(item){
+  var body = items.slice(0, shown).map(function(item, itemIndex){
     var bucket = caseBucket(item);
     var status = bucket === 'discussion' ? '讨论' : (item.status || '未标结果');
     var badgeClass = bucket === 'discussion' ? 'disc' : (bucket === 'good' ? 'good' : 'mid');
@@ -1593,7 +1747,14 @@ function renderCaseList(){
     }).join('');
     var images = (item.images || []).map(function(url){
       var safe = safeCaseImageUrl(url);
-      return safe ? '<img loading="lazy" src="' + escAttr(safe) + '" data-case-img="' + escAttr(safe) + '" alt="案例截图">' : '';
+      if (!safe) return '';
+      var fallback = caseImageFallbackUrl(safe);
+      return '<div class="case-img-item">' +
+        '<img loading="' + (itemIndex < 5 ? 'eager' : 'lazy') + '" decoding="async" src="' + escAttr(safe) +
+        '" data-case-img="' + escAttr(safe) + '" data-case-primary="' + escAttr(safe) +
+        '" data-case-fallback="' + escAttr(fallback) + '" data-case-stage="primary" alt="案例截图">' +
+        '<button type="button" class="case-img-retry" data-case-img-retry hidden>图片加载失败，点击重试</button>' +
+        '</div>';
     }).filter(Boolean);
     var summary = item.summary && item.summary !== item.effect
       ? '<div class="case-story">「' + esc(item.summary) + '」</div>' : '';
@@ -1620,18 +1781,24 @@ function renderCaseList(){
   var previousScroll = caseBody.scrollTop;
   caseBody.innerHTML = body + more;
   caseBody.scrollTop = previousScroll;
+  watchCaseImages(caseBody);
 }
 
 async function openCaseSheet(pid){
   var meta = caseMeta(pid);
   if (!meta) return;
   var productData = PD[pid] || DB.index.find(function(item){ return item.id === pid; }) || {};
-  caseView = {pid:pid, data:null, shown:5, filter:'all'};
+  caseView = {
+    pid:pid, data:null, shown:5, filter:'all',
+    sort:lsGet('cf_case_sort') === 'earliest' ? 'earliest' : 'latest'
+  };
   q('#caseTitle').textContent = (productData.name || pid) + ' · 相关案例（' + meta.count + ' 条）';
   q('#caseLead').textContent = (CASE_INDEX && CASE_INDEX.disclaimer) ||
     '群友个案体验，不等同于疗效结论；请勿据此自行诊断或调整治疗。';
   q('#caseFilters').hidden = true;
   q('#caseFilters').innerHTML = '';
+  q('#caseSort').hidden = true;
+  applyCaseFontSize(false);
   q('#caseBody').innerHTML = '<div class="case-loading"><span class="spin"></span>正在读取案例反馈…</div>';
   q('#caseSheet').classList.add('on');
   syncSheetLock();
@@ -1640,6 +1807,7 @@ async function openCaseSheet(pid){
     if (!caseView || caseView.pid !== pid) return;
     if (!data || !data.items || !data.items.length){
       q('#caseFilters').hidden = true;
+      q('#caseSort').hidden = true;
       q('#caseBody').innerHTML = '<div class="case-empty">暂未收录与该产品相关的案例反馈</div>';
       return;
     }
@@ -1649,6 +1817,8 @@ async function openCaseSheet(pid){
     q('#caseBody').scrollTop = 0;
   }catch(e){
     if (!caseView || caseView.pid !== pid) return;
+    q('#caseFilters').hidden = true;
+    q('#caseSort').hidden = true;
     q('#caseBody').innerHTML = '<div class="case-error">案例数据暂时没有加载出来，请稍后再试。</div>';
   }
 }
@@ -1683,14 +1853,23 @@ function caseGallerySetIndex(index){
   var total = caseGallery.images.length;
   if (!total) return;
   caseGallery.index = (index + total) % total;
-  q('#caseLightboxImg').src = caseGallery.images[caseGallery.index];
+  var primary = caseGallery.images[caseGallery.index];
+  var lightboxImg = q('#caseLightboxImg');
+  lightboxImg.hidden = false;
+  lightboxImg.dataset.casePrimary = primary;
+  lightboxImg.dataset.caseFallback = caseImageFallbackUrl(primary);
+  lightboxImg.dataset.caseStage = 'primary';
+  lightboxImg.dataset.caseFailed = '';
+  lightboxImg.src = primary;
   q('#caseLightboxCount').textContent = (caseGallery.index + 1) + ' / ' + total;
+  q('#caseLightboxHint').textContent = '双指缩放 · 左右滑动切换';
   q('#casePrev').disabled = total < 2;
   q('#caseNext').disabled = total < 2;
   caseGallery.pointers.clear();
   caseGallery.single = null;
   caseGallery.pinch = null;
   caseGalleryResetTransform();
+  armCaseImageTimeout(lightboxImg);
 }
 
 function caseGalleryStep(delta){
@@ -2481,9 +2660,7 @@ async function openDetail(id){
   q('#dtitle').title = p.name;
   var html = '<div class="dmeta">'+p.id+' · '+esc(p.spec)+' · 计量基准 '+esc(p.basis.raw)+
       (p.grade?' · 覆盖 '+esc(p.grade)+' 级':'')+'</div>';
-  if (p.oneLine) html += '<blockquote class="d-oneline">'+esc(p.oneLine)+'</blockquote>';
-  if (p.advice) html += '<div class="d-advice"><b>建议用量：</b>'+esc(p.advice)+
-    (p.dose&&p.dose.confidence?'　<span style="color:var(--ink3);font-size:12px">（置信度 '+esc(p.dose.confidence)+'）</span>':'')+'</div>';
+  if (p.advice) html += '<div class="d-advice"><b>建议用量：</b>'+esc(p.advice)+'</div>';
   var h = p.how||{};
   howKeys(h).forEach(function(k){
     if (h[k] && h[k].html) html += detailSection(k, h[k].html, k === '剂量' ? 'dsec-dose' : '');
@@ -2492,6 +2669,9 @@ async function openDetail(id){
     if (!s.html) return;
     html += detailSection(s.title, s.html);
   });
+  if (p.oneLine){
+    html += detailSection('一句话记住', '<div class="d-oneline">'+esc(p.oneLine)+'</div>', 'dsec-oneline');
+  }
   if ((p.notes||[]).length){
     var notes = '';
     p.notes.forEach(function(n){ notes += '<div style="margin-bottom:6px">'+n.html+'</div>'; });
@@ -2562,6 +2742,10 @@ async function openDetail(id){
   q('#aiSheet').onclick = function(e){ if (e.target===this) closeAISheet(); };
   q('#caseClose').onclick = closeCaseSheet;
   q('#caseSheet').onclick = function(e){ if (e.target===this) closeCaseSheet(); };
+  q('#caseZoomToggle').onclick = function(){
+    caseFontLarge = !caseFontLarge;
+    applyCaseFontSize(true);
+  };
   q('#caseLightboxClose').onclick = closeCaseLightbox;
   q('#casePrev').onclick = function(){ caseGalleryStep(-1); };
   q('#caseNext').onclick = function(){ caseGalleryStep(1); };
@@ -2570,6 +2754,24 @@ async function openDetail(id){
   q('#caseLightboxStage').addEventListener('pointermove', caseGalleryPointerMove, {passive:false});
   q('#caseLightboxStage').addEventListener('pointerup', function(e){ caseGalleryPointerUp(e, false); });
   q('#caseLightboxStage').addEventListener('pointercancel', function(e){ caseGalleryPointerUp(e, true); });
+  document.addEventListener('error', function(e){
+    var img = e.target;
+    if (img && img.tagName === 'IMG' && (img.dataset.casePrimary || img.id === 'caseLightboxImg')){
+      handleCaseImageError(img);
+    }
+  }, true);
+  document.addEventListener('load', function(e){
+    var img = e.target;
+    if (img && img.tagName === 'IMG' && (img.dataset.casePrimary || img.id === 'caseLightboxImg')){
+      delete img.dataset.caseTimer;
+      img.dataset.caseFailed = '';
+      img.hidden = false;
+      var item = img.closest('.case-img-item');
+      var retry = item && item.querySelector('.case-img-retry');
+      if (retry) retry.hidden = true;
+    }
+  }, true);
+  applyCaseFontSize(false);
   q('#aiPrompt').addEventListener('input', updateAICount);
   q('#aiReset').onclick = function(){
     q('#aiPrompt').value = aiDefaultPrompt;
@@ -2622,7 +2824,7 @@ async function openDetail(id){
   q('#psearch').oninput = renderList;
 
   document.addEventListener('click', function(e){
-    var t = e.target.closest ? e.target.closest('[data-rm],[data-detail],[data-toggle],[data-quick-toggle],[data-quick],[data-qtab],[data-gap-el],[data-gap-add],[data-ai-product],[data-ai-combo],[data-case-product],[data-case-filter],[data-case-more],[data-case-img],[data-ingf],[data-step],[data-jump]') : null;
+    var t = e.target.closest ? e.target.closest('[data-rm],[data-detail],[data-toggle],[data-quick-toggle],[data-quick],[data-qtab],[data-gap-el],[data-gap-add],[data-ai-product],[data-ai-combo],[data-case-product],[data-case-filter],[data-case-sort],[data-case-more],[data-case-img],[data-case-img-retry],[data-ingf],[data-step],[data-jump]') : null;
     if (!t) return;
     if (t.dataset.caseProduct){ openCaseSheet(t.dataset.caseProduct); return; }
     if (t.dataset.caseFilter && caseView){
@@ -2633,9 +2835,31 @@ async function openDetail(id){
       q('#caseBody').scrollTop = 0;
       return;
     }
+    if (t.dataset.caseSort && caseView){
+      caseView.sort = t.dataset.caseSort === 'earliest' ? 'earliest' : 'latest';
+      caseView.shown = 5;
+      lsSet('cf_case_sort', caseView.sort);
+      renderCaseSort();
+      renderCaseList();
+      q('#caseBody').scrollTop = 0;
+      return;
+    }
     if (t.hasAttribute('data-case-more') && caseView){
       caseView.shown += 5;
       renderCaseList();
+      return;
+    }
+    if (t.hasAttribute('data-case-img-retry')){
+      var imageItem = t.closest('.case-img-item');
+      var retryImage = imageItem && imageItem.querySelector('img');
+      if (retryImage){
+        t.hidden = true;
+        retryImage.hidden = false;
+        retryImage.dataset.caseStage = 'primary';
+        retryImage.dataset.caseFailed = '';
+        retryImage.src = retryCaseImageUrl(retryImage.dataset.casePrimary);
+        armCaseImageTimeout(retryImage);
+      }
       return;
     }
     if (t.dataset.caseImg){ openCaseLightbox(t.dataset.caseImg, t); return; }
