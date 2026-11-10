@@ -1567,11 +1567,17 @@ async function ensureShopIndex(){
       if (BUNDLE && BUNDLE.shop){
         SHOP_INDEX = BUNDLE.shop;
       }else{
-        var sha = await resolveCaseSha();
-        SHOP_BASE = 'https://fastly.jsdelivr.net/gh/'+REPO+'@'+sha+'/data';
-        var res = await fetch(SHOP_BASE+'/shop.json', {cache:'no-store'});
-        if (!res.ok) throw new Error('shop '+res.status);
-        SHOP_INDEX = await res.json();
+        try{
+          var sha = await resolveCaseSha();
+          SHOP_BASE = 'https://fastly.jsdelivr.net/gh/'+REPO+'@'+sha+'/data';
+          var res = await fetch(SHOP_BASE+'/shop.json', {cache:'no-store'});
+          if (!res.ok) throw new Error('shop '+res.status);
+          SHOP_INDEX = await res.json();
+        }catch(dynamicError){
+          var fixed = await fetch(BASE+'/data/shop.json', {cache:'force-cache'});
+          if (!fixed.ok) throw new Error('fixed shop '+fixed.status);
+          SHOP_INDEX = await fixed.json();
+        }
       }
     }catch(e){
       SHOP_INDEX = {products:{}};
