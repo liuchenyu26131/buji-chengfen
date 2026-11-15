@@ -1,5 +1,7 @@
-# ── 本仓库的职责：只放「能直接上线的东西」= 数据 + 壳源码 ──
-# 这两样合起来就是一个完整可用的站点，jsdelivr 也只读 data/。
+# ── 本仓库只放运行数据；index.html 仅保留在本地并上传国内静态托管 ──
+
+# 防止 git add -A / deploy.py 把壳文件推到 GitHub
+/index.html
 
 # 预览包是构建产物（1.1 MB，每次重建都变），不收进版本库
 preview.html
