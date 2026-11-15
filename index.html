@@ -54,7 +54,9 @@ header{
 .hd-tool{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);
   border-radius:8px;background:var(--panel);color:var(--ink2);line-height:1}
 .hd-tool:active{background:var(--line2)}
+.hd-tool:disabled{opacity:.34;cursor:default}
 .hd-tool .ico{font-size:15px;line-height:1}
+.hd-tool svg{width:16px;height:16px}
 .zoom-group{display:flex;align-items:center;height:34px;overflow:hidden;border:1px solid var(--line);
   border-radius:8px;background:var(--panel)}
 .zoom-btn{width:30px;height:32px;display:grid;place-items:center;font-size:16px;line-height:1;color:var(--ink2)}
@@ -110,6 +112,12 @@ header.is-collapsed .selbar{max-height:0;padding-bottom:0;opacity:0;pointer-even
   color:var(--accent);background:var(--accent-bg);
 }
 .ghost{font-size:12.5px;color:var(--ink3);text-decoration:underline;text-underline-offset:3px}
+.share-toast{position:fixed;left:50%;bottom:24px;z-index:120;max-width:calc(100vw - 32px);
+  padding:9px 15px;border:1px solid var(--line);border-radius:999px;background:var(--panel);
+  box-shadow:var(--shadow);font-size:12.5px;color:var(--ink);text-align:center;
+  opacity:0;pointer-events:none;transform:translate(-50%,8px);transition:opacity .18s ease,transform .18s ease}
+.share-toast.on{opacity:1;transform:translate(-50%,0)}
+.share-toast.bad{color:#8f2f2f;border-color:#d9b8b8}
 
 /* ---------- 区块 ---------- */
 section{margin:18px 0}
@@ -727,12 +735,17 @@ footer .ver{font-family:var(--mono);margin-top:6px}
 </head>
 <body>
 
+<div class="share-toast" id="shareToast" role="status" aria-live="polite"></div>
+
 <header>
   <div class="wrap">
     <div class="hd">
       <h1>营养配方盘</h1>
       <span class="sub" id="cnt">— 个产品</span>
       <div class="hd-tools">
+        <button type="button" class="hd-tool" id="shareSelection" disabled aria-label="复制分享链接" title="复制分享链接">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98"/><path d="m15.41 6.51-6.82 3.98"/></svg>
+        </button>
         <button type="button" class="hd-tool" id="themeToggle" aria-pressed="false" aria-label="切换到夜间模式" title="切换到夜间模式">
           <span class="ico" id="themeIcon" aria-hidden="true">☀</span>
         </button>
@@ -1319,8 +1332,11 @@ function renderChips(){
     actions.appendChild(c);
   }
   box.appendChild(actions);
+  var shareBtn = q('#shareSelection');
+  if (shareBtn) shareBtn.disabled = !SEL.length;
   syncHeaderControl();
   if (DB) syncQuickAddUI();
+  syncHash();
 }
 
 /* 多产品时，向下浏览自动收起顶部选品区；点击标题栏可随时展开。 */
@@ -2059,6 +2075,38 @@ function copyTextSync(text){
     return ok;
   }catch(e){ return false; }
 }
+var shareToastTimer = null;
+function showShareToast(message, bad){
+  var el = q('#shareToast');
+  if (!el) return;
+  clearTimeout(shareToastTimer);
+  el.textContent = message;
+  el.classList.toggle('bad', !!bad);
+  el.classList.add('on');
+  shareToastTimer = setTimeout(function(){
+    el.classList.remove('on');
+  }, 2400);
+}
+function shareSelection(){
+  if (!SEL.length){
+    showShareToast('先选择产品再分享', true);
+    return;
+  }
+  syncHash();
+  var code = selectionShareCode();
+  var url = location.href.split('#')[0] + (code ? '#' + code : '');
+  var finish = function(ok){
+    if (ok) showShareToast('分享链接已复制');
+    else showShareToast('复制失败，请从地址栏复制', true);
+  };
+  if (copyTextSync(url)){
+    finish(true);
+  }else if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url).then(function(){ finish(true); }, function(){ finish(false); });
+  }else{
+    finish(false);
+  }
+}
 function manualYuanbaolink(){
   return ' 若没自动打开，<a href="'+AI_YUANBAO_URL+'" target="_blank" rel="noopener">点此手动打开元宝</a>。';
 }
@@ -2758,6 +2806,34 @@ async function openDetail(id){
   syncSheetLock();
 }
 
+function applySharedHash(){
+  SEL = [];
+  var m = location.hash.match(/(?:^#|&)s=([^&]*)/);
+  if (!m) return {hadHash:false, skipped:0};
+
+  var seen = {};
+  var skipped = 0;
+  var raw = decodeURIComponent(m[1] || '');
+  raw.split(',').forEach(function(pair){
+    if (!pair) return;
+    var a = pair.split(':');
+    var id = a[0];
+    var item = DB.index.find(function(x){ return x.id === id; });
+    if (!item){
+      skipped++;
+      return;
+    }
+    if (seen[id]) return;
+    seen[id] = true;
+    var value = a.length > 1 ? Number(a[1]) : NaN;
+    var amount = (String(a[1] || '').trim() && Number.isFinite(value) && value >= 0)
+      ? Math.round(value * 1000) / 1000
+      : item.defaultAmount;
+    SEL.push({id:id, amount:amount});
+  });
+  return {hadHash:true, skipped:skipped};
+}
+
 /* ---------------- 启动 ---------------- */
 (async function(){
   try{
@@ -2771,21 +2847,18 @@ async function openDetail(id){
     applyQuickNavAnchor(quickNavAnchor, false);
 
     // 分享链接：#s=P032:1,P005:2
-    var m = location.hash.match(/s=([^&]+)/);
-    if (m){
-      m[1].split(',').forEach(function(pair){
-        var a = pair.split(':');
-        if (a[0] && DB.index.some(x=>x.id===a[0])){
-          SEL.push({id:a[0], amount: parseFloat(a[1]) || (DB.index.find(x=>x.id===a[0]).defaultAmount)});
-        }
-      });
-    }
+    var shared = applySharedHash();
     renderChips();
     if (SEL.length){
       q('#main').innerHTML = '<div class="loading">读取产品数据…</div>';
       for (var i=0;i<SEL.length;i++){ await product(SEL[i].id); }
     }
     render();
+    if (shared.hadHash && !SEL.length){
+      setTimeout(function(){ showShareToast(shared.skipped ? '分享链接中的产品已下架' : '分享链接为空', true); }, 0);
+    }else if (shared.skipped){
+      setTimeout(function(){ showShareToast(shared.skipped + ' 个分享产品已下架，已跳过', true); }, 0);
+    }
   }catch(e){
     q('#main').innerHTML = '<div class="errbox">'+
       '<div style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:6px">数据没加载出来</div>'+
@@ -2800,6 +2873,7 @@ async function openDetail(id){
     if (SEL.length >= 2) setHeaderCollapsed(!headerCollapsed, 'tap');
   };
   q('#themeToggle').onclick = toggleTheme;
+  q('#shareSelection').onclick = shareSelection;
   q('#zoomOut').onclick = function(){ applyContentZoom(contentZoom - ZOOM_STEP, true); };
   q('#zoomIn').onclick = function(){ applyContentZoom(contentZoom + ZOOM_STEP, true); };
   q('#detailZoomOut').onclick = function(){ applyDetailZoom(detailZoom - ZOOM_STEP, true); };
@@ -2997,11 +3071,24 @@ function throttledRender(){
   if (rt) clearTimeout(rt);
   rt = setTimeout(function(){ render(); syncHash(); }, 220);
 }
+function selectionShareCode(){
+  if (!DB || !SEL.length) return '';
+  return 's=' + SEL.map(function(x){
+    var item = DB.index.find(function(p){ return p.id === x.id; });
+    var value = Number(x.amount);
+    if (!Number.isFinite(value) || value < 0){
+      value = item ? item.defaultAmount : 0;
+    }
+    value = Math.round(value * 1000) / 1000;
+    return x.id + ':' + value;
+  }).join(',');
+}
 function syncHash(){
   try{
-    if (!SEL.length){ history.replaceState(null,'',location.pathname+location.search); return; }
-    var s = SEL.map(x=>x.id+':'+x.amount).join(',');
-    history.replaceState(null,'','#s='+s);
+    var code = selectionShareCode();
+    var next = location.pathname + location.search + (code ? '#' + code : '');
+    var current = location.pathname + location.search + location.hash;
+    if (next !== current) history.replaceState(null, '', next);
   }catch(e){}
 }
 </script>
