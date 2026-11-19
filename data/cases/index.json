@@ -1,5 +1,5 @@
 {
- "builtAt": "2026-11-19T11:51:46+08:00",
+ "builtAt": "2026-11-19T14:01:08+08:00",
  "sourceCommit": "9a25468",
  "sourceRecords": 2300,
  "eligibleRecords": 2297,
@@ -96,6 +96,11 @@
   "P005": {
    "count": 85,
    "file": "P005.json",
+   "family": "活性B族"
+  },
+  "P128": {
+   "count": 85,
+   "file": "P128.json",
    "family": "活性B族"
   },
   "P009": {
@@ -566,11 +571,6 @@
   "P109": {
    "count": 60,
    "file": "P109.json",
-   "family": "基础全营养素"
-  },
-  "P110": {
-   "count": 60,
-   "file": "P110.json",
    "family": "基础全营养素"
   },
   "P111": {
