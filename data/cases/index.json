@@ -1,5 +1,5 @@
 {
- "builtAt": "2026-11-15T15:56:53+08:00",
+ "builtAt": "2026-11-19T11:51:46+08:00",
  "sourceCommit": "9a25468",
  "sourceRecords": 2300,
  "eligibleRecords": 2297,
@@ -69,7 +69,8 @@
   "fucoidan": 0,
   "sea_salt": 20,
   "ps": 1,
-  "digestive_enzyme": 9
+  "digestive_enzyme": 9,
+  "msm": 0
  },
  "products": {
   "P001": {

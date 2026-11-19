@@ -342,6 +342,11 @@
       "label": "消化酶",
       "keywords": ["消化酶"],
       "products": ["P121"]
+    },
+    "msm": {
+      "label": "MSM",
+      "keywords": ["MSM", "二甲基砜", "Methylsulfonylmethane"],
+      "products": ["P127"]
     }
   }
 }
