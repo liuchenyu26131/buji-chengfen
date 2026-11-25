@@ -2,6 +2,8 @@
 
 # 防止 git add -A / deploy.py 把壳文件推到 GitHub
 /index.html
+# 托管端实际文件名是 i.html（sps.yy-gp.com/h9d8w/i.html），同理不入库
+/i.html
 
 # 预览包是构建产物（1.1 MB，每次重建都变），不收进版本库
 preview.html
