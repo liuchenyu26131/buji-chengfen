@@ -9,10 +9,20 @@ preview.html
 # 这份 README 是内部运维手册（含本机路径、待核疑点、下架记录），不公开
 README.md
 
+# 科普加载方式小样：验证页 + 对照用的全量单文件，只在本机测，不进仓库
+# （data/science/ 下的分片是正式数据，要随仓库走，不在此列）
+/sci_test.html
+/data/science/_old_full.json
+
 # 生成器与部署脚本留在本地知识库：它们依赖上一层的 CSV 表，
 # 单独拷进这个仓库是跑不起来的，放进来只会误导以后的自己
 build_site_json.py
+build_science_v2.py
 deploy.py
+
+# 视觉样张截图，只是本地核对排版用
+/_shot_*.png
+/_sc_*.html
 
 __pycache__/
 *.pyc

@@ -173,8 +173,28 @@ def detect_version(name):
 
 
 def parse_key(name):
-    m = re.match(r"^(\d+_[^-]+?)_", name)
-    return m.group(1) if m else name.split("_")[0]
+    """从文件名剥离尾部版本词，得到成分键（如 029_烟酸B3、20_K2-MK4）。
+
+    旧实现用 ^(\\d+_[^-]+?)_ 取前缀，一旦成分名里带连字符（Ca-AKG、K2-MK4）
+    就会截断成裸编号 17/20，导致 MK4 与 MK7 落到同一个键、互相覆盖。
+    改为从右往左剥版本词：版本词可能叠加（_正分子与功能医学视角_大白话），
+    循环剥离即可，且完全不依赖连字符。
+    """
+    s = name
+    for _ in range(4):
+        cut = False
+        for _ver, kws in VERSION_RULES:
+            for kw in kws:
+                suffix = "_" + kw
+                if s.endswith(suffix) and len(s) > len(suffix):
+                    s = s[: -len(suffix)]
+                    cut = True
+                    break
+            if cut:
+                break
+        if not cut:
+            break
+    return s
 
 
 def title_of(md, fallback):
