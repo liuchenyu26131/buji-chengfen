@@ -27,5 +27,19 @@ deploy.py
 /_shot_*.png
 /_sc_*.html
 
+# 产品↔科普映射核对用的中间产物（待确认后才写入 SCI_MAP，不入库）
+gen_sci_map_review.py
+/_映射候选.json
+/_映射清单_待核对.md
+
+# 科普文件名改造用的脚本与中间产物（一次性运维，不入库）
+rename_sci_files.py
+_验证_改名前后数据.py
+_验证_自动映射.py
+/_文件名改造预览.md
+/_产品映射_自动清单.md
+/_改名前_键基线.json
+/_改名前_数据快照.json
+
 __pycache__/
 *.pyc

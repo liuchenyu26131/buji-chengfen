@@ -194,6 +194,9 @@ def parse_key(name):
                 break
         if not cut:
             break
+    # 身份键内插入的产品 ID 段（如 55_P093_茶氨酸、029_P060-P061_烟酸B3）
+    # 只是给人看的映射提示，不能进成分键，否则线上分片/SCI_MAP 全部失配。
+    s = re.sub(r"_P\d+(?:-P?\d+)*", "", s)
     return s
 
 
